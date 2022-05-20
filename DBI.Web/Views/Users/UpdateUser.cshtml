@@ -1,0 +1,183 @@
+﻿@using DBI_eDahab.Web.ViewModels
+@model DBI_eDahab.Web.ViewModels.UpdateUserForm
+
+@{
+    ViewBag.Title = "UpdateUser";
+    var i = 0;
+}
+
+
+<ul class="breadcrumb">
+    <li><a href="#">Users</a></li>
+    <li><a href="#">Update User</a></li>
+    <li class="active">Update User Form</li>
+
+</ul>
+<!-- END BREADCRUMB -->
+<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+
+    <div class="row">
+        <div class="col-md-12">
+            @*@using (Html.BeginForm("UpdateUser", "Users", FormMethod.Post))
+                {*@
+            <form method="post" action="~/Users/UpdateUser">
+
+
+
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <strong>@TempData["SuccessMessage"]</strong>
+                    </div>
+                }
+
+
+                <div class="form-horizontal">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><strong>Update User </strong> Form</h3>
+                            <ul class="panel-controls">
+                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body">
+                            <p></p>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    @Html.HiddenFor(model => model.Id)
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <span class="help-block">Provide Name for the user</span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+
+                                                    @Html.HiddenFor(model => model.UserName)
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <span class="help-block">User phone number</span>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <span class="help-block">User Email</span>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ResetPassword, new { @class = "control-label col-sm-3" })
+                                        <div class="col-sm-6">
+                                            <label class="control-label checkbox-inline">
+                                                @Html.CheckBoxFor(model => model.ResetPassword, "checked='checked'")
+                                            </label>
+                                            <span class="help-block">Check To generate new password for this user</span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Active, new { @class = "control-label col-sm-3" })
+                                        <div class="col-sm-6">
+                                            <label class="control-label checkbox-inline">
+                                                @Html.CheckBoxFor(model => model.Active)
+                                            </label>
+                                            <span class="help-block">Activation Option</span>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+                                </div>
+
+
+                                <div class="panel panel-success panel-hidden-controls">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Manage user permissions</h3>
+
+                                    </div>
+                                    <div class="panel-body">
+                                        @foreach (var permission in (Dictionary<string, Users.Permissions>) ViewBag.Permissions)
+                                        {
+                                            <div class="col-sm-3 form-group">
+                                                <label class="control-label checkbox-inline" for="@string.Format("CurrentPermissions[{0}]", i)">
+                                                    <input id="@string.Format("CurrentPermissions[{0}]", i)" name="@string.Format("CurrentPermissions[{0}]", i++)" value="@permission.Value" type="checkbox" @((Model.CurrentPermissions & permission.Value) == permission.Value ? "checked='checked'" : "") />
+                                                    @permission.Key
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="reset" class="btn btn-default">Clear Form</button>
+
+                            <input type="submit" class="btn btn-primary pull-right" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- END PAGE CONTENT WRAPPER -->

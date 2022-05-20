@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://192.168.23.88/DBIWebservice.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="TransactionQuery">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryUtilityClass">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Status" type="xs:int" />
+          <xs:element minOccurs="0" name="TransactionID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionMessage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionRequestTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="TransactionResponseTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="TransactionStatus" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TransactionQuery" nillable="true" type="tns:TransactionQuery" />
+  <xs:complexType name="PrimaryUtilityClass">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="PrimaryUtilityClass" nillable="true" type="tns:PrimaryUtilityClass" />
+  <xs:complexType name="BranchesList">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryUtilityClass">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="List" nillable="true" type="q1:ArrayOfKeyValueOfstringstring" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BranchesList" nillable="true" type="tns:BranchesList" />
+  <xs:complexType name="CustomerAccountTypesList">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryUtilityClass">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="List" nillable="true" type="q2:ArrayOfKeyValueOfstringstring" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CustomerAccountTypesList" nillable="true" type="tns:CustomerAccountTypesList" />
+  <xs:complexType name="CustomerAccounts">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryUtilityClass">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountsList" nillable="true" type="tns:ArrayOfCustomerAccounts.DBIAccount" />
+          <xs:element minOccurs="0" name="MSISDN" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CustomerAccounts" nillable="true" type="tns:CustomerAccounts" />
+  <xs:complexType name="ArrayOfCustomerAccounts.DBIAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomerAccounts.DBIAccount" nillable="true" type="tns:CustomerAccounts.DBIAccount" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomerAccounts.DBIAccount" nillable="true" type="tns:ArrayOfCustomerAccounts.DBIAccount" />
+  <xs:complexType name="CustomerAccounts.DBIAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNo" type="xs:long" />
+      <xs:element minOccurs="0" name="AccountType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BranchCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Currency" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerAccounts.DBIAccount" nillable="true" type="tns:CustomerAccounts.DBIAccount" />
+  <xs:complexType name="Customer">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryUtilityClass">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Active" type="xs:boolean" />
+          <xs:element minOccurs="0" name="MSISDN" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Customer" nillable="true" type="tns:Customer" />
+</xs:schema>

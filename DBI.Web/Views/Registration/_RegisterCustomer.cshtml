@@ -1,0 +1,134 @@
+﻿@model DBI_eDahab.Web.ViewModels.CustomerForm
+
+
+
+
+
+
+
+
+
+
+@using (Html.BeginForm())
+            {
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4> </h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Customer Register Form</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.MSISDN, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="col-md-2">
+                                <a href="#" class="btn btn-info">Validate</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.eDahabName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.eDahabName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.eDahabName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AccountNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.AccountNo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AccountNo, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-2">
+                                <a href="#" class="btn btn-info">Validate</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AccountHolder, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.AccountHolder, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.AccountHolder, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AccountType, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-8">
+                                <select class="form-control" name="AccountType">
+                                    <option>11301</option>
+                                    <option>11302</option>
+                                    <option>11301</option>
+                                    <option>Personal Account</option>
+                                    <option>Saving Account</option>
+                                    <option>Business Account</option>
+
+                                </select>
+
+                                @Html.ValidationMessageFor(model => model.AccountType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Branch, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                            @*@foreach (var item in ViewBag.UserBranch)
+                            {*@
+
+
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Branch, new {htmlAttributes = new {@class = "form-control"}})
+                                @*<input type="text" name="Branch" value="@item.Branch" />*@
+                                @Html.ValidationMessageFor(model => model.Branch, "", new { @class = "text-danger" })
+                            </div>
+                            @*}*@
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.eDahabType, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-8">
+                                <select class="form-control" name="eDahabType">
+                                    <option>Subscriber</option>
+                                    <option>Merchant</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.eDahabType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-8">
+                        <input type="submit" value="Submit" class="btn btn-default" />
+                        <input type="reset" value="Clear Form" class="btn btn-warning" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="CashOutOneStep">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="msisdn" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="input" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CashOutOneStepResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CashOutOneStepResult" type="tns:ConvivaResponseObject" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ConvivaResponseObject">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="StatusCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BarredStatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AuthHeader" type="tns:AuthHeader" />
+      <s:complexType name="AuthHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="RegisterSubscriber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="msisdn" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="firstname" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lastname" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gender" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="city" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterSubscriberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterSubscriberResult" type="tns:ConvivaResponseObject" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="msisdn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCustomerInfoResult" type="tns:EDahabUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EDahabUser">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="MSISDN" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Balance" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="PwdFlag" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Language" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CheckAgentBalance">
+        <s:complexType />
+      </s:element>
+      <s:element name="CheckAgentBalanceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckAgentBalanceResult" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CashOutOneStepSoapIn">
+    <wsdl:part name="parameters" element="tns:CashOutOneStep" />
+  </wsdl:message>
+  <wsdl:message name="CashOutOneStepSoapOut">
+    <wsdl:part name="parameters" element="tns:CashOutOneStepResponse" />
+  </wsdl:message>
+  <wsdl:message name="CashOutOneStepAuthHeader">
+    <wsdl:part name="AuthHeader" element="tns:AuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RegisterSubscriberSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterSubscriber" />
+  </wsdl:message>
+  <wsdl:message name="RegisterSubscriberSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterSubscriberResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterSubscriberAuthHeader">
+    <wsdl:part name="AuthHeader" element="tns:AuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCustomerInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCustomerInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerInfoAuthHeader">
+    <wsdl:part name="AuthHeader" element="tns:AuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="CheckAgentBalanceSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckAgentBalance" />
+  </wsdl:message>
+  <wsdl:message name="CheckAgentBalanceSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckAgentBalanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckAgentBalanceAuthHeader">
+    <wsdl:part name="AuthHeader" element="tns:AuthHeader" />
+  </wsdl:message>
+  <wsdl:portType name="EDahabApiSouthSoap">
+    <wsdl:operation name="CashOutOneStep">
+      <wsdl:input message="tns:CashOutOneStepSoapIn" />
+      <wsdl:output message="tns:CashOutOneStepSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterSubscriber">
+      <wsdl:input message="tns:RegisterSubscriberSoapIn" />
+      <wsdl:output message="tns:RegisterSubscriberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerInfo">
+      <wsdl:input message="tns:GetCustomerInfoSoapIn" />
+      <wsdl:output message="tns:GetCustomerInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckAgentBalance">
+      <wsdl:input message="tns:CheckAgentBalanceSoapIn" />
+      <wsdl:output message="tns:CheckAgentBalanceSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EDahabApiSouthSoap" type="tns:EDahabApiSouthSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CashOutOneStep">
+      <soap:operation soapAction="http://tempuri.org/CashOutOneStep" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CashOutOneStepAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterSubscriber">
+      <soap:operation soapAction="http://tempuri.org/RegisterSubscriber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RegisterSubscriberAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerInfo">
+      <soap:operation soapAction="http://tempuri.org/GetCustomerInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetCustomerInfoAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAgentBalance">
+      <soap:operation soapAction="http://tempuri.org/CheckAgentBalance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CheckAgentBalanceAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="EDahabApiSouthSoap12" type="tns:EDahabApiSouthSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CashOutOneStep">
+      <soap12:operation soapAction="http://tempuri.org/CashOutOneStep" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CashOutOneStepAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterSubscriber">
+      <soap12:operation soapAction="http://tempuri.org/RegisterSubscriber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RegisterSubscriberAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetCustomerInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetCustomerInfoAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAgentBalance">
+      <soap12:operation soapAction="http://tempuri.org/CheckAgentBalance" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CheckAgentBalanceAuthHeader" part="AuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EDahabApiSouth">
+    <wsdl:port name="EDahabApiSouthSoap" binding="tns:EDahabApiSouthSoap">
+      <soap:address location="http://192.168.23.88:2020/EDahabApiSouth.asmx" />
+    </wsdl:port>
+    <wsdl:port name="EDahabApiSouthSoap12" binding="tns:EDahabApiSouthSoap12">
+      <soap12:address location="http://192.168.23.88:2020/EDahabApiSouth.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

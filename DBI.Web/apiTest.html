@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+
+
+<body>
+    <h2>testApi</h2>
+    <h3>Cors Request</h3>
+
+
+    <button id="getPatients">Get AccountInfo</button>
+
+<pre id="output">
+</pre>
+    <script src="Scripts/jquery-2.0.3.min.js"></script>
+
+    <script>
+        $(function () {
+
+
+
+            var getAccountInfo = function () {
+                $.get(url).always(showResponse);
+
+                return false;
+            };
+
+            var showResponse = function (object) {
+                $("#output").text(JSON.stringify(object, null, 4));
+            };
+
+            var url = "http://192.168.1.114/api/AccountInfo";
+
+            $("#getAccountInfo").click(getAccountInfo);
+        });
+    </script>
+</body>
+
+</html>

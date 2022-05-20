@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="PentabankRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CallerID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CallerPassword" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PIN" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PentabankRequest" nillable="true" type="tns:PentabankRequest" />
+  <xs:complexType name="PrimaryObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNo" type="xs:long" />
+      <xs:element minOccurs="0" name="AccountType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BranchCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Currency" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransactionID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PrimaryObject" nillable="true" type="tns:PrimaryObject" />
+  <xs:complexType name="AccountInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Status" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AccountInfo" nillable="true" type="tns:AccountInfo" />
+  <xs:complexType name="ArrayOfAccountInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountInfo" nillable="true" type="tns:AccountInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountInfo" nillable="true" type="tns:ArrayOfAccountInfo" />
+  <xs:complexType name="PentabankResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimaryObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AdviceNo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ResponseCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Status" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PentabankResponse" nillable="true" type="tns:PentabankResponse" />
+  <xs:complexType name="ArrayOfStatementEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StatementEntity" nillable="true" type="tns:StatementEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStatementEntity" nillable="true" type="tns:ArrayOfStatementEntity" />
+  <xs:complexType name="StatementEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Amount" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ChequeDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ChequeNo" type="xs:long" />
+      <xs:element minOccurs="0" name="Narration" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransactionDate" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StatementEntity" nillable="true" type="tns:StatementEntity" />
+</xs:schema>

@@ -1,0 +1,110 @@
+﻿@model DBI_eDahab.Web.ViewModels.ReconcilationBalances
+
+@{
+    ViewBag.Title = "Reconciliation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Reconciliation</h2>
+
+<div class="form-horizontal">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Reconcilation Balances</h3>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @*@Html.LabelFor(model => model.DBIAgentUSDBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            <label class="control-label col-md-6">Balance As per e-Dahab Books (USD): </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.DBIAgentUSDBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.DBIAgentUSDBalance, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-6">Balance As per DBI Books (USD): </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.eDahabUSDAccountBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.eDahabUSDAccountBalance, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-6">USD Difference: </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.USDDifference, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.USDDifference, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+
+<!--                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @*@Html.LabelFor(model => model.DBIAgentSLSBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            <label class="control-label col-md-6">Balance As per e-Dahab Books (SLS): </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.DBIAgentSLSBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.DBIAgentSLSBalance, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @*@Html.LabelFor(model => model.eDahabSLSAccountBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            <label class="control-label col-md-6">Balance As per DBI Books (SLS): </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.eDahabSLSAccountBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.eDahabSLSAccountBalance, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6">SLS Difference: </label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.SLSDifference, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.SLSDifference, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+-->
+
+                    </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    @Html.Partial("~/Views/Reports/Transactions.cshtml",Model.Transactions)
+
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+
+
+
+
+@section scripts
+ {
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".datepickerOne").datepicker();
+        });
+    </script>
+}

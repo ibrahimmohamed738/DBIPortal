@@ -1,0 +1,68 @@
+﻿
+
+
+@model DBI_eDahab.Web.ViewModels.LoginForm
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class="body-full-height">
+<head>
+    <!-- META SECTION -->
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    @Styles.Render("~/Content/css")
+    <!-- EOF CSS INCLUDE -->
+</head>
+<body>
+    <div class="login-container lightmode">
+        <div class="login-box animated fadeInDown">
+            <div class=""></div>
+            <center><h2 style="color:white">  <img src="~/Content/logo.png" class="img-responsive" alt="Alternate Text" />  </h2></center>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <strong>@TempData["SuccessMessage"]</strong>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <strong>@TempData["ErrorMessage"]</strong>
+                </div>
+            }
+            <div class="login-body">
+                <div class="login-title"><strong>Enter Token Here</strong></div>
+                <form action="~/Authentication/Token" class="form-horizontal" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>Token</strong></label>
+                        <div class="col-sm-9">
+                            @Html.TextBox("Token", null, new { @class = "form-control  " })
+                            <span class="help-block">
+                                @Html.ActionLink("Resend Token", "ResendToken")
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <input class="btn btn-primary" type="submit" value="Submit Token" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="login-footer">
+                <div class="pull-left">
+                    &copy; @DateTime.Now.Year Dahabshiil
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

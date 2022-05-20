@@ -1,0 +1,263 @@
+﻿@model DBI_eDahab.Web.ViewModels.CustomerAccountForm
+@{
+    ViewBag.Title = "AddCustomerAccounts";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script src="~/Scripts/jquery-2.0.3.min.js"></script>
+
+<br />
+
+<div class="container">
+    @using (Html.BeginForm("AddCustomerAccounts", "Customers"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4> </h4>
+            @if (TempData["Success"] != null)
+            {
+                <h4 class="alert alert-success"> @TempData["Success"]</h4>
+            }
+            @if (TempData["MSISDNInUse"] != null)
+            {
+                <h4 class="alert alert-danger"> @TempData["MSISDNInUse"]</h4>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <h4 class="alert alert-danger"> @TempData["Error"]</h4>
+            }
+
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Customer Account Registeration Form</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <p></p>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="62XXXXXXX" />
+                                    @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger", @id = "msisdnValidation" })
+                                </div>
+                                <div class="col-md-3">
+
+                                    <button type="button" id="validateEdahabName" class="btn btn-sm btn-info">Get eDahab Name</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.eDahabName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="EdahabName" readonly />
+                                    @Html.ValidationMessageFor(model => model.eDahabName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AccountNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    <input type="search" id="AccountNo" name="AccountNo" value="" class="form-control" />
+                                    @Html.ValidationMessageFor(model => model.AccountNo, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-2">
+                                    <a id="validateAccountHolder" class="btn btn-sm btn-info">Validate</a>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AccountType, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    <select class="form-control" name="AccountType" id="AccountType" disabled>
+                                        <option value="" selected></option>
+                                        <option value="81101">81101  Customer Current Account</option>
+                                        <option value="81102">81102  Staff Current Account</option>
+                                        <option value="81103">81103  Customers Saving Account</option>
+                                        <option value="81105">81105  Companies Current Accounts</option>
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.AccountType, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Currency, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Currency, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AccountHolder, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.AccountHolder, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.AccountHolder, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NewDailyLimit, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    @*@Html.EditorFor(model => model.DailyLimit, new { htmlAttributes = new { @class = "form-control", } })*@
+                                    <input type="search" id="NewDailyLimit" name="NewDailyLimit" value="5000" class="form-control" readonly  />
+                                    @Html.ValidationMessageFor(model => model.NewDailyLimit, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-8">
+                                <input type="submit" value="Submit" class="btn btn-success" />
+
+                                <input type="reset" value="Clear Form" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>
+
+
+@section scripts {
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            $("#clickMe").click(function () {
+                document.getElementById("#place").innerHTML = "<input type='text' value=''>"
+            });
+
+
+
+
+
+
+            $('input').on("keypress", function (e) {
+                /* ENTER PRESSED*/
+                if (e.keyCode == 13) {
+                    /* FOCUS ELEMENT */
+                    var inputs = $(this).parents("form").eq(0).find(":input");
+                    var idx = inputs.index(this);
+
+                    if (idx == inputs.length - 1) {
+                        inputs[0].select()
+                    } else {
+                        inputs[idx + 1].focus(); //  handles submit buttons
+
+                        inputs[idx + 1].select();
+                    }
+                    return false;
+                }
+            });
+
+
+
+
+
+
+            $("#validateEdahabName").click(function ()
+            {
+                $.ajax({
+                    url: "@Url.Content("~/Customers/GetEdahabNameFromDB")",
+
+                    dataType: 'json', contentType: 'application/json',
+
+                    data: {
+                        MSISDN: $("#MSISDN").val()
+                    },
+                    success: function (data) {
+                        $("input[name=EdahabName]").val(data);
+                    }
+                });
+            });
+
+
+
+
+
+
+
+            $("#MSISDN").change(function () {
+
+                $("input[name=EdahabName]").val("");
+            });
+
+
+
+
+
+            $("#AccountNo").change(function () {
+
+                $("input[name=AccountHolder]").val("");
+                $("input[name=Currency]").val("");
+                $("#AccountType").val("");
+                $("#AccountType").prop("disabled", true);
+            });
+
+
+
+
+
+
+
+            $("#validateAccountHolder").click(function () {
+                $.ajax({
+                    url: "@Url.Content("~/Customers/GetDBIAccountHolder")",
+                    data: {
+                        AccountNo: $("#AccountNo").val(),
+                    },
+
+
+                    success: function (data) {
+                        if (data["Status"] == "0")
+                        {
+
+                            $("input[name=AccountHolder]").val(data["CustomerName"]);
+                            $("input[name=Currency]").val(data["Currency"]);
+                            $("#AccountType").val(data["AccountType"]);
+                            $("#AccountType").prop("disabled", true);
+                        }
+                        else {
+                            alert(data["Message"]);
+                        }
+
+                    }
+                });
+            });
+
+            $("form").submit(function () {
+                $("#AccountType").prop("disabled", false);
+            });
+
+
+            $("#GetCustomerPhoto").click(function () {
+                var appRootUrl = "@Url.Content("~/")";
+                var url = appRootUrl;
+                if (!$("#MSISDN").val()) {
+                    $("#MSISDN").focus();
+                    return;
+                }
+                url = appRootUrl + "Customers/GetEdahabCustomerPhoto?MSISDN=" + $("#MSISDN").val();
+
+                $("#modal-body").html("<img   src='" + url + "' />");
+
+                //$("#ajax-loader").html('');
+            });
+        });
+    </script>
+}

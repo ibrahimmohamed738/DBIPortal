@@ -1,0 +1,117 @@
+﻿@model DBI_eDahab.Web.ViewModels.Users
+
+@{
+    ViewBag.Title = "Add User";
+}
+
+<hr />
+<hr />
+
+<div class="container">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        if (TempData["ErrorMessage"] != null)
+        {
+            <h4 class="alert alert-danger">@TempData["ErrorMessage"]</h4>
+        }
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">User Info</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <h4>Users</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                       
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Branch, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    <select class="form-control" name="Branch" id="Branch">
+                                        <option value="104">Tripiano Branch</option>
+                                        <option value="110">Bakara branch</option>
+                                        <option value="111">Beledweyne branch</option>
+                                        <option value="112">Hamarweyne Branch</option>
+                                        <option value="113">Baidoa Branch</option>
+                                        <option value="115">Kismayo Branch</option>
+                                        <option value="116">Jowhar Branch</option>
+                                        <option value="118">Beledhawo Branch</option>
+                                        <option value="119">Sug bad Branch</option>
+                                        <option value="200">HO Branch</option>
+
+
+
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.Branch, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="panel-footer">
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <input type="submit" value="Submit" class="btn btn-sm btn-primary" />
+                                <input type="reset" class="btn btn-sm btn-warning" value="Clear Form" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    }
+
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+</div>

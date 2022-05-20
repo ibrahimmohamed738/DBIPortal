@@ -1,0 +1,75 @@
+﻿@model IEnumerable<DBI_eDahab.Web.PentaServiceApi.CustForm>
+
+@{
+    ViewBag.Title = "ApproveCustomers";
+}
+
+<h2>ApproveCustomers</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountHolder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Branch)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DailyLimit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MSISDN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.eDahabName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.eDahabType)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountHolder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Branch)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DailyLimit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MSISDN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.eDahabName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.eDahabType)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,220 @@
+﻿@model DBI_eDahab.Web.ViewModels.CustomerForm
+@{
+    ViewBag.Title = "RegisterCustomer";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script src="~/Scripts/jquery-2.0.3.min.js"></script>
+
+<br />
+
+<div class="container">
+    @using (Html.BeginForm("RegisterCustomer", "Customers"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4> </h4>
+            @if (TempData["Success"] != null)
+            {
+                <h4 class="alert alert-success"> @TempData["Success"]</h4>
+            }
+            @if (TempData["MSISDNInUse"] != null)
+            {
+                <h4 class="alert alert-danger"> @TempData["MSISDNInUse"]</h4>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <h4 class="alert alert-danger"> @TempData["Error"]</h4>
+            }
+
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Customer Registeration Form</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <p></p>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="62XXXXXXX" />
+                                    @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger", @id = "msisdnValidation" })
+                                </div>
+                                <div class="col-md-3">
+
+                                    <button type="button" id="validateEdahabName" enabled = "false" class="btn btn-sm btn-info">Validate</button>
+                                    <button type="button" id="GetCustomerPhoto" class="btn btn-sm btn-primary pull-right">Get Photo</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.eDahabType, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="eDahabType" readonly />
+                                    @Html.ValidationMessageFor(model => model.eDahabType, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.eDahabName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="EdahabName" readonly />
+                                    @Html.ValidationMessageFor(model => model.eDahabName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body panel-body-image">
+                                    <div id="modal-body" widh="424" height="238" class="img-responsive">
+                                        <div class="well">
+                                        </div>
+                                    </div>
+                                    @*<img src="~/Content/gorilla.jpg" class="img-responsive" alt="Gorilla" />*@
+                                    <a href="#" class="panel-body-inform">
+                                        <span class="fa fa-heart-o"></span>
+                                    </a>
+                                </div>
+                                <div class="panel-body">
+                                    <h3>Customer &mdash; eDahab Picture</h3>
+                                    <p></p>
+                                </div>
+                                <div class="panel-footer text-muted">
+                                    <span class="fa fa-clock-o"></span> 3d ago &nbsp;&nbsp;&nbsp;
+                                    <span class="fa fa-comment-o"></span> 36
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <div class="col-md-offset-1 col-md-8">
+                            <input type="submit" value="Submit" class="btn btn-success" />
+
+                            <input type="reset" value="Clear Form" class="btn btn-warning" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
+@*<button id="button" value="Add" onClick:"javascript:add();">Add INput</button>*@
+ 
+
+
+@section scripts {
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            $("#clickMe").click(function () {
+                document.getElementById("#place").innerHTML = "<input type='text' value=''>"
+            });
+
+            //$("#clickMe").click(function () {
+            //    //Create an input type dynamically.
+            //    var element = document.createElement("input");
+
+            //    //Create Labels
+            //    var label = document.createElement("Label");
+            //    label.innerHTML = "New Label";
+
+            //    //Assign different attributes to the element.
+            //    element.setAttribute("type", "text");
+            //    element.setAttribute("value", "");
+            //    element.setAttribute("name", "Test Name");
+            //    element.setAttribute("style", "width:200px");
+
+            //    label.setAttribute("style", "font-weight:normal");
+
+            //    // 'foobar' is the div id, where new fields are to be added
+            //    var foo = document.getElementById("fooBar");
+
+            //    //Append the element in page (in span).
+            //    foo.appendChild(label);
+            //    foo.appendChild(element);
+            //});
+
+
+
+
+
+            $('input').on("keypress", function (e) {
+                /* ENTER PRESSED*/
+                if (e.keyCode == 13) {
+                    /* FOCUS ELEMENT */
+                    var inputs = $(this).parents("form").eq(0).find(":input");
+                    var idx = inputs.index(this);
+
+                    if (idx == inputs.length - 1) {
+                        inputs[0].select()
+                    } else {
+                        inputs[idx + 1].focus(); //  handles submit buttons
+
+                        inputs[idx + 1].select();
+                    }
+                    return false;
+                }
+            });
+
+
+
+
+
+
+            $("#validateEdahabName").click(function () {
+                $.ajax({
+                    url: "@Url.Content("~/Customers/GetEdahabName")",
+
+                    dataType: 'json', contentType: 'application/json',
+
+                    data: {
+                        MSISDN: $("#MSISDN").val()
+                    },
+                    success: function (data) {
+                        $("input[name=EdahabName]").val(data["Name"]);
+                        $("input[name=eDahabType]").val(data["Category"]);
+
+
+                    }
+                });
+            });
+
+
+
+
+
+
+
+
+
+            $("#GetCustomerPhoto").click(function () {
+                var appRootUrl = "@Url.Content("~/")";
+                var url = appRootUrl;
+                if (!$("#MSISDN").val()) {
+                    $("#MSISDN").focus();
+                    return;
+                }
+                url = appRootUrl + "Customers/GetEdahabCustomerPhoto?MSISDN=" + $("#MSISDN").val();
+
+                $("#modal-body").html("<img   src='" + url + "' />");
+
+                //$("#ajax-loader").html('');
+            });
+        });
+    </script>
+}

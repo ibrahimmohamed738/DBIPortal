@@ -1,0 +1,272 @@
+﻿
+
+@model  PagedList<DBI_eDahab.Web.ViewModels.CustomerForm>
+
+
+@{
+    ViewBag.Title = "Customers";
+    // var pageNumbers = Enumerable.Range(1, Model.PageCount).Where(n => n <= 5 || (n >= Model.Page - 2 && n <= Model.Page + 2) || n > Model.PageCount - 5).ToArray();
+
+}
+
+
+<body>
+
+    <!-- END BREADCRUMB -->
+    <!-- PAGE TITLE -->
+    <!-- END PAGE TITLE -->
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- START DEFAULT DATATABLE -->
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3></h3>
+                    </div>
+                    <div class="panel-body">
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <strong>@TempData["SuccessMessage"]</strong>
+                            </div>
+                        }
+                        <form method="get">
+
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="term" placeholder="Enter Mobile/Acc. No." />
+                                        <span class="input-group-addon add-on"><span class="fa fa-search"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <div class="input-group">
+
+                                        <input type="text" name="DateFrom" class="form-control datepicker" placeholder="From Date" id="dp-4" data-date="07-07-2014" data-date-format="dd-mm-yyyy" data-date-viewmode="months" />
+                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <input type="text" name="DateTo" class="form-control datepicker" placeholder="To Date" id="dp-4" data-date="07-07-2014" data-date-format="dd-mm-yyyy" data-date-viewmode="months" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Branch" class="form-control">
+                                            <option></option>
+                                            <option value="104">Tripiano Branch</option>
+                                            <option value="110">Bakara branch</option>
+                                            <option value="111">Beledweyne branch</option>
+                                            <option value="112">Hamarweyne Branch</option>
+                                            <option value="113">Baidoa Branch</option>
+                                            <option value="115">Kismayo Branch</option>
+                                            <option value="116">Jowhar Branch</option>
+                                            <option value="118">Beledhawo Branch</option>
+                                            <option value="119">Sug bad Branch</option>
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Active" class="form-control">
+                                            <option></option>
+                                            <option value="Y">Active</option>
+                                            <option value="N">Deactive</option>
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Verified" class="form-control">
+                                            <option></option>
+                                            <option value="True">Verified</option>
+                                            <option value="False">Not Verified</option>
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Search</button> | 
+                                        <a href="~/Reports/ExportCustomersExcel" class="btn  btn-warning"> Export Excel</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>     
+
+
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <table class="table" id="customer_report">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        No.
+                                    </th>
+                                    <th>
+                                        MSISDN
+                                    </th>
+                                    <th>
+                                        eDahabName
+                                    </th>
+                                    <th>
+                                        AccountNo
+                                    </th>
+                                    <th>
+                                        AccountType
+                                    </th>
+                                    <th>
+                                        AccountHolder
+                                    </th>
+                                    <th>
+                                        Currency
+                                    </th>
+
+                                    <th>
+                                        CreatedOn
+                                    </th>
+                                    <th>
+                                        CreatedBy
+                                    </th>
+
+                                    <th>
+                                        DailyLimit
+                                    </th>
+                                    <th>
+                                        Active
+                                    </th>
+                                    <th>
+                                        Verified
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @{
+                                int count = (Model.PageNumber-1) * Model.PageSize;
+
+                                foreach (var list in Model)
+                                {
+                                    count += 1;
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @count
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink(list.MSISDN, "ModifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "" })
+                                        </td>
+
+                                        <td>@list.eDahabName</td>
+                                        <td>@list.CustomerAccount.AccountNo</td>
+                                        <td>@list.CustomerAccount.AccountType</td>
+                                        <td>@list.CustomerAccount.AccountHolder</td>
+                                        <td>@list.CustomerAccount.Currency</td>
+
+
+                                        <td>@list.CustomerAccount.CreatedOn.ToShortDateString()</td>
+                                        <td>@list.CustomerAccount.CreatedBy</td>
+
+                                        <td>@list.CustomerAccount.DailyLimit</td>
+
+
+                                        @if (list.Active == "Y")
+                                        {
+                                            <td><span class="label label-success">Yes</span></td>
+                                        }
+
+                                        @if (list.Active == "N")
+                                        {
+                                            <td><span class="label label-danger">No</span></td>
+
+                                        }
+
+
+                                        @if (list.CustomerAccount.Verified == true)
+                                        {
+                                            <td><span class="label label-success">Yes</span></td>
+                                        }
+
+                                        @if (list.CustomerAccount.Verified == false)
+                                        {
+                                            <td><span class="label label-danger">No</span></td>
+
+                                        }
+
+
+
+
+                                        <td>
+                                            @Html.ActionLink("Verify", "VerifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "btn btn-xs btn-primary" })
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            }
+                                }
+                        </table>
+                        <div class="pagedList pull-right" data-otf-target="#RestaurantList">
+                            @Html.PagedListPager(Model, page => Url.Action("Customers", new
+                       {
+                           page,
+                           term = Request.QueryString["term"],
+                           DateFrom = Request.QueryString["DateFrom"],
+                           DateTo = Request.QueryString["DateTo"],
+                           Currency = Request.QueryString["Currency"],
+                           Branch = Request.QueryString["Branch"],
+                           
+                       }),
+                                             PagedListRenderOptions.MinimalWithItemCountText)
+                        </div>
+                    </div>
+                </div>
+                <!-- END DEFAULT DATATABLE -->
+                <!-- START SIMPLE DATATABLE -->
+                <!-- END SIMPLE DATATABLE -->
+            </div>
+        </div>
+
+    </div>
+    <!-- PAGE CONTENT WRAPPER -->
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+

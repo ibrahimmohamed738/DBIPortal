@@ -1,0 +1,336 @@
+﻿
+
+@model  PagedList<DBI_eDahab.Web.ViewModels.Transaction>
+
+
+@{
+    ViewBag.Title = "Transactions";
+    // var pageNumbers = Enumerable.Range(1, Model.PageCount).Where(n => n <= 5 || (n >= Model.Page - 2 && n <= Model.Page + 2) || n > Model.PageCount - 5).ToArray();
+
+}
+
+
+<body>
+
+    <!-- END BREADCRUMB -->
+    <!-- PAGE TITLE -->
+    <!-- END PAGE TITLE -->
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- START DEFAULT DATATABLE -->
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3></h3>
+                    </div>
+                    <div class="panel-body">
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <strong>@TempData["SuccessMessage"]</strong>
+                            </div>
+                        }
+
+
+
+                        @if (TempData["Error"] != null)
+                        {
+                            <h4 class="alert alert-danger"> @TempData["Error"]</h4>
+                        }
+
+
+                        @if (TempData["SessionNull"] != null)
+                        {
+                            <h3 class="alert alert-danger">@TempData["SessionNull"]</h3>
+                        }
+
+                        <form method="get">
+
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="term" placeholder="Enter Mobile/Acc. No." />
+                                        <span class="input-group-addon add-on"><span class="fa fa-search"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Name" placeholder="Enter Customer Name" />
+                                        <span class="input-group-addon add-on"><span class="fa fa-search"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Amount" placeholder="Amount" />
+                                        <span class="input-group-addon add-on"><span class="fa fa-search"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <div class="input-group">
+
+                                        <input type="text" name="DateFrom" class="form-control datepickerOne" placeholder="From Date" value="@DateTime.Now.ToShortDateString()" />
+                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <input type="text" name="DateTo" class="form-control datepickerOne" placeholder="To Date" value="@DateTime.Now.ToShortDateString()" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Status" class="form-control">
+                                            <option></option>
+                                            <option value="1">Success</option>
+                                            <option value="0">Failed</option>
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Branch" class="form-control">
+                                            <option></option>
+                                            <option value="104">Trepiano Branch</option>
+                                            <option value="110">Bakara branch</option>
+                                            <option value="111">Beledweyne branch</option>
+                                            <option value="112">Hamarweyne Branch</option>
+                                            <option value="113">Baidoa Branch</option>
+                                            <option value="115">Kismayo Branch</option>
+                                            <option value="116">Jowhar Branch</option>
+                                            <option value="118">Beledhawo Branch</option>
+                                            <option value="119">Sug bad Branch</option>
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Search</button> |
+                                        <a href="~/Reports/ExportTransactionsExcel" class="btn  btn-warning"> Export Excel</a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        No.
+                                    </th>
+                                    <th>
+                                        MSISDN
+                                    </th>
+                                    <th>
+                                        AccountNo
+                                    </th>
+                                    <th>
+                                        AccountType
+                                    </th>
+                                    <th>
+                                        Currency
+                                    </th>
+
+                                    <th>
+                                        Branch
+                                    </th>
+                                    <th>
+                                        Dated
+                                    </th>
+
+                                    <th>
+                                        Credit
+                                    </th>
+                                    <th>
+                                        Debit
+                                    </th>
+                                    <th>
+                                        Narration
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+    @{
+
+        decimal totalSLSDebits = 0, totalSLSCredits = 0, totaLUSDDebits = 0, totalUSDCredits = 0;
+        int count = (Model.PageNumber - 1) * Model.PageSize;
+        <tbody>
+
+            @foreach (var list in Model)
+            {
+            count += 1;
+            <tr>
+                <td>
+                    @count
+                </td>
+                <td>
+                    @Html.ActionLink(list.MSISDN, "ModifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.AccountId, AccountType = list.AccountType }, new { @class = "" })
+                </td>
+
+
+
+                <td>@list.AccountId</td>
+                <td>@list.AccountType</td>
+
+
+                <td>@list.Currency</td>
+                <td>@list.Branch</td>
+
+                <td>@list.Dated.ToShortDateString()</td>
+
+                @if (list.TransactionType == "DEPOSIT")
+            {
+                if (list.Currency == "USD")
+                { totalUSDCredits += list.Amount; }
+                if (list.Currency == "SLS")
+                { totalSLSCredits += list.Amount; }
+
+
+                <td>@list.Amount.ToString("C")</td>
+                <td>0</td>
+                }
+                @if (list.TransactionType == "WITHDRAWAL")
+                {
+                    if (list.Currency == "USD")
+                    { totaLUSDDebits += list.Amount; }
+                    if (list.Currency == "SLS")
+                    { totalSLSDebits += list.Amount; }
+                    <td>0</td>
+                    <td>@list.Amount.ToString("C")</td>
+                }
+                @if (list.TransactionType == "CANCELED")
+                {
+                    if (list.Currency == "USD")
+                    { totaLUSDDebits += 0; }
+                    if (list.Currency == "SLS")
+                    { totalSLSDebits += 0; }
+                    <td>0</td>
+                    <td>@list.Amount.ToString("C")</td>
+                    <td>@list.Narration</td>
+                    <td><span class="label label-success">Cancelled</span></td>
+                }
+
+
+                @if (list.Status == true && list.TransactionType != "CANCELED")
+            {
+                    <td>@list.Narration</td>
+                    <td><span class="label label-success">Success</span></td>
+                }
+
+                @if (list.Status == false && list.TransactionType != "CANCELED")
+                {
+                    <td>
+                        @Html.ActionLink(list.Narration, "ProcessFailedTransaction", "Reports", new { TransactionID = list.Narration }, new { @class = "btn btn-xs btn-primary" })
+                    </td>
+                    <td><span class="label label-danger">Failed</span></td>
+
+                }
+
+
+            </tr>
+            }
+        </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td>Total USD Credits: </td>
+                                    <td>@totalUSDCredits.ToString("C")</td>
+                                    <td>Total USD Debits: </td>
+                                    <td>@totaLUSDDebits.ToString("C")</td>
+                                    <td>Total SLS Credits: </td>
+                                    <td>@totalSLSCredits.ToString("C")</td>
+                                    <td>Total SLS Debits: </td>
+                                    <td>@totalSLSDebits.ToString("C")</td>
+                                </tr>
+                            </tfoot>
+                                }
+                        </table>
+                        <div class="pagedList pull-right" data-otf-target="#RestaurantList">
+                            @Html.PagedListPager(Model, page => Url.Action("Transactions", new
+                       {
+                           page,
+                           term = Request.QueryString["term"],
+
+                           Amount = Request.QueryString["Amount"],
+                           DateFrom = Request.QueryString["DateFrom"],
+                           DateTo = Request.QueryString["DateTo"],
+
+                           Status = Request.QueryString["Status"],
+                           Currency = Request.QueryString["Currency"],
+                           Branch = Request.QueryString["Branch"],
+
+                       }),
+                                             PagedListRenderOptions.MinimalWithItemCountText)
+                        </div>
+                    </div>
+                </div>
+                <!-- END DEFAULT DATATABLE -->
+                <!-- START SIMPLE DATATABLE -->
+                <!-- END SIMPLE DATATABLE -->
+            </div>
+        </div>
+
+    </div>
+    <!-- PAGE CONTENT WRAPPER -->
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section scripts
+ {
+ 
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+     
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".datepickerOne").datepicker();
+        });
+    </script>
+}

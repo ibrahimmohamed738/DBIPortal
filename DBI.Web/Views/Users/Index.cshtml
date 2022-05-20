@@ -1,0 +1,126 @@
+﻿
+
+@model DBI_eDahab.Web.ViewModels.UserSearch
+
+
+@{
+    ViewBag.Title = "Users";
+    var pageNumbers = Enumerable.Range(1, Model.PageCount).Where(n => n <= 5 || (n >= Model.Page - 2 && n <= Model.Page + 2) || n > Model.PageCount - 5).ToArray();
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><strong><i class="fa fa-cog"></i> Manage Users </strong> Form</h3>
+        <ul class="panel-controls">
+            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <p></p>
+    </div>
+    <div class="panel-body">
+
+
+
+
+        <div class="row">
+            <div class="col-xs-12">
+
+
+
+
+                @using (Html.BeginForm("Index", "Users", FormMethod.Get, new { @class = "form-horizontal", @placeholder = "Search UserName , Name Or Mobile Number" }))
+                {
+                    @Html.ValidationSummary()
+                    <div class="row">
+
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><strong>SearchTerm</strong></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control col-md-6" placeholder="Search UserName or MobileNumber" name="SearchTerm" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><strong>PageSize</strong></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control col-md-6" value="@Model.PageSize" name="PageSize" />
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            <div class="col-md-9  col-lg-offset-2 col-md-offset-2">
+                                <input class="btn btn-primary" type="submit" value="Search" />
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
+                @if (Model != null && Model.SearchResults != null)
+                {
+                    if (Model.SearchResults.Count == 0)
+                    {
+                        <h3>No users matching the search term "@Model.SearchTerm" found.</h3>
+                    }
+                    else
+                    {
+                        <h3>@(Model.UsersCount.ToString("N0")) @(Model.UsersCount == 1 ? "user" : "users") found.</h3>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Full Name</th>
+                                    <th>Mobile Number</th>
+                                    <th>Branch</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model.SearchResults)
+                                {
+                                    <tr>
+                                        <td>@user.UserName</td>
+                                        <td>@user.FullName</td>
+                                        <td>@user.MobileNumber</td>
+                                        <td>@user.Branch</td>
+
+
+
+                                        <td>@Html.ActionLink("Update ", "UpdateUser", new { UserId = user.UserName }, new { @class = "btn btn-circle btn-primary" })</td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <ul class="pagination">
+                            <li class="@(Model.Page == 1 ? "disabled" : null)">@Html.ActionLink("<", "Index", "Users", new { page = Model.Page > 1 ? Model.Page - 1 : 1, pageSize = Model.PageSize, searchterm = Model.SearchTerm }, null)</li>
+                            @for (int i = 0; i <= pageNumbers.Count() - 1; i++)
+                            {
+                                <li class="@(Model.Page == pageNumbers[i] ? "active" : null)">@Html.ActionLink(pageNumbers[i].ToString(), "Index", "Users", new { page = pageNumbers[i], pageSize = Model.PageSize, searchterm = Model.SearchTerm }, null)</li>
+                                if (i != pageNumbers.Count() - 1 && pageNumbers[i] != pageNumbers[i + 1] - 1)
+                                {
+                                    <li><a>...</a></li>
+                                }
+                            }
+                            <li class="@(Model.Page == Model.PageCount ? "disabled" : null)">@Html.ActionLink(">", "Index", "Users", new { page = Model.Page != Model.PageCount ? Model.Page + 1 : Model.PageCount, pageSize = Model.PageSize, searchterm = Model.SearchTerm }, null)</li>
+                        </ul>
+                    }
+                }
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>

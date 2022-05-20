@@ -1,0 +1,17 @@
+m.vs/config
+mDBI_eDahab.Web
+mDBI_eDahab.Web/App_Start
+rDBI_eDahab.Web/Content
+aDBI_eDahab.Web/Content/themes/base
+aDBI_eDahab.Web/Content/themes/base/images
+rDBI_eDahab.Web/Controllers
+aDBI_eDahab.Web/Helpers
+aDBI_eDahab.Web/Models
+rDBI_eDahab.Web/Scripts
+aDBI_eDahab.Web/Service References/PentaServiceApi
+rDBI_eDahab.Web/ViewModels
+mDBI_eDahab.Web/Views/Authentication
+aDBI_eDahab.Web/Views/Customers
+mDBI_eDahab.Web/Views/Home
+mDBI_eDahab.Web/Views/Shared
+mDBI_eDahab.Web/Views/Users
