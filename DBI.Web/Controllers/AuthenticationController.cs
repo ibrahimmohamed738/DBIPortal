@@ -9,6 +9,10 @@ using DBI_eDahab.Web.ViewModels;
 using DBI_eDahab.Web.DBIWebService;
 using System.Web.Configuration;
 using System.Net;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DBI_eDahab.Web.Controllers
 {
@@ -26,7 +30,7 @@ namespace DBI_eDahab.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Login(LoginForm loginForm)
+        public async Task<ActionResult> Login(LoginForm loginForm)
         {
             if (ModelState.IsValid)
             {
@@ -43,16 +47,18 @@ namespace DBI_eDahab.Web.Controllers
                     var token = new Random().Next(1000, 9999).ToString();
                     Session["User"] = user;
                     HttpContext.Cache[string.Format("{0}'s CurrentPermissions", user.UserName)] = user.CurrentPermissions;
+                    await SendSmsAsync("DBI", user.MobileNumber, token);
                     //  _usersRepository.SendSomtelSms("252" + user.MobileNumber, token, asFlash: true);
-                    SendSMSRequest sms = new SendSMSRequest()
-                    {
-                        MSG = token,
-                        MSISDN = user.MobileNumber,
-                        CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                        CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                    };
-                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    _pentBankApi.Send_SMS(sms);
+
+                    //SendSMSRequest sms = new SendSMSRequest()
+                    //{
+                    //    MSG = token,
+                    //    MSISDN = user.MobileNumber,
+                    //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
+                    //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
+                    //};
+                    //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                    //_pentBankApi.Send_SMS(sms);
                     Session["Token"] = token;
                     return RedirectToAction("Token");
                 }
@@ -71,23 +77,24 @@ namespace DBI_eDahab.Web.Controllers
             }
             return View(loginForm);
         }
-        public ActionResult ResendToken()
+        public async Task<ActionResult> ResendToken()
         {
             var user = Session["User"] as Users;
             var expectedToken = Session["Token"] as string;
             if (user != null && expectedToken != null)
             {
                 var token = new Random().Next(1000, 9999).ToString();
+                await SendSmsAsync("DBI",user.MobileNumber,token);
                 //     _usersRepository.SendSomtelSms("252" + user.MobileNumber, token, asFlash: true);
-                SendSMSRequest sms = new SendSMSRequest()
-                {
-                    MSG = token,
-                    MSISDN = user.MobileNumber,
-                    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                };
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                _pentBankApi.Send_SMS(sms);
+                //SendSMSRequest sms = new SendSMSRequest()
+                //{
+                //    MSG = token,
+                //    MSISDN = user.MobileNumber,
+                //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
+                //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
+                //};
+                //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                //_pentBankApi.Send_SMS(sms);
 
                 Session["Token"] = token;
                 TempData["SuccessMessage"] = "Token has been resent.";
@@ -146,6 +153,24 @@ namespace DBI_eDahab.Web.Controllers
             TempData["SuccessMessage"] = "You have been logged out of the system.";
 
             return RedirectToAction("Login");
+        }
+
+
+        public async Task SendSmsAsync(string title, string phone, string message)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://192.168.23.90:5000/");
+                var request = new
+                {
+                    phone,
+                    title,
+                    message
+                };
+                var json = JsonConvert.SerializeObject(request);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                await client.PostAsync("SMS", data);
+            }
         }
     }
 }
