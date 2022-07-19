@@ -10,7 +10,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DBI_eDahab.Web.DBIWebService;
 using System.Web.Configuration;
 using System.Net;
 
@@ -20,8 +19,7 @@ namespace DBI_eDahab.Web.Controllers
     {
         // GET: Reports
         Repository _repository = new Repository();
-        DBIWebserviceClient _DBIApi = new DBIWebserviceClient("BasicHttpsBinding_IDBIWebservice");
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
+        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
 
         private class CustomerReport
         {
@@ -81,67 +79,67 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.ProcessFailures)]
-        public ActionResult ProcessFailedTransaction(string TransactionID)
-        {
-            try
-            {
-                CorrectTransactionRequest req = new CorrectTransactionRequest();
-                req.TransactionID = TransactionID;
-                req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
-                req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                CorrectTransactionResponse res = _DBIApi.ProcessFailedTransaction(req);
-                if (res.Status == 1 || res == null)
-                    TempData["Error"] = "Exception Occured";
-                else
-                    TempData["Success"] = res.Message;
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                TempData["Error"] = e.Message;
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
+        //[PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.ProcessFailures)]
+        //public ActionResult ProcessFailedTransaction(string TransactionID)
+        //{
+        //    try
+        //    {
+        //        CorrectTransactionRequest req = new CorrectTransactionRequest();
+        //        req.TransactionID = TransactionID;
+        //        req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
+        //        req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
+        //        ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+        //        CorrectTransactionResponse res = _DBIApi.ProcessFailedTransaction(req);
+        //        if (res.Status == 1 || res == null)
+        //            TempData["Error"] = "Exception Occured";
+        //        else
+        //            TempData["Success"] = res.Message;
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        TempData["Error"] = e.Message;
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Reconciliation)]
-        public ActionResult Reconciliation(FilterTransactions filter, int page = 1)
-        {
-            GLCheckBalanceRequest req = new GLCheckBalanceRequest();
-            req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
-            req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
-            req.Currency = "USD";
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            GLCheckBalanceResponse USDBal = _DBIApi.CheckGLBalance(req);
-            req.Currency = "SOS";
-            GLCheckBalanceResponse SLSBal = _DBIApi.CheckGLBalance(req);
-            ReconcilationBalances reconcilationBalances = new ReconcilationBalances();
-            reconcilationBalances.eDahabSLSAccountBalance = SLSBal.Balance;
-            reconcilationBalances.eDahabUSDAccountBalance = USDBal.Balance;
-            //To Do get balances after Farhan provide the API
+        //[PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Reconciliation)]
+        //public ActionResult Reconciliation(FilterTransactions filter, int page = 1)
+        //{
+        //    GLCheckBalanceRequest req = new GLCheckBalanceRequest();
+        //    req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
+        //    req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
+        //    req.Currency = "USD";
+        //    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+        //    GLCheckBalanceResponse USDBal = _DBIApi.CheckGLBalance(req);
+        //    req.Currency = "SOS";
+        //    GLCheckBalanceResponse SLSBal = _DBIApi.CheckGLBalance(req);
+        //    ReconcilationBalances reconcilationBalances = new ReconcilationBalances();
+        //    reconcilationBalances.eDahabSLSAccountBalance = SLSBal.Balance;
+        //    reconcilationBalances.eDahabUSDAccountBalance = USDBal.Balance;
+        //    //To Do get balances after Farhan provide the API
             
-            eDahabServiceApi.AuthHeader auth = new eDahabServiceApi.AuthHeader
-            {
-                Username = WebConfigurationManager.AppSettings["eDahabUser"].ToString(),
-                Password = WebConfigurationManager.AppSettings["eDahabPassword"].ToString()
-            };
-            var eDahabBalances = _eDahabApi.CheckAgentBalance(auth);
-            reconcilationBalances.DBIAgentSLSBalance = 0;
-            reconcilationBalances.DBIAgentUSDBalance = eDahabBalances;
-            if (!(filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null ))
-            {
-                filter.DateFrom = new DateTime(2018, 10, 1);
-                filter.DateTo = DateTime.Today;
-            }
-            filter.Status = "0";
-            List<Transaction> list = _repository.Transactions(filter);
-            reconcilationBalances.Transactions = list.ToPagedList(1, list.Count>0? list.Count : 1);
-            Session["TransactionsSession"] = reconcilationBalances.Transactions;
+        //    eDahabServiceApi.AuthHeader auth = new eDahabServiceApi.AuthHeader
+        //    {
+        //        Username = WebConfigurationManager.AppSettings["eDahabUser"].ToString(),
+        //        Password = WebConfigurationManager.AppSettings["eDahabPassword"].ToString()
+        //    };
+        //    var eDahabBalances = _eDahabApi.CheckAgentBalance(auth);
+        //    reconcilationBalances.DBIAgentSLSBalance = 0;
+        //    reconcilationBalances.DBIAgentUSDBalance = eDahabBalances;
+        //    if (!(filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null ))
+        //    {
+        //        filter.DateFrom = new DateTime(2018, 10, 1);
+        //        filter.DateTo = DateTime.Today;
+        //    }
+        //    filter.Status = "0";
+        //    List<Transaction> list = _repository.Transactions(filter);
+        //    reconcilationBalances.Transactions = list.ToPagedList(1, list.Count>0? list.Count : 1);
+        //    Session["TransactionsSession"] = reconcilationBalances.Transactions;
 
-            return View(reconcilationBalances);
-        }
+        //    return View(reconcilationBalances);
+        //}
 
         
 

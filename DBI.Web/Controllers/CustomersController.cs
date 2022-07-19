@@ -7,25 +7,32 @@ using DBI_eDahab.Web.Helpers;
 using DBI_eDahab.Web.Models;
 using DBI_eDahab.Web.ViewModels;
 using System.Web.Security;
-using DBI_eDahab.Web.DBIWebService;
 using System.Net;
 using System.Web.Configuration;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace DBI_eDahab.Web.Controllers
 {
     [Authorize]
     public class CustomersController : Controller
     {
-        //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-        Repository _repository = new Repository();
-        UsersRepository _usersRepository = new UsersRepository();
-        //PentaServiceApi.PentaServiceClient _pentaServiceApi = new PentaServiceApi.PentaServiceClient();
-        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IService1");
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
+        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
+        private readonly IFluxCubeApi _fluxCubeApi;
+        private readonly Repository _repository;
+        private readonly UsersRepository _usersRepository;
 
+        public CustomersController(IFluxCubeApi fluxCubeApi, Repository repository, UsersRepository usersRepository)
+        {
+            _fluxCubeApi = fluxCubeApi;
+            _repository = repository;
+            _usersRepository = usersRepository;
+        }
 
-
+        public CustomersController()
+        {
+                
+        }
 
         public ActionResult GetEdahabName(string MSISDN, string Category)
         {
@@ -34,7 +41,7 @@ namespace DBI_eDahab.Web.Controllers
                 Username = WebConfigurationManager.AppSettings["eDahabUser"].ToString(),
                 Password = WebConfigurationManager.AppSettings["eDahabPassword"].ToString()
             };
-            var edahabName = _eDahabApi.GetCustomerInfo(authHeader, MSISDN);
+            var edahabName = _eDahabApi.GetEDahabInfo(MSISDN);
             return Json(edahabName, JsonRequestBehavior.AllowGet);
         }
 
@@ -48,56 +55,22 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        public ActionResult GetDBIAccountHolder(AccountInfoRequest req, string AccountNo)
+        public async Task<ActionResult> GetDBIAccountHolderAsync(AccountInfoRequest req, string AccountNo)
         {
 
-            AccountInfo AccountHolderName = getAccountInfo(req);
-            return Json(AccountHolderName, JsonRequestBehavior.AllowGet);
+            AccountInfoRespone AccountHolderName = await getAccountInfoAsync(req);
+            return Json(AccountHolderName.Name, JsonRequestBehavior.AllowGet);
         }
 
-        private AccountInfo getAccountInfo(AccountInfoRequest req)
+        private async Task<AccountInfoRespone> getAccountInfoAsync(AccountInfoRequest req)
         {
-            AccountInfo result = new AccountInfo();
-            req.BranchCode = GetUser().Branch.ToString();
-            //This has to be changed for the HO of each reqion
-            if (req.BranchCode == "200")
-                req.BranchCode = req.AccountNo.ToString().Substring(0, 3);
-            req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
-            req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            AccountInfo[] list = _pentBankApi.SearchAccount(req);
-            switch(list.Length)
-            {
-                case 0:
-                    result.Status = -1;
-                    result.Message = "Account not found";
-                    break;
-                case 1:
-                    result = list[0];
-                    break;
-                default:
-                    result.Status = 1;
-                    result.Message = "conflict of accounts please contract IT department";
-                    break;
-            }
-            return result;
+            AccountInfoRespone account = await _fluxCubeApi.GetCustomerInfo(req);
+            return account;
         }
 
         private Users GetUser()
         {
             return _usersRepository.GetUser(User.Identity.Name.ToString());
-        }
-
-        public ActionResult AccountTypes()
-        {
-            var getTypes = _pentBankApi.GetCustomerAccountTypes();
-            return Json(getTypes.List, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetBranchs()
-        {
-            var getcodes = _pentBankApi.GetBranchesCodes();
-            return Json(getcodes.List, JsonRequestBehavior.AllowGet);
         }
 
         public string GetDatetime()
@@ -126,7 +99,7 @@ namespace DBI_eDahab.Web.Controllers
 
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Register_customers)]
         [HttpPost]
-        public ActionResult RegisterCustomer(CustomerForm custForm)
+        public async Task<ActionResult> RegisterCustomer(CustomerForm custForm)
         {
             //if (ModelState.IsValid)
             //{
@@ -149,15 +122,8 @@ namespace DBI_eDahab.Web.Controllers
                         string hashedPassword = string.Join("", hash.Select(b => b.ToString("x2")));
                         custForm.PIN = hashedPassword;
                         _repository.RegisterCustomer(custForm);
-                    SendSMSRequest sms = new SendSMSRequest()
-                    {
-                        MSG = $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}",
-                        MSISDN = custForm.MSISDN,
-                        CallerID = WebConfigurationManager.AppSettings["SMSUser"].ToString(),
-                        CallerPassword = WebConfigurationManager.AppSettings["SMSPassword"].ToString()
-                    };
-                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    _pentBankApi.Send_SMS(sms);
+
+                        await _fluxCubeApi.SendSmsAsync("DBI-MobileBanking", custForm.MSISDN, $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}");
                         TempData["Success"] = "Successfully Saved Customer";
                         AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "RegisterCustomerMSISDN", Description = "Successfully registered customer MSISDN: " + custForm.MSISDN, AffectedParty = custForm.MSISDN };
                         _usersRepository.LogUserAction(auditLogRecord); 
@@ -264,7 +230,7 @@ namespace DBI_eDahab.Web.Controllers
 
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.ModifyCustomers)]
         [HttpPost]
-        public ActionResult ModifyCustomer(string userId, CustomerForm editCustomer)
+        public async Task<ActionResult> ModifyCustomer(string userId, CustomerForm editCustomer)
         {
             AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ModifyCustomerAccount" };
             _repository.UpdateCustomer(editCustomer, TempData["Active"].ToString());
@@ -286,15 +252,8 @@ namespace DBI_eDahab.Web.Controllers
                 var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(randomPassword, "SHA1");
 #pragma warning restore 618
                 _repository.ChangePin(editCustomer.MSISDN, hashedPassword);
-                SendSMSRequest sms = new SendSMSRequest()
-                {
-                    MSG = string.Format("Macmiil, Pin-kaagii ayaa laguu badalay , Pin-ka cusubi waa : {0}", randomPassword),
-                    MSISDN = editCustomer.MSISDN,
-                    CallerID = WebConfigurationManager.AppSettings["SMSUser"].ToString(),
-                    CallerPassword = WebConfigurationManager.AppSettings["SMSPassword"].ToString()
-                };
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                _pentBankApi.Send_SMS(sms);
+
+                await _fluxCubeApi.SendSmsAsync("DBI-MobileBanking", editCustomer.MSISDN, $"Macmiil, Pin-kaagii ayaa laguu badalay , Pin-ka cusubi waa : {randomPassword}");
                 auditLogRecord.ActivityType = "ResetCustomerPIN";
                 auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.MSISDN + ") PIN";
                 auditLogRecord.AffectedParty = editCustomer.MSISDN;
@@ -316,22 +275,15 @@ namespace DBI_eDahab.Web.Controllers
 
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Verify)]
         [HttpPost]
-        public ActionResult VerifyCustomer(CustomerForm customer, string submitButton)
+        public async Task<ActionResult> VerifyCustomer(CustomerForm customer, string submitButton)
         {
             AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), AffectedParty = customer.CustomerAccount.AccountNo };
             switch (submitButton)
             {
                 case "Verify":
                     _repository.VerifyCustomer(customer.CustomerAccount.AccountNo, customer.CustomerAccount.AccountType);
-                    SendSMSRequest sms = new SendSMSRequest()
-                    {
-                        MSG = string.Format("Dear customer your DBI account {0} has been successfully verified", customer.CustomerAccount.AccountNo),
-                        MSISDN = customer.MSISDN,
-                        CallerID = WebConfigurationManager.AppSettings["SMSUser"].ToString(),
-                        CallerPassword = WebConfigurationManager.AppSettings["SMSPassword"].ToString()
-                    };
-                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    _pentBankApi.Send_SMS(sms);
+                    await _fluxCubeApi.SendSmsAsync("DBI-MobileBanking", customer.MSISDN, $"Dear customer your DBI account {customer.CustomerAccount.AccountNo} has been successfully verified");
+                  
                     TempData["SuccessMessage"] = "Successfully Verfied Customer";
                     auditLogRecord.ActivityType = "VerifyCustomerAccount";
                     auditLogRecord.Description = "Successfully verified customer("+ customer.MSISDN+") account";

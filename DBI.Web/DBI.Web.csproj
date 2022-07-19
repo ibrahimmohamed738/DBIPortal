@@ -166,19 +166,18 @@
     </Compile>
     <Compile Include="Helpers\EnumHelpers.cs" />
     <Compile Include="Helpers\PermissionRequired.cs" />
+    <Compile Include="Models\FluxCubeApi.cs" />
+    <Compile Include="Models\IFluxCubeApi.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\UsersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\DBIWebService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\eDahabServiceApi\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AccountInfoRequest.cs" />
+    <Compile Include="ViewModels\AccountInfoRespone.cs" />
     <Compile Include="ViewModels\AuditLog.cs" />
     <Compile Include="ViewModels\CustomerAccountForm.cs" />
     <Compile Include="ViewModels\Branchs.cs" />
@@ -329,76 +328,11 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\settings.js" />
     <None Include="Scripts\_references.js" />
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.AccountInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.AccountTransferResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.BranchesList.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.CheckBalanceResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.CorrectTransactionResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.Customer.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.CustomerAccounts.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.CustomerAccountTypesList.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.GLCheckBalanceResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.StatementResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.TransactionQuery.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.UpdateBalanceResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.ChangePINResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Service References\DBIWebService\configuration91.svcinfo" />
-    <None Include="Service References\DBIWebService\configuration.svcinfo" />
-    <None Include="Service References\DBIWebService\DBI_WCF_Service.wsdl" />
-    <None Include="Service References\DBIWebService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\DBIWebService\Service1.disco" />
     <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Scripts\jquery-1.12.4.min.map" />
-    <None Include="Service References\DBIWebService\Service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\Service11.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\Service12.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\Service13.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\Service14.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\Service15.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\eDahabServiceApi\configuration91.svcinfo" />
     <None Include="Service References\eDahabServiceApi\configuration.svcinfo" />
     <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.BankeDahabAgentBalance.datasource">
@@ -491,7 +425,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\DBIWebService\" />
     <WCFMetadataStorage Include="Service References\eDahabServiceApi\" />
   </ItemGroup>
   <PropertyGroup>

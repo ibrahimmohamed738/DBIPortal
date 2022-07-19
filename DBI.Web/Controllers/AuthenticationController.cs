@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using DBI_eDahab.Web.Models;
 using DBI_eDahab.Web.ViewModels;
-using DBI_eDahab.Web.DBIWebService;
 using System.Web.Configuration;
 using System.Net;
 using Newtonsoft.Json;
@@ -21,8 +20,7 @@ namespace DBI_eDahab.Web.Controllers
         // GET: Authentication
 
         UsersRepository _usersRepository = new UsersRepository();
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
-        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IService1");
+        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
 
         public ActionResult Login()
         {

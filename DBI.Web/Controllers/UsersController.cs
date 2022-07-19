@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DBI_eDahab.Web.Helpers;
-using DBI_eDahab.Web.DBIWebService;
 using System.Web.Configuration;
 using System.Net;
 using System.Threading.Tasks;
@@ -23,8 +22,7 @@ namespace DBI_eDahab.Web.Controllers
         // GET: Users
 
         UsersRepository _usersRepository = new UsersRepository();
-        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IService1");
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
+        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
 
 
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Update_Users)]
