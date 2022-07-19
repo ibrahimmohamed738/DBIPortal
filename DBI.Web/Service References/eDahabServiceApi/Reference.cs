@@ -12,44 +12,214 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="eDahabServiceApi.EDahabApiSouthSoap")]
-    public interface EDahabApiSouthSoap {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="eDahabServiceApi.eDahabServiceSoap")]
+    public interface eDahabServiceSoap {
         
-        // CODEGEN: Generating message contract since message CashOutOneStepRequest has headers
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CashOutOneStep", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetAirtimeBalanceByMSISDN", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepResponse CashOutOneStep(DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest request);
+        DBI_eDahab.Web.eDahabServiceApi.CustomerInfo GetAirtimeBalanceByMSISDN(DBI_eDahab.Web.eDahabServiceApi.ValidateForm model);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CashOutOneStep", ReplyAction="*")]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepResponse> CashOutOneStepAsync(DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetAirtimeBalanceByMSISDN", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CustomerInfo> GetAirtimeBalanceByMSISDNAsync(DBI_eDahab.Web.eDahabServiceApi.ValidateForm model);
         
-        // CODEGEN: Generating message contract since message RegisterSubscriberRequest has headers
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RegisterSubscriber", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RefundCustomer", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberResponse RegisterSubscriber(DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest request);
+        DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RefundCustomer(DBI_eDahab.Web.eDahabServiceApi.RefundForm model);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RegisterSubscriber", ReplyAction="*")]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberResponse> RegisterSubscriberAsync(DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RefundCustomer", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> RefundCustomerAsync(DBI_eDahab.Web.eDahabServiceApi.RefundForm model);
         
-        // CODEGEN: Generating message contract since message GetCustomerInfoRequest has headers
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCustomerInfo", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetEDahabInfo", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoResponse GetCustomerInfo(DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest request);
+        DBI_eDahab.Web.eDahabServiceApi.User GetEDahabInfo(string MSISDN);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCustomerInfo", ReplyAction="*")]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoResponse> GetCustomerInfoAsync(DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetEDahabInfo", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.User> GetEDahabInfoAsync(string MSISDN);
         
-        // CODEGEN: Generating message contract since message CheckAgentBalanceRequest has headers
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckAgentBalance", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetResellerInfo", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceResponse CheckAgentBalance(DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest request);
+        DBI_eDahab.Web.eDahabServiceApi.SomtelResponse GetResellerInfo(string MSISDN);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckAgentBalance", ReplyAction="*")]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceResponse> CheckAgentBalanceAsync(DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetResellerInfo", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.SomtelResponse> GetResellerInfoAsync(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RegisterEDahab", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RegisterEDahab(DBI_eDahab.Web.eDahabServiceApi.EDahabRegisterForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RegisterEDahab", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> RegisterEDahabAsync(DBI_eDahab.Web.eDahabServiceApi.EDahabRegisterForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RegisterReseller", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.SomtelResponse RegisterReseller(DBI_eDahab.Web.eDahabServiceApi.ResellerRegisterForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RegisterReseller", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.SomtelResponse> RegisterResellerAsync(DBI_eDahab.Web.eDahabServiceApi.ResellerRegisterForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UnbarEDahabCustomer", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject UnbarEDahabCustomer(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UnbarEDahabCustomer", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> UnbarEDahabCustomerAsync(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveEmployee", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        void SaveEmployee(DBI_eDahab.Web.eDahabServiceApi.StaffForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveEmployee", ReplyAction="*")]
+        System.Threading.Tasks.Task SaveEmployeeAsync(DBI_eDahab.Web.eDahabServiceApi.StaffForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveCustomer", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        void SaveCustomer(DBI_eDahab.Web.eDahabServiceApi.CustomerForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveCustomer", ReplyAction="*")]
+        System.Threading.Tasks.Task SaveCustomerAsync(DBI_eDahab.Web.eDahabServiceApi.CustomerForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetEmployees", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.Staff[] GetEmployees();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetEmployees", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Staff[]> GetEmployeesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCustomers", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.Customer[] GetCustomers();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCustomers", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Customer[]> GetCustomersAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SendSMS", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        void SendSMS(string MSISDN, string Message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SendSMS", ReplyAction="*")]
+        System.Threading.Tasks.Task SendSMSAsync(string MSISDN, string Message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SendToken", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        void SendToken(string MSISDN, string Token);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SendToken", ReplyAction="*")]
+        System.Threading.Tasks.Task SendTokenAsync(string MSISDN, string Token);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetSubscriberInfo", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.Subscriber GetSubscriberInfo(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetSubscriberInfo", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Subscriber> GetSubscriberInfoAsync(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetMerchantInfo", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.Merchant GetMerchantInfo(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetMerchantInfo", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Merchant> GetMerchantInfoAsync(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AddRate", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        void AddRate(decimal Rate, string UserId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AddRate", ReplyAction="*")]
+        System.Threading.Tasks.Task AddRateAsync(decimal Rate, string UserId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetRates", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.Rates[] GetRates();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetRates", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Rates[]> GetRatesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetLatestRate", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        decimal GetLatestRate();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetLatestRate", ReplyAction="*")]
+        System.Threading.Tasks.Task<decimal> GetLatestRateAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckResellerByMSISDN", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        bool CheckResellerByMSISDN(string MSISDN);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckResellerByMSISDN", ReplyAction="*")]
+        System.Threading.Tasks.Task<bool> CheckResellerByMSISDNAsync(string MSISDN);
+        
+        // CODEGEN: Parameter 'StartDate' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetResellersByDate", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateResponse GetResellersByDate(DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetResellersByDate", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateResponse> GetResellersByDateAsync(DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest request);
+        
+        // CODEGEN: Generating message contract since message GetBankeDahabAgentBalanceRequest has headers
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetBankeDahabAgentBalance", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceResponse GetBankeDahabAgentBalance(DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetBankeDahabAgentBalance", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceResponse> GetBankeDahabAgentBalanceAsync(DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RefundCustomerFromMobiquity", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RefundCustomerFromMobiquity(DBI_eDahab.Web.eDahabServiceApi.RefundForm model);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RefundCustomerFromMobiquity", ReplyAction="*")]
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> RefundCustomerFromMobiquityAsync(DBI_eDahab.Web.eDahabServiceApi.RefundForm model);
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class ValidateForm : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string destinationMSISDNField;
+        
+        private string serviceTypeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string DestinationMSISDN {
+            get {
+                return this.destinationMSISDNField;
+            }
+            set {
+                this.destinationMSISDNField = value;
+                this.RaisePropertyChanged("DestinationMSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string ServiceType {
+            get {
+                return this.serviceTypeField;
+            }
+            set {
+                this.serviceTypeField = value;
+                this.RaisePropertyChanged("ServiceType");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -109,24 +279,1126 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public partial class EDahabUser : object, System.ComponentModel.INotifyPropertyChanged {
+    public partial class BankeDahabAgentBalance : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private decimal usdField;
+        
+        private decimal shlField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public decimal Usd {
+            get {
+                return this.usdField;
+            }
+            set {
+                this.usdField = value;
+                this.RaisePropertyChanged("Usd");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal Shl {
+            get {
+                return this.shlField;
+            }
+            set {
+                this.shlField = value;
+                this.RaisePropertyChanged("Shl");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class Rates : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private decimal rateField;
+        
+        private string datedField;
+        
+        private string userIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public decimal Rate {
+            get {
+                return this.rateField;
+            }
+            set {
+                this.rateField = value;
+                this.RaisePropertyChanged("Rate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Dated {
+            get {
+                return this.datedField;
+            }
+            set {
+                this.datedField = value;
+                this.RaisePropertyChanged("Dated");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string UserId {
+            get {
+                return this.userIdField;
+            }
+            set {
+                this.userIdField = value;
+                this.RaisePropertyChanged("UserId");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class Merchant : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string mSISDNField;
         
-        private decimal balanceField;
+        private string customerNameField;
         
-        private string pwdFlagField;
+        private string lastNameField;
         
-        private string languageField;
+        private string addressField;
         
-        private string categoryField;
+        private string cityField;
+        
+        private string telephoneField;
+        
+        private string iDTypeField;
+        
+        private string iDNumberField;
+        
+        private string userIdField;
+        
+        private string userCodeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CustomerName {
+            get {
+                return this.customerNameField;
+            }
+            set {
+                this.customerNameField = value;
+                this.RaisePropertyChanged("CustomerName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string LastName {
+            get {
+                return this.lastNameField;
+            }
+            set {
+                this.lastNameField = value;
+                this.RaisePropertyChanged("LastName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string Address {
+            get {
+                return this.addressField;
+            }
+            set {
+                this.addressField = value;
+                this.RaisePropertyChanged("Address");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string City {
+            get {
+                return this.cityField;
+            }
+            set {
+                this.cityField = value;
+                this.RaisePropertyChanged("City");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string Telephone {
+            get {
+                return this.telephoneField;
+            }
+            set {
+                this.telephoneField = value;
+                this.RaisePropertyChanged("Telephone");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string IDType {
+            get {
+                return this.iDTypeField;
+            }
+            set {
+                this.iDTypeField = value;
+                this.RaisePropertyChanged("IDType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string IDNumber {
+            get {
+                return this.iDNumberField;
+            }
+            set {
+                this.iDNumberField = value;
+                this.RaisePropertyChanged("IDNumber");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public string UserId {
+            get {
+                return this.userIdField;
+            }
+            set {
+                this.userIdField = value;
+                this.RaisePropertyChanged("UserId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public string UserCode {
+            get {
+                return this.userCodeField;
+            }
+            set {
+                this.userCodeField = value;
+                this.RaisePropertyChanged("UserCode");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class Subscriber : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string customerNameField;
+        
+        private string lastNameField;
+        
+        private string addressField;
+        
+        private string cityField;
+        
+        private string telephoneField;
+        
+        private string iDTypeField;
+        
+        private string iDNumberField;
+        
+        private string userIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CustomerName {
+            get {
+                return this.customerNameField;
+            }
+            set {
+                this.customerNameField = value;
+                this.RaisePropertyChanged("CustomerName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string LastName {
+            get {
+                return this.lastNameField;
+            }
+            set {
+                this.lastNameField = value;
+                this.RaisePropertyChanged("LastName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string Address {
+            get {
+                return this.addressField;
+            }
+            set {
+                this.addressField = value;
+                this.RaisePropertyChanged("Address");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string City {
+            get {
+                return this.cityField;
+            }
+            set {
+                this.cityField = value;
+                this.RaisePropertyChanged("City");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string Telephone {
+            get {
+                return this.telephoneField;
+            }
+            set {
+                this.telephoneField = value;
+                this.RaisePropertyChanged("Telephone");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string IDType {
+            get {
+                return this.iDTypeField;
+            }
+            set {
+                this.iDTypeField = value;
+                this.RaisePropertyChanged("IDType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string IDNumber {
+            get {
+                return this.iDNumberField;
+            }
+            set {
+                this.iDNumberField = value;
+                this.RaisePropertyChanged("IDNumber");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public string UserId {
+            get {
+                return this.userIdField;
+            }
+            set {
+                this.userIdField = value;
+                this.RaisePropertyChanged("UserId");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class Customer : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string nAMEField;
+        
+        private string cITYField;
+        
+        private string lOCATIONField;
+        
+        private string rESELLERIDField;
+        
+        private string mSISDN2Field;
+        
+        private string dateCreatedField;
+        
+        private string userIdField;
         
         private string nameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string NAME {
+            get {
+                return this.nAMEField;
+            }
+            set {
+                this.nAMEField = value;
+                this.RaisePropertyChanged("NAME");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string CITY {
+            get {
+                return this.cITYField;
+            }
+            set {
+                this.cITYField = value;
+                this.RaisePropertyChanged("CITY");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string LOCATION {
+            get {
+                return this.lOCATIONField;
+            }
+            set {
+                this.lOCATIONField = value;
+                this.RaisePropertyChanged("LOCATION");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string RESELLERID {
+            get {
+                return this.rESELLERIDField;
+            }
+            set {
+                this.rESELLERIDField = value;
+                this.RaisePropertyChanged("RESELLERID");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string MSISDN2 {
+            get {
+                return this.mSISDN2Field;
+            }
+            set {
+                this.mSISDN2Field = value;
+                this.RaisePropertyChanged("MSISDN2");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string DateCreated {
+            get {
+                return this.dateCreatedField;
+            }
+            set {
+                this.dateCreatedField = value;
+                this.RaisePropertyChanged("DateCreated");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string UserId {
+            get {
+                return this.userIdField;
+            }
+            set {
+                this.userIdField = value;
+                this.RaisePropertyChanged("UserId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class Staff : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string nAMEField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string NAME {
+            get {
+                return this.nAMEField;
+            }
+            set {
+                this.nAMEField = value;
+                this.RaisePropertyChanged("NAME");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class CustomerForm : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string nAMEField;
+        
+        private string cITYField;
+        
+        private string lOCATIONField;
+        
+        private string rESELLERIDField;
+        
+        private string mSISDN2Field;
+        
+        private string uSERIDField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string NAME {
+            get {
+                return this.nAMEField;
+            }
+            set {
+                this.nAMEField = value;
+                this.RaisePropertyChanged("NAME");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string CITY {
+            get {
+                return this.cITYField;
+            }
+            set {
+                this.cITYField = value;
+                this.RaisePropertyChanged("CITY");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string LOCATION {
+            get {
+                return this.lOCATIONField;
+            }
+            set {
+                this.lOCATIONField = value;
+                this.RaisePropertyChanged("LOCATION");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string RESELLERID {
+            get {
+                return this.rESELLERIDField;
+            }
+            set {
+                this.rESELLERIDField = value;
+                this.RaisePropertyChanged("RESELLERID");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string MSISDN2 {
+            get {
+                return this.mSISDN2Field;
+            }
+            set {
+                this.mSISDN2Field = value;
+                this.RaisePropertyChanged("MSISDN2");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string USERID {
+            get {
+                return this.uSERIDField;
+            }
+            set {
+                this.uSERIDField = value;
+                this.RaisePropertyChanged("USERID");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class StaffForm : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string nAMEField;
+        
+        private string cITYField;
+        
+        private string lOCATIONField;
+        
+        private string oFFICEField;
+        
+        private string uSERIDField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string NAME {
+            get {
+                return this.nAMEField;
+            }
+            set {
+                this.nAMEField = value;
+                this.RaisePropertyChanged("NAME");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string CITY {
+            get {
+                return this.cITYField;
+            }
+            set {
+                this.cITYField = value;
+                this.RaisePropertyChanged("CITY");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string LOCATION {
+            get {
+                return this.lOCATIONField;
+            }
+            set {
+                this.lOCATIONField = value;
+                this.RaisePropertyChanged("LOCATION");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string OFFICE {
+            get {
+                return this.oFFICEField;
+            }
+            set {
+                this.oFFICEField = value;
+                this.RaisePropertyChanged("OFFICE");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string USERID {
+            get {
+                return this.uSERIDField;
+            }
+            set {
+                this.uSERIDField = value;
+                this.RaisePropertyChanged("USERID");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class ResellerRegisterForm : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string nameField;
+        
+        private string resellerIdField;
+        
+        private string mSIDField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string ResellerId {
+            get {
+                return this.resellerIdField;
+            }
+            set {
+                this.resellerIdField = value;
+                this.RaisePropertyChanged("ResellerId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string MSID {
+            get {
+                return this.mSIDField;
+            }
+            set {
+                this.mSIDField = value;
+                this.RaisePropertyChanged("MSID");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class EDahabRegisterForm : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string fNAMEField;
+        
+        private string lNAMEField;
+        
+        private string dOBField;
+        
+        private string gENDERField;
+        
+        private string aDDRESSField;
+        
+        private string dISTRICTField;
+        
+        private string cITYField;
+        
+        private string uSERIDField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string FNAME {
+            get {
+                return this.fNAMEField;
+            }
+            set {
+                this.fNAMEField = value;
+                this.RaisePropertyChanged("FNAME");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string LNAME {
+            get {
+                return this.lNAMEField;
+            }
+            set {
+                this.lNAMEField = value;
+                this.RaisePropertyChanged("LNAME");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string DOB {
+            get {
+                return this.dOBField;
+            }
+            set {
+                this.dOBField = value;
+                this.RaisePropertyChanged("DOB");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string GENDER {
+            get {
+                return this.gENDERField;
+            }
+            set {
+                this.gENDERField = value;
+                this.RaisePropertyChanged("GENDER");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string ADDRESS {
+            get {
+                return this.aDDRESSField;
+            }
+            set {
+                this.aDDRESSField = value;
+                this.RaisePropertyChanged("ADDRESS");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string DISTRICT {
+            get {
+                return this.dISTRICTField;
+            }
+            set {
+                this.dISTRICTField = value;
+                this.RaisePropertyChanged("DISTRICT");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string CITY {
+            get {
+                return this.cITYField;
+            }
+            set {
+                this.cITYField = value;
+                this.RaisePropertyChanged("CITY");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public string USERID {
+            get {
+                return this.uSERIDField;
+            }
+            set {
+                this.uSERIDField = value;
+                this.RaisePropertyChanged("USERID");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class SomtelResponse : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string resellerIdField;
+        
+        private string statusCodeField;
+        
+        private string mSIDField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string MSISDN {
+            get {
+                return this.mSISDNField;
+            }
+            set {
+                this.mSISDNField = value;
+                this.RaisePropertyChanged("MSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string ResellerId {
+            get {
+                return this.resellerIdField;
+            }
+            set {
+                this.resellerIdField = value;
+                this.RaisePropertyChanged("ResellerId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string StatusCode {
+            get {
+                return this.statusCodeField;
+            }
+            set {
+                this.statusCodeField = value;
+                this.RaisePropertyChanged("StatusCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string MSID {
+            get {
+                return this.mSIDField;
+            }
+            set {
+                this.mSIDField = value;
+                this.RaisePropertyChanged("MSID");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class User : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mSISDNField;
+        
+        private string nameField;
+        
+        private string categoryField;
         
         private string codeField;
         
@@ -144,54 +1416,6 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public decimal Balance {
-            get {
-                return this.balanceField;
-            }
-            set {
-                this.balanceField = value;
-                this.RaisePropertyChanged("Balance");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string PwdFlag {
-            get {
-                return this.pwdFlagField;
-            }
-            set {
-                this.pwdFlagField = value;
-                this.RaisePropertyChanged("PwdFlag");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public string Language {
-            get {
-                return this.languageField;
-            }
-            set {
-                this.languageField = value;
-                this.RaisePropertyChanged("Language");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public string Category {
-            get {
-                return this.categoryField;
-            }
-            set {
-                this.categoryField = value;
-                this.RaisePropertyChanged("Category");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
         public string Name {
             get {
                 return this.nameField;
@@ -203,7 +1427,19 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string Category {
+            get {
+                return this.categoryField;
+            }
+            set {
+                this.categoryField = value;
+                this.RaisePropertyChanged("Category");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public string Code {
             get {
                 return this.codeField;
@@ -225,7 +1461,7 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -238,7 +1474,7 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
         
         private string messageField;
         
-        private string barredStatusField;
+        private string remainingCreditField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
@@ -278,13 +1514,217 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public string BarredStatus {
+        public string RemainingCredit {
             get {
-                return this.barredStatusField;
+                return this.remainingCreditField;
             }
             set {
-                this.barredStatusField = value;
-                this.RaisePropertyChanged("BarredStatus");
+                this.remainingCreditField = value;
+                this.RaisePropertyChanged("RemainingCredit");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RefundForm : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string sourceMSISDNField;
+        
+        private string destinationMSISDNField;
+        
+        private decimal amountField;
+        
+        private decimal amountInKbsField;
+        
+        private string transactionIdField;
+        
+        private string remarksField;
+        
+        private string refundUserField;
+        
+        private string serviceTypeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string SourceMSISDN {
+            get {
+                return this.sourceMSISDNField;
+            }
+            set {
+                this.sourceMSISDNField = value;
+                this.RaisePropertyChanged("SourceMSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string DestinationMSISDN {
+            get {
+                return this.destinationMSISDNField;
+            }
+            set {
+                this.destinationMSISDNField = value;
+                this.RaisePropertyChanged("DestinationMSISDN");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal Amount {
+            get {
+                return this.amountField;
+            }
+            set {
+                this.amountField = value;
+                this.RaisePropertyChanged("Amount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal AmountInKbs {
+            get {
+                return this.amountInKbsField;
+            }
+            set {
+                this.amountInKbsField = value;
+                this.RaisePropertyChanged("AmountInKbs");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string TransactionId {
+            get {
+                return this.transactionIdField;
+            }
+            set {
+                this.transactionIdField = value;
+                this.RaisePropertyChanged("TransactionId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string Remarks {
+            get {
+                return this.remarksField;
+            }
+            set {
+                this.remarksField = value;
+                this.RaisePropertyChanged("Remarks");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string RefundUser {
+            get {
+                return this.refundUserField;
+            }
+            set {
+                this.refundUserField = value;
+                this.RaisePropertyChanged("RefundUser");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string ServiceType {
+            get {
+                return this.serviceTypeField;
+            }
+            set {
+                this.serviceTypeField = value;
+                this.RaisePropertyChanged("ServiceType");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class CustomerInfo : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string statusCodeField;
+        
+        private decimal balanceField;
+        
+        private string currentBalanceField;
+        
+        private string accountIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string StatusCode {
+            get {
+                return this.statusCodeField;
+            }
+            set {
+                this.statusCodeField = value;
+                this.RaisePropertyChanged("StatusCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal Balance {
+            get {
+                return this.balanceField;
+            }
+            set {
+                this.balanceField = value;
+                this.RaisePropertyChanged("Balance");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string CurrentBalance {
+            get {
+                return this.currentBalanceField;
+            }
+            set {
+                this.currentBalanceField = value;
+                this.RaisePropertyChanged("CurrentBalance");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string AccountId {
+            get {
+                return this.accountIdField;
+            }
+            set {
+                this.accountIdField = value;
+                this.RaisePropertyChanged("AccountId");
             }
         }
         
@@ -301,154 +1741,60 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CashOutOneStep", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class CashOutOneStepRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        public DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader;
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetResellersByDate", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetResellersByDateRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public string msisdn;
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<System.DateTime> StartDate;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public decimal amount;
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<System.DateTime> EndDate;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public string input;
+        public string Extention;
         
-        public CashOutOneStepRequest() {
+        public GetResellersByDateRequest() {
         }
         
-        public CashOutOneStepRequest(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn, decimal amount, string input) {
-            this.AuthHeader = AuthHeader;
-            this.msisdn = msisdn;
-            this.amount = amount;
-            this.input = input;
+        public GetResellersByDateRequest(System.Nullable<System.DateTime> StartDate, System.Nullable<System.DateTime> EndDate, string Extention) {
+            this.StartDate = StartDate;
+            this.EndDate = EndDate;
+            this.Extention = Extention;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CashOutOneStepResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class CashOutOneStepResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetResellersByDateResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetResellersByDateResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject CashOutOneStepResult;
+        public DBI_eDahab.Web.eDahabServiceApi.Customer[] GetResellersByDateResult;
         
-        public CashOutOneStepResponse() {
+        public GetResellersByDateResponse() {
         }
         
-        public CashOutOneStepResponse(DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject CashOutOneStepResult) {
-            this.CashOutOneStepResult = CashOutOneStepResult;
+        public GetResellersByDateResponse(DBI_eDahab.Web.eDahabServiceApi.Customer[] GetResellersByDateResult) {
+            this.GetResellersByDateResult = GetResellersByDateResult;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="RegisterSubscriber", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class RegisterSubscriberRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetBankeDahabAgentBalance", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetBankeDahabAgentBalanceRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
         public DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public string msisdn;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public string firstname;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public string lastname;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
-        public string gender;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=4)]
-        public string city;
-        
-        public RegisterSubscriberRequest() {
+        public GetBankeDahabAgentBalanceRequest() {
         }
         
-        public RegisterSubscriberRequest(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn, string firstname, string lastname, string gender, string city) {
-            this.AuthHeader = AuthHeader;
-            this.msisdn = msisdn;
-            this.firstname = firstname;
-            this.lastname = lastname;
-            this.gender = gender;
-            this.city = city;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="RegisterSubscriberResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class RegisterSubscriberResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RegisterSubscriberResult;
-        
-        public RegisterSubscriberResponse() {
-        }
-        
-        public RegisterSubscriberResponse(DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RegisterSubscriberResult) {
-            this.RegisterSubscriberResult = RegisterSubscriberResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetCustomerInfo", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetCustomerInfoRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        public DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public string msisdn;
-        
-        public GetCustomerInfoRequest() {
-        }
-        
-        public GetCustomerInfoRequest(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn) {
-            this.AuthHeader = AuthHeader;
-            this.msisdn = msisdn;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetCustomerInfoResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetCustomerInfoResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public DBI_eDahab.Web.eDahabServiceApi.EDahabUser GetCustomerInfoResult;
-        
-        public GetCustomerInfoResponse() {
-        }
-        
-        public GetCustomerInfoResponse(DBI_eDahab.Web.eDahabServiceApi.EDahabUser GetCustomerInfoResult) {
-            this.GetCustomerInfoResult = GetCustomerInfoResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CheckAgentBalance", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class CheckAgentBalanceRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        public DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader;
-        
-        public CheckAgentBalanceRequest() {
-        }
-        
-        public CheckAgentBalanceRequest(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader) {
+        public GetBankeDahabAgentBalanceRequest(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader) {
             this.AuthHeader = AuthHeader;
         }
     }
@@ -456,155 +1802,255 @@ namespace DBI_eDahab.Web.eDahabServiceApi {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CheckAgentBalanceResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class CheckAgentBalanceResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetBankeDahabAgentBalanceResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetBankeDahabAgentBalanceResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public decimal CheckAgentBalanceResult;
+        public DBI_eDahab.Web.eDahabServiceApi.BankeDahabAgentBalance GetBankeDahabAgentBalanceResult;
         
-        public CheckAgentBalanceResponse() {
+        public GetBankeDahabAgentBalanceResponse() {
         }
         
-        public CheckAgentBalanceResponse(decimal CheckAgentBalanceResult) {
-            this.CheckAgentBalanceResult = CheckAgentBalanceResult;
+        public GetBankeDahabAgentBalanceResponse(DBI_eDahab.Web.eDahabServiceApi.BankeDahabAgentBalance GetBankeDahabAgentBalanceResult) {
+            this.GetBankeDahabAgentBalanceResult = GetBankeDahabAgentBalanceResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface EDahabApiSouthSoapChannel : DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap, System.ServiceModel.IClientChannel {
+    public interface eDahabServiceSoapChannel : DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class EDahabApiSouthSoapClient : System.ServiceModel.ClientBase<DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap>, DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap {
+    public partial class eDahabServiceSoapClient : System.ServiceModel.ClientBase<DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap>, DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap {
         
-        public EDahabApiSouthSoapClient() {
+        public eDahabServiceSoapClient() {
         }
         
-        public EDahabApiSouthSoapClient(string endpointConfigurationName) : 
+        public eDahabServiceSoapClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public EDahabApiSouthSoapClient(string endpointConfigurationName, string remoteAddress) : 
+        public eDahabServiceSoapClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public EDahabApiSouthSoapClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public eDahabServiceSoapClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public EDahabApiSouthSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public eDahabServiceSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
+        public DBI_eDahab.Web.eDahabServiceApi.CustomerInfo GetAirtimeBalanceByMSISDN(DBI_eDahab.Web.eDahabServiceApi.ValidateForm model) {
+            return base.Channel.GetAirtimeBalanceByMSISDN(model);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CustomerInfo> GetAirtimeBalanceByMSISDNAsync(DBI_eDahab.Web.eDahabServiceApi.ValidateForm model) {
+            return base.Channel.GetAirtimeBalanceByMSISDNAsync(model);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RefundCustomer(DBI_eDahab.Web.eDahabServiceApi.RefundForm model) {
+            return base.Channel.RefundCustomer(model);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> RefundCustomerAsync(DBI_eDahab.Web.eDahabServiceApi.RefundForm model) {
+            return base.Channel.RefundCustomerAsync(model);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.User GetEDahabInfo(string MSISDN) {
+            return base.Channel.GetEDahabInfo(MSISDN);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.User> GetEDahabInfoAsync(string MSISDN) {
+            return base.Channel.GetEDahabInfoAsync(MSISDN);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.SomtelResponse GetResellerInfo(string MSISDN) {
+            return base.Channel.GetResellerInfo(MSISDN);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.SomtelResponse> GetResellerInfoAsync(string MSISDN) {
+            return base.Channel.GetResellerInfoAsync(MSISDN);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RegisterEDahab(DBI_eDahab.Web.eDahabServiceApi.EDahabRegisterForm model) {
+            return base.Channel.RegisterEDahab(model);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> RegisterEDahabAsync(DBI_eDahab.Web.eDahabServiceApi.EDahabRegisterForm model) {
+            return base.Channel.RegisterEDahabAsync(model);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.SomtelResponse RegisterReseller(DBI_eDahab.Web.eDahabServiceApi.ResellerRegisterForm model) {
+            return base.Channel.RegisterReseller(model);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.SomtelResponse> RegisterResellerAsync(DBI_eDahab.Web.eDahabServiceApi.ResellerRegisterForm model) {
+            return base.Channel.RegisterResellerAsync(model);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject UnbarEDahabCustomer(string MSISDN) {
+            return base.Channel.UnbarEDahabCustomer(MSISDN);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> UnbarEDahabCustomerAsync(string MSISDN) {
+            return base.Channel.UnbarEDahabCustomerAsync(MSISDN);
+        }
+        
+        public void SaveEmployee(DBI_eDahab.Web.eDahabServiceApi.StaffForm model) {
+            base.Channel.SaveEmployee(model);
+        }
+        
+        public System.Threading.Tasks.Task SaveEmployeeAsync(DBI_eDahab.Web.eDahabServiceApi.StaffForm model) {
+            return base.Channel.SaveEmployeeAsync(model);
+        }
+        
+        public void SaveCustomer(DBI_eDahab.Web.eDahabServiceApi.CustomerForm model) {
+            base.Channel.SaveCustomer(model);
+        }
+        
+        public System.Threading.Tasks.Task SaveCustomerAsync(DBI_eDahab.Web.eDahabServiceApi.CustomerForm model) {
+            return base.Channel.SaveCustomerAsync(model);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.Staff[] GetEmployees() {
+            return base.Channel.GetEmployees();
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Staff[]> GetEmployeesAsync() {
+            return base.Channel.GetEmployeesAsync();
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.Customer[] GetCustomers() {
+            return base.Channel.GetCustomers();
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Customer[]> GetCustomersAsync() {
+            return base.Channel.GetCustomersAsync();
+        }
+        
+        public void SendSMS(string MSISDN, string Message) {
+            base.Channel.SendSMS(MSISDN, Message);
+        }
+        
+        public System.Threading.Tasks.Task SendSMSAsync(string MSISDN, string Message) {
+            return base.Channel.SendSMSAsync(MSISDN, Message);
+        }
+        
+        public void SendToken(string MSISDN, string Token) {
+            base.Channel.SendToken(MSISDN, Token);
+        }
+        
+        public System.Threading.Tasks.Task SendTokenAsync(string MSISDN, string Token) {
+            return base.Channel.SendTokenAsync(MSISDN, Token);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.Subscriber GetSubscriberInfo(string MSISDN) {
+            return base.Channel.GetSubscriberInfo(MSISDN);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Subscriber> GetSubscriberInfoAsync(string MSISDN) {
+            return base.Channel.GetSubscriberInfoAsync(MSISDN);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.Merchant GetMerchantInfo(string MSISDN) {
+            return base.Channel.GetMerchantInfo(MSISDN);
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Merchant> GetMerchantInfoAsync(string MSISDN) {
+            return base.Channel.GetMerchantInfoAsync(MSISDN);
+        }
+        
+        public void AddRate(decimal Rate, string UserId) {
+            base.Channel.AddRate(Rate, UserId);
+        }
+        
+        public System.Threading.Tasks.Task AddRateAsync(decimal Rate, string UserId) {
+            return base.Channel.AddRateAsync(Rate, UserId);
+        }
+        
+        public DBI_eDahab.Web.eDahabServiceApi.Rates[] GetRates() {
+            return base.Channel.GetRates();
+        }
+        
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.Rates[]> GetRatesAsync() {
+            return base.Channel.GetRatesAsync();
+        }
+        
+        public decimal GetLatestRate() {
+            return base.Channel.GetLatestRate();
+        }
+        
+        public System.Threading.Tasks.Task<decimal> GetLatestRateAsync() {
+            return base.Channel.GetLatestRateAsync();
+        }
+        
+        public bool CheckResellerByMSISDN(string MSISDN) {
+            return base.Channel.CheckResellerByMSISDN(MSISDN);
+        }
+        
+        public System.Threading.Tasks.Task<bool> CheckResellerByMSISDNAsync(string MSISDN) {
+            return base.Channel.CheckResellerByMSISDNAsync(MSISDN);
+        }
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepResponse DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.CashOutOneStep(DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest request) {
-            return base.Channel.CashOutOneStep(request);
+        DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateResponse DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap.GetResellersByDate(DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest request) {
+            return base.Channel.GetResellersByDate(request);
         }
         
-        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject CashOutOneStep(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn, decimal amount, string input) {
-            DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest();
-            inValue.AuthHeader = AuthHeader;
-            inValue.msisdn = msisdn;
-            inValue.amount = amount;
-            inValue.input = input;
-            DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepResponse retVal = ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).CashOutOneStep(inValue);
-            return retVal.CashOutOneStepResult;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepResponse> DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.CashOutOneStepAsync(DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest request) {
-            return base.Channel.CashOutOneStepAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepResponse> CashOutOneStepAsync(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn, decimal amount, string input) {
-            DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepRequest();
-            inValue.AuthHeader = AuthHeader;
-            inValue.msisdn = msisdn;
-            inValue.amount = amount;
-            inValue.input = input;
-            return ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).CashOutOneStepAsync(inValue);
+        public DBI_eDahab.Web.eDahabServiceApi.Customer[] GetResellersByDate(System.Nullable<System.DateTime> StartDate, System.Nullable<System.DateTime> EndDate, string Extention) {
+            DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest();
+            inValue.StartDate = StartDate;
+            inValue.EndDate = EndDate;
+            inValue.Extention = Extention;
+            DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateResponse retVal = ((DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap)(this)).GetResellersByDate(inValue);
+            return retVal.GetResellersByDateResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberResponse DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.RegisterSubscriber(DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest request) {
-            return base.Channel.RegisterSubscriber(request);
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateResponse> DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap.GetResellersByDateAsync(DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest request) {
+            return base.Channel.GetResellersByDateAsync(request);
         }
         
-        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RegisterSubscriber(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn, string firstname, string lastname, string gender, string city) {
-            DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest();
-            inValue.AuthHeader = AuthHeader;
-            inValue.msisdn = msisdn;
-            inValue.firstname = firstname;
-            inValue.lastname = lastname;
-            inValue.gender = gender;
-            inValue.city = city;
-            DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberResponse retVal = ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).RegisterSubscriber(inValue);
-            return retVal.RegisterSubscriberResult;
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateResponse> GetResellersByDateAsync(System.Nullable<System.DateTime> StartDate, System.Nullable<System.DateTime> EndDate, string Extention) {
+            DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateRequest();
+            inValue.StartDate = StartDate;
+            inValue.EndDate = EndDate;
+            inValue.Extention = Extention;
+            return ((DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap)(this)).GetResellersByDateAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberResponse> DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.RegisterSubscriberAsync(DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest request) {
-            return base.Channel.RegisterSubscriberAsync(request);
+        DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceResponse DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap.GetBankeDahabAgentBalance(DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest request) {
+            return base.Channel.GetBankeDahabAgentBalance(request);
         }
         
-        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberResponse> RegisterSubscriberAsync(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn, string firstname, string lastname, string gender, string city) {
-            DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberRequest();
+        public DBI_eDahab.Web.eDahabServiceApi.BankeDahabAgentBalance GetBankeDahabAgentBalance(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader) {
+            DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest();
             inValue.AuthHeader = AuthHeader;
-            inValue.msisdn = msisdn;
-            inValue.firstname = firstname;
-            inValue.lastname = lastname;
-            inValue.gender = gender;
-            inValue.city = city;
-            return ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).RegisterSubscriberAsync(inValue);
+            DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceResponse retVal = ((DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap)(this)).GetBankeDahabAgentBalance(inValue);
+            return retVal.GetBankeDahabAgentBalanceResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoResponse DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.GetCustomerInfo(DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest request) {
-            return base.Channel.GetCustomerInfo(request);
+        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceResponse> DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap.GetBankeDahabAgentBalanceAsync(DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest request) {
+            return base.Channel.GetBankeDahabAgentBalanceAsync(request);
         }
         
-        public DBI_eDahab.Web.eDahabServiceApi.EDahabUser GetCustomerInfo(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn) {
-            DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest();
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceResponse> GetBankeDahabAgentBalanceAsync(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader) {
+            DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceRequest();
             inValue.AuthHeader = AuthHeader;
-            inValue.msisdn = msisdn;
-            DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoResponse retVal = ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).GetCustomerInfo(inValue);
-            return retVal.GetCustomerInfoResult;
+            return ((DBI_eDahab.Web.eDahabServiceApi.eDahabServiceSoap)(this)).GetBankeDahabAgentBalanceAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoResponse> DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.GetCustomerInfoAsync(DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest request) {
-            return base.Channel.GetCustomerInfoAsync(request);
+        public DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject RefundCustomerFromMobiquity(DBI_eDahab.Web.eDahabServiceApi.RefundForm model) {
+            return base.Channel.RefundCustomerFromMobiquity(model);
         }
         
-        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoResponse> GetCustomerInfoAsync(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader, string msisdn) {
-            DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoRequest();
-            inValue.AuthHeader = AuthHeader;
-            inValue.msisdn = msisdn;
-            return ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).GetCustomerInfoAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceResponse DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.CheckAgentBalance(DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest request) {
-            return base.Channel.CheckAgentBalance(request);
-        }
-        
-        public decimal CheckAgentBalance(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader) {
-            DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest();
-            inValue.AuthHeader = AuthHeader;
-            DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceResponse retVal = ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).CheckAgentBalance(inValue);
-            return retVal.CheckAgentBalanceResult;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceResponse> DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap.CheckAgentBalanceAsync(DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest request) {
-            return base.Channel.CheckAgentBalanceAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceResponse> CheckAgentBalanceAsync(DBI_eDahab.Web.eDahabServiceApi.AuthHeader AuthHeader) {
-            DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest inValue = new DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceRequest();
-            inValue.AuthHeader = AuthHeader;
-            return ((DBI_eDahab.Web.eDahabServiceApi.EDahabApiSouthSoap)(this)).CheckAgentBalanceAsync(inValue);
+        public System.Threading.Tasks.Task<DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject> RefundCustomerFromMobiquityAsync(DBI_eDahab.Web.eDahabServiceApi.RefundForm model) {
+            return base.Channel.RefundCustomerFromMobiquityAsync(model);
         }
     }
 }

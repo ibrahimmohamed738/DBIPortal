@@ -21,8 +21,8 @@ namespace DBI_eDahab.Web.Controllers
         Repository _repository = new Repository();
         UsersRepository _usersRepository = new UsersRepository();
         //PentaServiceApi.PentaServiceClient _pentaServiceApi = new PentaServiceApi.PentaServiceClient();
-        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IDBIWebservice");
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("EDahabApiSouthSoap");
+        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IService1");
+        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
 
 
 

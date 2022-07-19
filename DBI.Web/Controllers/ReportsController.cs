@@ -21,7 +21,7 @@ namespace DBI_eDahab.Web.Controllers
         // GET: Reports
         Repository _repository = new Repository();
         DBIWebserviceClient _DBIApi = new DBIWebserviceClient("BasicHttpsBinding_IDBIWebservice");
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("EDahabApiSouthSoap");
+        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
 
         private class CustomerReport
         {

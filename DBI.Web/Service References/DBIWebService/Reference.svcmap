@@ -19,17 +19,17 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://192.168.23.88/DBIWebservice.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://10.10.1.60/WCF/Service1.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="DBIWebservice.xsd" MetadataType="Schema" ID="341f8720-882b-4a31-bf47-46dae8c1acfc" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?xsd=xsd1" />
-    <MetadataFile FileName="DBIWebservice.disco" MetadataType="Disco" ID="0070d685-037d-4f33-930d-76d9b96667b9" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?disco" />
-    <MetadataFile FileName="DBIWebservice1.xsd" MetadataType="Schema" ID="f3bb1d32-7ca8-4d53-bacd-89da307a3c10" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?xsd=xsd3" />
-    <MetadataFile FileName="DBIWebservice2.xsd" MetadataType="Schema" ID="607caa44-8db7-4c90-897c-3d9147f5108e" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?xsd=xsd4" />
-    <MetadataFile FileName="DBIWebservice3.xsd" MetadataType="Schema" ID="6ec15408-7ea1-49a5-b0ea-8982772125e3" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?xsd=xsd0" />
-    <MetadataFile FileName="DBIWebservice.wsdl" MetadataType="Wsdl" ID="305af105-80c9-4b0c-adfa-bc91b5018a80" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?wsdl" />
-    <MetadataFile FileName="DBIWebservice4.xsd" MetadataType="Schema" ID="6dcb1770-bf86-4678-aeb3-a692d06c46f3" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?xsd=xsd5" />
-    <MetadataFile FileName="DBIWebservice5.xsd" MetadataType="Schema" ID="8a0018a6-8f8f-4301-94e5-cb1ad7b7a9d5" SourceId="1" SourceUrl="https://192.168.23.88/DBIWebservice.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="894c4479-bdde-459f-abb4-d7c6fb564b68" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?disco" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="d2604c12-b15b-403d-bf1f-85ce2781f7b0" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?xsd=xsd4" />
+    <MetadataFile FileName="Service11.xsd" MetadataType="Schema" ID="d87447e3-d7aa-4bf9-9812-ab9140fca6d9" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service12.xsd" MetadataType="Schema" ID="2be7e556-f36d-42a2-a321-da9bee4994d7" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?xsd=xsd3" />
+    <MetadataFile FileName="Service13.xsd" MetadataType="Schema" ID="d6b82c98-60cb-4a1f-9d30-a5e888a79d7c" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?xsd=xsd5" />
+    <MetadataFile FileName="Service14.xsd" MetadataType="Schema" ID="fc56cbce-fea4-422f-9844-169af20b17a9" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service15.xsd" MetadataType="Schema" ID="9b291f8a-106e-4a3c-b10a-9765d144071f" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?xsd=xsd2" />
+    <MetadataFile FileName="DBI_WCF_Service.wsdl" MetadataType="Wsdl" ID="2ca3892a-8775-4eb9-869c-57cb32e8d2ac" SourceId="1" SourceUrl="https://10.10.1.60/WCF/Service1.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

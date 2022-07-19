@@ -19,11 +19,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://192.168.23.88:2020/EDahabApiSouth.asmx" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://192.168.21.46:9931/eDahabService.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="EDahabApiSouth.disco" MetadataType="Disco" ID="a49f5f1a-49de-4876-a47c-d9ac83d6e1d3" SourceId="1" SourceUrl="http://192.168.23.88:2020/EDahabApiSouth.asmx?disco" />
-    <MetadataFile FileName="EDahabApiSouth.wsdl" MetadataType="Wsdl" ID="1a8b1146-6ba0-43a6-afea-84ef7e385650" SourceId="1" SourceUrl="http://192.168.23.88:2020/EDahabApiSouth.asmx?wsdl" />
+    <MetadataFile FileName="eDahabService.disco" MetadataType="Disco" ID="fe8fb2c9-8608-428b-8981-7007c2d6dc81" SourceId="1" SourceUrl="http://192.168.21.46:9931/eDahabService.asmx?disco" />
+    <MetadataFile FileName="eDahabService.wsdl" MetadataType="Wsdl" ID="a965a46e-cd72-42a5-9e1e-e0b44fcf7894" SourceId="1" SourceUrl="http://192.168.21.46:9931/eDahabService.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

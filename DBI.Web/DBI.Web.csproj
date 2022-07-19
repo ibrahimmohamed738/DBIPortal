@@ -26,6 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -328,7 +329,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\settings.js" />
     <None Include="Scripts\_references.js" />
-    <None Include="Service References\DBIWebService\DBIWebservice.disco" />
     <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.AccountInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -370,60 +370,76 @@
     </Content>
     <None Include="Service References\DBIWebService\configuration91.svcinfo" />
     <None Include="Service References\DBIWebService\configuration.svcinfo" />
-    <None Include="Service References\DBIWebService\DBIWebservice.wsdl" />
-    <None Include="Service References\DBIWebService\DBIWebservice.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\DBIWebservice1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\DBIWebservice2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\DBIWebservice3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\DBIWebservice4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DBIWebService\DBIWebservice5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Service References\DBIWebService\DBI_eDahab.Web.DBIWebService.SendSMSResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
+    <None Include="Service References\DBIWebService\DBI_WCF_Service.wsdl" />
     <None Include="Service References\DBIWebService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\DBIWebService\Service1.disco" />
     <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.ConvivaResponseObject.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Scripts\jquery-1.12.4.min.map" />
+    <None Include="Service References\DBIWebService\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DBIWebService\Service11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DBIWebService\Service12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DBIWebService\Service13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DBIWebService\Service14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DBIWebService\Service15.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\eDahabServiceApi\configuration91.svcinfo" />
     <None Include="Service References\eDahabServiceApi\configuration.svcinfo" />
-    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.CashOutOneStepResponse.datasource">
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.BankeDahabAgentBalance.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.GetCustomerInfoResponse.datasource">
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.Customer.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.RegisterSubscriberResponse.datasource">
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.CustomerInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.CheckAgentBalanceResponse.datasource">
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.GetBankeDahabAgentBalanceResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.EDahabUser.datasource">
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.GetResellersByDateResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\eDahabServiceApi\EDahabApiSouth.wsdl" />
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.Merchant.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.Rates.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.SomtelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.Staff.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.Subscriber.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\eDahabServiceApi\DBI_eDahab.Web.eDahabServiceApi.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\eDahabServiceApi\eDahabService.wsdl" />
     <None Include="Service References\eDahabServiceApi\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\eDahabServiceApi\EDahabApiSouth.disco" />
+    <None Include="Service References\eDahabServiceApi\eDahabService.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

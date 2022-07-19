@@ -15,7 +15,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PrimaryObject", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PrimaryObject", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.AccountInfo))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.PentabankResponse))]
@@ -26,7 +26,6 @@ namespace DBI_eDahab.Web.DBIWebService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.StatementResponse))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.GLCheckBalanceResponse))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.ChangePINResponse))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.SendSMSResponse))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.PentabankRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.AccountTransferRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.UpdateBalanceRequest))]
@@ -34,7 +33,6 @@ namespace DBI_eDahab.Web.DBIWebService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.StatementRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.GLCheckBalanceRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.ChangePINRequest))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.SendSMSRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.CheckBalanceRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.AccountInfoRequest))]
     public partial class PrimaryObject : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -144,7 +142,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AccountInfo", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AccountInfo", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects")]
     [System.SerializableAttribute()]
     public partial class AccountInfo : DBI_eDahab.Web.DBIWebService.PrimaryObject {
         
@@ -199,7 +197,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PentabankResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PentabankResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.CheckBalanceResponse))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.AccountTransferResponse))]
@@ -208,7 +206,6 @@ namespace DBI_eDahab.Web.DBIWebService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.StatementResponse))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.GLCheckBalanceResponse))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.ChangePINResponse))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.SendSMSResponse))]
     public partial class PentabankResponse : DBI_eDahab.Web.DBIWebService.PrimaryObject {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -278,7 +275,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CheckBalanceResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CheckBalanceResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class CheckBalanceResponse : DBI_eDahab.Web.DBIWebService.PentabankResponse {
         
@@ -349,7 +346,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AccountTransferResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AccountTransferResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class AccountTransferResponse : DBI_eDahab.Web.DBIWebService.PentabankResponse {
         
@@ -436,7 +433,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UpdateBalanceResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UpdateBalanceResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.CorrectTransactionResponse))]
     public partial class UpdateBalanceResponse : DBI_eDahab.Web.DBIWebService.PentabankResponse {
@@ -460,14 +457,14 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CorrectTransactionResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CorrectTransactionResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class CorrectTransactionResponse : DBI_eDahab.Web.DBIWebService.UpdateBalanceResponse {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StatementResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StatementResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class StatementResponse : DBI_eDahab.Web.DBIWebService.PentabankResponse {
         
@@ -538,7 +535,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GLCheckBalanceResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GLCheckBalanceResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class GLCheckBalanceResponse : DBI_eDahab.Web.DBIWebService.PentabankResponse {
         
@@ -593,21 +590,14 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ChangePINResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChangePINResponse", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class ChangePINResponse : DBI_eDahab.Web.DBIWebService.PentabankResponse {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SendSMSResponse", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
-    [System.SerializableAttribute()]
-    public partial class SendSMSResponse : DBI_eDahab.Web.DBIWebService.PentabankResponse {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PentabankRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PentabankRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.AccountTransferRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.UpdateBalanceRequest))]
@@ -615,7 +605,6 @@ namespace DBI_eDahab.Web.DBIWebService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.StatementRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.GLCheckBalanceRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.ChangePINRequest))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.SendSMSRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.CheckBalanceRequest))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.AccountInfoRequest))]
     public partial class PentabankRequest : DBI_eDahab.Web.DBIWebService.PrimaryObject {
@@ -671,7 +660,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AccountTransferRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AccountTransferRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class AccountTransferRequest : DBI_eDahab.Web.DBIWebService.PentabankRequest {
         
@@ -790,7 +779,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UpdateBalanceRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UpdateBalanceRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.CorrectTransactionRequest))]
     public partial class UpdateBalanceRequest : DBI_eDahab.Web.DBIWebService.PentabankRequest {
@@ -830,14 +819,14 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CorrectTransactionRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CorrectTransactionRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class CorrectTransactionRequest : DBI_eDahab.Web.DBIWebService.UpdateBalanceRequest {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StatementRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StatementRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class StatementRequest : DBI_eDahab.Web.DBIWebService.PentabankRequest {
         
@@ -924,14 +913,14 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GLCheckBalanceRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GLCheckBalanceRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class GLCheckBalanceRequest : DBI_eDahab.Web.DBIWebService.PentabankRequest {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ChangePINRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChangePINRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class ChangePINRequest : DBI_eDahab.Web.DBIWebService.PentabankRequest {
         
@@ -970,46 +959,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SendSMSRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
-    [System.SerializableAttribute()]
-    public partial class SendSMSRequest : DBI_eDahab.Web.DBIWebService.PentabankRequest {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MSGField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MSISDNField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string MSG {
-            get {
-                return this.MSGField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MSGField, value) != true)) {
-                    this.MSGField = value;
-                    this.RaisePropertyChanged("MSG");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string MSISDN {
-            get {
-                return this.MSISDNField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MSISDNField, value) != true)) {
-                    this.MSISDNField = value;
-                    this.RaisePropertyChanged("MSISDN");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CheckBalanceRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CheckBalanceRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.AccountInfoRequest))]
     public partial class CheckBalanceRequest : DBI_eDahab.Web.DBIWebService.PentabankRequest {
@@ -1017,14 +967,14 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AccountInfoRequest", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AccountInfoRequest", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models")]
     [System.SerializableAttribute()]
     public partial class AccountInfoRequest : DBI_eDahab.Web.DBIWebService.CheckBalanceRequest {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StatementEntity", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StatementEntity", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects")]
     [System.SerializableAttribute()]
     public partial class StatementEntity : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1133,7 +1083,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PrimaryUtilityClass", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PrimaryUtilityClass", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.UtilityCalsses")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.BranchesList))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DBI_eDahab.Web.DBIWebService.CustomerAccountTypesList))]
@@ -1167,7 +1117,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BranchesList", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BranchesList", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.UtilityCalsses")]
     [System.SerializableAttribute()]
     public partial class BranchesList : DBI_eDahab.Web.DBIWebService.PrimaryUtilityClass {
         
@@ -1190,7 +1140,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CustomerAccountTypesList", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CustomerAccountTypesList", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.UtilityCalsses")]
     [System.SerializableAttribute()]
     public partial class CustomerAccountTypesList : DBI_eDahab.Web.DBIWebService.PrimaryUtilityClass {
         
@@ -1213,7 +1163,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CustomerAccounts", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CustomerAccounts", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.UtilityCalsses")]
     [System.SerializableAttribute()]
     public partial class CustomerAccounts : DBI_eDahab.Web.DBIWebService.PrimaryUtilityClass {
         
@@ -1267,7 +1217,7 @@ namespace DBI_eDahab.Web.DBIWebService {
         
         [System.Diagnostics.DebuggerStepThroughAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-        [System.Runtime.Serialization.DataContractAttribute(Name="CustomerAccounts.DBIAccount", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses")]
+        [System.Runtime.Serialization.DataContractAttribute(Name="CustomerAccounts.DBIAccount", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.UtilityCalsses")]
         [System.SerializableAttribute()]
         public partial class DBIAccount : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
             
@@ -1360,7 +1310,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Customer", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Customer", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.UtilityCalsses")]
     [System.SerializableAttribute()]
     public partial class Customer : DBI_eDahab.Web.DBIWebService.PrimaryUtilityClass {
         
@@ -1415,7 +1365,7 @@ namespace DBI_eDahab.Web.DBIWebService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TransactionQuery", Namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.UtilityCalsses")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TransactionQuery", Namespace="http://schemas.datacontract.org/2004/07/WcfService1.UtilityCalsses")]
     [System.SerializableAttribute()]
     public partial class TransactionQuery : DBI_eDahab.Web.DBIWebService.PrimaryUtilityClass {
         
@@ -1533,124 +1483,118 @@ namespace DBI_eDahab.Web.DBIWebService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DBIWebService.IDBIWebservice")]
-    public interface IDBIWebservice {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DBIWebService.IService1")]
+    public interface IService1 {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetAccountInfo", ReplyAction="http://tempuri.org/IDBIWebservice/GetAccountInfoResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAccountInfo", ReplyAction="http://tempuri.org/IService1/GetAccountInfoResponse")]
         DBI_eDahab.Web.DBIWebService.AccountInfo GetAccountInfo(DBI_eDahab.Web.DBIWebService.AccountInfoRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetAccountInfo", ReplyAction="http://tempuri.org/IDBIWebservice/GetAccountInfoResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAccountInfo", ReplyAction="http://tempuri.org/IService1/GetAccountInfoResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.AccountInfo> GetAccountInfoAsync(DBI_eDahab.Web.DBIWebService.AccountInfoRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/SearchAccount", ReplyAction="http://tempuri.org/IDBIWebservice/SearchAccountResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SearchAccount", ReplyAction="http://tempuri.org/IService1/SearchAccountResponse")]
         DBI_eDahab.Web.DBIWebService.AccountInfo[] SearchAccount(DBI_eDahab.Web.DBIWebService.AccountInfoRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/SearchAccount", ReplyAction="http://tempuri.org/IDBIWebservice/SearchAccountResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SearchAccount", ReplyAction="http://tempuri.org/IService1/SearchAccountResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.AccountInfo[]> SearchAccountAsync(DBI_eDahab.Web.DBIWebService.AccountInfoRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/CheckBalance", ReplyAction="http://tempuri.org/IDBIWebservice/CheckBalanceResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckBalance", ReplyAction="http://tempuri.org/IService1/CheckBalanceResponse")]
         DBI_eDahab.Web.DBIWebService.CheckBalanceResponse CheckBalance(DBI_eDahab.Web.DBIWebService.CheckBalanceRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/CheckBalance", ReplyAction="http://tempuri.org/IDBIWebservice/CheckBalanceResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckBalance", ReplyAction="http://tempuri.org/IService1/CheckBalanceResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.CheckBalanceResponse> CheckBalanceAsync(DBI_eDahab.Web.DBIWebService.CheckBalanceRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/AccountTransfer", ReplyAction="http://tempuri.org/IDBIWebservice/AccountTransferResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AccountTransfer", ReplyAction="http://tempuri.org/IService1/AccountTransferResponse")]
         DBI_eDahab.Web.DBIWebService.AccountTransferResponse AccountTransfer(DBI_eDahab.Web.DBIWebService.AccountTransferRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/AccountTransfer", ReplyAction="http://tempuri.org/IDBIWebservice/AccountTransferResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AccountTransfer", ReplyAction="http://tempuri.org/IService1/AccountTransferResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.AccountTransferResponse> AccountTransferAsync(DBI_eDahab.Web.DBIWebService.AccountTransferRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/UpdateBalance", ReplyAction="http://tempuri.org/IDBIWebservice/UpdateBalanceResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateBalance", ReplyAction="http://tempuri.org/IService1/UpdateBalanceResponse")]
         DBI_eDahab.Web.DBIWebService.UpdateBalanceResponse UpdateBalance(DBI_eDahab.Web.DBIWebService.UpdateBalanceRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/UpdateBalance", ReplyAction="http://tempuri.org/IDBIWebservice/UpdateBalanceResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateBalance", ReplyAction="http://tempuri.org/IService1/UpdateBalanceResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.UpdateBalanceResponse> UpdateBalanceAsync(DBI_eDahab.Web.DBIWebService.UpdateBalanceRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/ProcessFailedTransaction", ReplyAction="http://tempuri.org/IDBIWebservice/ProcessFailedTransactionResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ProcessFailedTransaction", ReplyAction="http://tempuri.org/IService1/ProcessFailedTransactionResponse")]
         DBI_eDahab.Web.DBIWebService.CorrectTransactionResponse ProcessFailedTransaction(DBI_eDahab.Web.DBIWebService.CorrectTransactionRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/ProcessFailedTransaction", ReplyAction="http://tempuri.org/IDBIWebservice/ProcessFailedTransactionResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ProcessFailedTransaction", ReplyAction="http://tempuri.org/IService1/ProcessFailedTransactionResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.CorrectTransactionResponse> ProcessFailedTransactionAsync(DBI_eDahab.Web.DBIWebService.CorrectTransactionRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/QueryTransaction", ReplyAction="http://tempuri.org/IDBIWebservice/QueryTransactionResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/QueryTransaction", ReplyAction="http://tempuri.org/IService1/QueryTransactionResponse")]
         DBI_eDahab.Web.DBIWebService.TransactionQuery QueryTransaction(string req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/QueryTransaction", ReplyAction="http://tempuri.org/IDBIWebservice/QueryTransactionResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/QueryTransaction", ReplyAction="http://tempuri.org/IService1/QueryTransactionResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.TransactionQuery> QueryTransactionAsync(string req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetBranchesCodes", ReplyAction="http://tempuri.org/IDBIWebservice/GetBranchesCodesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetBranchesCodes", ReplyAction="http://tempuri.org/IService1/GetBranchesCodesResponse")]
         DBI_eDahab.Web.DBIWebService.BranchesList GetBranchesCodes();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetBranchesCodes", ReplyAction="http://tempuri.org/IDBIWebservice/GetBranchesCodesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetBranchesCodes", ReplyAction="http://tempuri.org/IService1/GetBranchesCodesResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.BranchesList> GetBranchesCodesAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetCustomerAccountTypes", ReplyAction="http://tempuri.org/IDBIWebservice/GetCustomerAccountTypesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetCustomerAccountTypes", ReplyAction="http://tempuri.org/IService1/GetCustomerAccountTypesResponse")]
         DBI_eDahab.Web.DBIWebService.CustomerAccountTypesList GetCustomerAccountTypes();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetCustomerAccountTypes", ReplyAction="http://tempuri.org/IDBIWebservice/GetCustomerAccountTypesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetCustomerAccountTypes", ReplyAction="http://tempuri.org/IService1/GetCustomerAccountTypesResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.CustomerAccountTypesList> GetCustomerAccountTypesAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetStatement", ReplyAction="http://tempuri.org/IDBIWebservice/GetStatementResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStatement", ReplyAction="http://tempuri.org/IService1/GetStatementResponse")]
         DBI_eDahab.Web.DBIWebService.StatementResponse GetStatement(DBI_eDahab.Web.DBIWebService.StatementRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetStatement", ReplyAction="http://tempuri.org/IDBIWebservice/GetStatementResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStatement", ReplyAction="http://tempuri.org/IService1/GetStatementResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.StatementResponse> GetStatementAsync(DBI_eDahab.Web.DBIWebService.StatementRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/CheckGLBalance", ReplyAction="http://tempuri.org/IDBIWebservice/CheckGLBalanceResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckGLBalance", ReplyAction="http://tempuri.org/IService1/CheckGLBalanceResponse")]
         DBI_eDahab.Web.DBIWebService.GLCheckBalanceResponse CheckGLBalance(DBI_eDahab.Web.DBIWebService.GLCheckBalanceRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/CheckGLBalance", ReplyAction="http://tempuri.org/IDBIWebservice/CheckGLBalanceResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckGLBalance", ReplyAction="http://tempuri.org/IService1/CheckGLBalanceResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.GLCheckBalanceResponse> CheckGLBalanceAsync(DBI_eDahab.Web.DBIWebService.GLCheckBalanceRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetCustomerAccounts", ReplyAction="http://tempuri.org/IDBIWebservice/GetCustomerAccountsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetCustomerAccounts", ReplyAction="http://tempuri.org/IService1/GetCustomerAccountsResponse")]
         DBI_eDahab.Web.DBIWebService.CustomerAccounts GetCustomerAccounts(string msisdn);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/GetCustomerAccounts", ReplyAction="http://tempuri.org/IDBIWebservice/GetCustomerAccountsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetCustomerAccounts", ReplyAction="http://tempuri.org/IService1/GetCustomerAccountsResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.CustomerAccounts> GetCustomerAccountsAsync(string msisdn);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/VerifyCustomer", ReplyAction="http://tempuri.org/IDBIWebservice/VerifyCustomerResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/VerifyCustomer", ReplyAction="http://tempuri.org/IService1/VerifyCustomerResponse")]
         DBI_eDahab.Web.DBIWebService.Customer VerifyCustomer(string msisdn);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/VerifyCustomer", ReplyAction="http://tempuri.org/IDBIWebservice/VerifyCustomerResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/VerifyCustomer", ReplyAction="http://tempuri.org/IService1/VerifyCustomerResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.Customer> VerifyCustomerAsync(string msisdn);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/ChangePIN", ReplyAction="http://tempuri.org/IDBIWebservice/ChangePINResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ChangePIN", ReplyAction="http://tempuri.org/IService1/ChangePINResponse")]
         DBI_eDahab.Web.DBIWebService.ChangePINResponse ChangePIN(DBI_eDahab.Web.DBIWebService.ChangePINRequest req);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/ChangePIN", ReplyAction="http://tempuri.org/IDBIWebservice/ChangePINResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ChangePIN", ReplyAction="http://tempuri.org/IService1/ChangePINResponse")]
         System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.ChangePINResponse> ChangePINAsync(DBI_eDahab.Web.DBIWebService.ChangePINRequest req);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/Send_SMS", ReplyAction="http://tempuri.org/IDBIWebservice/Send_SMSResponse")]
-        DBI_eDahab.Web.DBIWebService.SendSMSResponse Send_SMS(DBI_eDahab.Web.DBIWebService.SendSMSRequest req);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDBIWebservice/Send_SMS", ReplyAction="http://tempuri.org/IDBIWebservice/Send_SMSResponse")]
-        System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.SendSMSResponse> Send_SMSAsync(DBI_eDahab.Web.DBIWebService.SendSMSRequest req);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IDBIWebserviceChannel : DBI_eDahab.Web.DBIWebService.IDBIWebservice, System.ServiceModel.IClientChannel {
+    public interface IService1Channel : DBI_eDahab.Web.DBIWebService.IService1, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class DBIWebserviceClient : System.ServiceModel.ClientBase<DBI_eDahab.Web.DBIWebService.IDBIWebservice>, DBI_eDahab.Web.DBIWebService.IDBIWebservice {
+    public partial class Service1Client : System.ServiceModel.ClientBase<DBI_eDahab.Web.DBIWebService.IService1>, DBI_eDahab.Web.DBIWebService.IService1 {
         
-        public DBIWebserviceClient() {
+        public Service1Client() {
         }
         
-        public DBIWebserviceClient(string endpointConfigurationName) : 
+        public Service1Client(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public DBIWebserviceClient(string endpointConfigurationName, string remoteAddress) : 
+        public Service1Client(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public DBIWebserviceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public Service1Client(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public DBIWebserviceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public Service1Client(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -1764,14 +1708,6 @@ namespace DBI_eDahab.Web.DBIWebService {
         
         public System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.ChangePINResponse> ChangePINAsync(DBI_eDahab.Web.DBIWebService.ChangePINRequest req) {
             return base.Channel.ChangePINAsync(req);
-        }
-        
-        public DBI_eDahab.Web.DBIWebService.SendSMSResponse Send_SMS(DBI_eDahab.Web.DBIWebService.SendSMSRequest req) {
-            return base.Channel.Send_SMS(req);
-        }
-        
-        public System.Threading.Tasks.Task<DBI_eDahab.Web.DBIWebService.SendSMSResponse> Send_SMSAsync(DBI_eDahab.Web.DBIWebService.SendSMSRequest req) {
-            return base.Channel.Send_SMSAsync(req);
         }
     }
 }

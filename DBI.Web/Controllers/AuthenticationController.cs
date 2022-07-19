@@ -21,8 +21,8 @@ namespace DBI_eDahab.Web.Controllers
         // GET: Authentication
 
         UsersRepository _usersRepository = new UsersRepository();
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("EDahabApiSouthSoap");
-        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IDBIWebservice");
+        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
+        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IService1");
 
         public ActionResult Login()
         {
@@ -160,7 +160,11 @@ namespace DBI_eDahab.Web.Controllers
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://192.168.23.90:5000/");
+                if(phone.StartsWith("65") || phone.StartsWith("66"))
+                   client.BaseAddress = new Uri("http://192.168.21.45:50030/");
+                else
+                   client.BaseAddress = new Uri("http://192.168.23.90:5000/");
+
                 var request = new
                 {
                     phone,

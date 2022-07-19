@@ -11,6 +11,10 @@ using DBI_eDahab.Web.Helpers;
 using DBI_eDahab.Web.DBIWebService;
 using System.Web.Configuration;
 using System.Net;
+using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace DBI_eDahab.Web.Controllers
 {
@@ -19,8 +23,8 @@ namespace DBI_eDahab.Web.Controllers
         // GET: Users
 
         UsersRepository _usersRepository = new UsersRepository();
-        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IDBIWebservice");
-        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("EDahabApiSouthSoap");
+        DBIWebserviceClient _pentBankApi = new DBIWebserviceClient("BasicHttpsBinding_IService1");
+        eDahabServiceApi.EDahabApiSouthSoapClient _eDahabApi = new eDahabServiceApi.EDahabApiSouthSoapClient("eDahabServiceSoap");
 
 
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Update_Users)]
@@ -47,7 +51,7 @@ namespace DBI_eDahab.Web.Controllers
         }
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Create_Users)]
         [HttpPost]
-        public ActionResult AddUsers(string userId, Users addUser)
+        public async Task<ActionResult> AddUsers(string userId, Users addUser)
         {
             if (ModelState.IsValid)
             {
@@ -63,15 +67,16 @@ namespace DBI_eDahab.Web.Controllers
                     var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(randomPassword, "SHA1");
                     addUser.Password = hashedPassword;
                     _usersRepository.AddUser(addUser);
-                    SendSMSRequest sms = new SendSMSRequest()
-                    {
-                        MSG = string.Format("Your Username is {0} and Password is: {1}", addUser.UserName, randomPassword),
-                        MSISDN = addUser.MobileNumber,
-                        CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                        CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                    };
+                    //SendSMSRequest sms = new SendSMSRequest()
+                    //{
+                    //    MSG = string.Format("Your Username is {0} and Password is: {1}", addUser.UserName, randomPassword),
+                    //    MSISDN = addUser.MobileNumber,
+                    //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
+                    //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
+                    //};
                     ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    _pentBankApi.Send_SMS(sms);
+                    await SendSmsAsync("DBI", addUser.MobileNumber, $"Your Username is {addUser.UserName} and Password is: {randomPassword}");
+                    //_pentBankApi.Send_SMS(sms);
                     TempData["SuccessMessage"] = "User has been successfully created.";
                     AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "CreateUser", Description = $"Create new user: {addUser.FullName},{addUser.MobileNumber}", AffectedParty = addUser.UserName };
                     _usersRepository.LogUserAction(auditLogRecord);
@@ -114,7 +119,7 @@ namespace DBI_eDahab.Web.Controllers
 
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Update_Users)]
         [HttpPost]
-        public ActionResult UpdateUser([ModelBinder(typeof(UserFormModelBinder))] UpdateUserForm updateUserForm)
+        public async Task<ActionResult> UpdateUser([ModelBinder(typeof(UserFormModelBinder))] UpdateUserForm updateUserForm)
         {
             if (_usersRepository != null)
             {
@@ -129,15 +134,16 @@ namespace DBI_eDahab.Web.Controllers
                     var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(randomPassword, "SHA1");
 #pragma warning restore 618
                     _usersRepository.ChangePassword(updateUserForm.UserName, hashedPassword);
-                    SendSMSRequest sms = new SendSMSRequest()
-                    {
-                        MSG = string.Format("Your Password is: {0}", randomPassword),
-                        MSISDN = updateUserForm.MobileNumber,
-                        CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                        CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                    };
+                    //SendSMSRequest sms = new SendSMSRequest()
+                    //{
+                    //    MSG = string.Format("Your Password is: {0}", randomPassword),
+                    //    MSISDN = updateUserForm.MobileNumber,
+                    //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
+                    //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
+                    //};
                     ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    _pentBankApi.Send_SMS(sms);
+                    await SendSmsAsync("DBI", updateUserForm.MobileNumber, $"Your Password is: {randomPassword}");
+                    //_pentBankApi.Send_SMS(sms);
                     AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ResetUserPassword", Description = $"Reset password of: {updateUserForm.Name},{updateUserForm.MobileNumber}", AffectedParty = updateUserForm.UserName };
                     _usersRepository.LogUserAction(auditLogRecord);
                     //TempData["SuccessMessage"] += string.Format(" New Password is {0}.", randomPassword);
@@ -167,6 +173,27 @@ namespace DBI_eDahab.Web.Controllers
             }
 
             return View(changePasswordForm);
+        }
+
+        public async Task SendSmsAsync(string title, string phone, string message)
+        {
+            using (var client = new HttpClient())
+            {
+                if (phone.StartsWith("65") || phone.StartsWith("66"))
+                    client.BaseAddress = new Uri("http://192.168.21.45:50030/");
+                else
+                    client.BaseAddress = new Uri("http://192.168.23.90:5000/");
+
+                var request = new
+                {
+                    phone,
+                    title,
+                    message
+                };
+                var json = JsonConvert.SerializeObject(request);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                await client.PostAsync("SMS", data);
+            }
         }
 
 

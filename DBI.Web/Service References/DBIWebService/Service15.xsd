@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/DBIWcfService.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="https://192.168.23.88/DBIWebservice.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" />
-  <xs:import schemaLocation="https://192.168.23.88/DBIWebservice.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/WcfService1.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfService1.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://10.10.1.60/WCF/Service1.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" />
+  <xs:import schemaLocation="https://10.10.1.60/WCF/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="AccountInfoRequest">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:CheckBalanceRequest">
@@ -12,7 +12,7 @@
   <xs:element name="AccountInfoRequest" nillable="true" type="tns:AccountInfoRequest" />
   <xs:complexType name="CheckBalanceRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q1:PentabankRequest">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q1:PentabankRequest">
         <xs:sequence />
       </xs:extension>
     </xs:complexContent>
@@ -20,7 +20,7 @@
   <xs:element name="CheckBalanceRequest" nillable="true" type="tns:CheckBalanceRequest" />
   <xs:complexType name="CheckBalanceResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q2:PentabankResponse">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q2:PentabankResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="AccountName" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="ClearBalance" type="xs:decimal" />
@@ -33,7 +33,7 @@
   <xs:element name="CheckBalanceResponse" nillable="true" type="tns:CheckBalanceResponse" />
   <xs:complexType name="AccountTransferRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q3:PentabankRequest">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q3:PentabankRequest">
         <xs:sequence>
           <xs:element minOccurs="0" name="Amount" type="xs:decimal" />
           <xs:element minOccurs="0" name="ChequeDate" type="xs:dateTime" />
@@ -49,7 +49,7 @@
   <xs:element name="AccountTransferRequest" nillable="true" type="tns:AccountTransferRequest" />
   <xs:complexType name="AccountTransferResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q4:PentabankResponse">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q4:PentabankResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="Balance" type="xs:decimal" />
           <xs:element minOccurs="0" name="OtherAccountNo" type="xs:long" />
@@ -63,7 +63,7 @@
   <xs:element name="AccountTransferResponse" nillable="true" type="tns:AccountTransferResponse" />
   <xs:complexType name="UpdateBalanceRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q5:PentabankRequest">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q5:PentabankRequest">
         <xs:sequence>
           <xs:element minOccurs="0" name="Amount" type="xs:decimal" />
           <xs:element minOccurs="0" name="Narration" nillable="true" type="xs:string" />
@@ -74,7 +74,7 @@
   <xs:element name="UpdateBalanceRequest" nillable="true" type="tns:UpdateBalanceRequest" />
   <xs:complexType name="UpdateBalanceResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q6:PentabankResponse">
+      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q6:PentabankResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="CustomerBalance" type="xs:decimal" />
         </xs:sequence>
@@ -100,7 +100,7 @@
   <xs:element name="CorrectTransactionResponse" nillable="true" type="tns:CorrectTransactionResponse" />
   <xs:complexType name="StatementRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q7:PentabankRequest">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q7:PentabankRequest">
         <xs:sequence>
           <xs:element minOccurs="0" name="FromDate" type="xs:dateTime" />
           <xs:element minOccurs="0" name="NoOfTransactions" type="xs:int" />
@@ -114,7 +114,7 @@
   <xs:element name="StatementRequest" nillable="true" type="tns:StatementRequest" />
   <xs:complexType name="StatementResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q8:PentabankResponse">
+      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q8:PentabankResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="Balance" type="xs:decimal" />
           <xs:element minOccurs="0" name="ClosingBalance" type="xs:decimal" />
@@ -127,7 +127,7 @@
   <xs:element name="StatementResponse" nillable="true" type="tns:StatementResponse" />
   <xs:complexType name="GLCheckBalanceRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q9:PentabankRequest">
+      <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q9:PentabankRequest">
         <xs:sequence />
       </xs:extension>
     </xs:complexContent>
@@ -135,7 +135,7 @@
   <xs:element name="GLCheckBalanceRequest" nillable="true" type="tns:GLCheckBalanceRequest" />
   <xs:complexType name="GLCheckBalanceResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q10="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q10:PentabankResponse">
+      <xs:extension xmlns:q10="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q10:PentabankResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="Balance" type="xs:decimal" />
           <xs:element minOccurs="0" name="BalanceDate" nillable="true" type="xs:string" />
@@ -147,7 +147,7 @@
   <xs:element name="GLCheckBalanceResponse" nillable="true" type="tns:GLCheckBalanceResponse" />
   <xs:complexType name="ChangePINRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q11="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q11:PentabankRequest">
+      <xs:extension xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q11:PentabankRequest">
         <xs:sequence>
           <xs:element minOccurs="0" name="MSISDN" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="NewPIN" nillable="true" type="xs:string" />
@@ -158,29 +158,10 @@
   <xs:element name="ChangePINRequest" nillable="true" type="tns:ChangePINRequest" />
   <xs:complexType name="ChangePINResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q12="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q12:PentabankResponse">
+      <xs:extension xmlns:q12="http://schemas.datacontract.org/2004/07/WcfService1.Models.PrimaryObjects" base="q12:PentabankResponse">
         <xs:sequence />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="ChangePINResponse" nillable="true" type="tns:ChangePINResponse" />
-  <xs:complexType name="SendSMSRequest">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q13="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q13:PentabankRequest">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="MSG" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="MSISDN" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="SendSMSRequest" nillable="true" type="tns:SendSMSRequest" />
-  <xs:complexType name="SendSMSResponse">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q14="http://schemas.datacontract.org/2004/07/DBIWcfService.Models.PrimaryObjects" base="q14:PentabankResponse">
-        <xs:sequence />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="SendSMSResponse" nillable="true" type="tns:SendSMSResponse" />
 </xs:schema>
