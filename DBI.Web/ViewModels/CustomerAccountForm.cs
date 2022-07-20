@@ -14,7 +14,7 @@ namespace DBI_eDahab.Web.ViewModels
         public string AccountHolder { get; set; }
         [Display(Name = "Account Type")]
         public string AccountType { get; set; }
-        public string Branch { get { return AccountNo.Substring(0, 3); }   }
+        public string Branch { get; set; }
         public string Currency { get; set; }
         [Required, Display(Name = "Daily Limit")]
         public decimal DailyLimit { get; set; }

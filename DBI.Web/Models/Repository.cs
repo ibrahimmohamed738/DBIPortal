@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -10,9 +12,9 @@ namespace DBI_eDahab.Web.Models
 {
     public class Repository
     {
-        public static string ConnectionStringOracle = System.Configuration.ConfigurationManager.ConnectionStrings["oracleConnection"].ConnectionString;
-        public static string photoLinkConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["PhotoLink"].ConnectionString;
-        readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBI"].ConnectionString;
+        public static string ConnectionStringOracle = ConfigurationManager.ConnectionStrings["oracleConnection"].ConnectionString;
+        public static string photoLinkConnectionString = ConfigurationManager.ConnectionStrings["PhotoLink"].ConnectionString;
+        readonly string _connectionString = ConfigurationManager.ConnectionStrings["DBI"].ConnectionString;
         // readonly string _smsConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SmsServer"].ConnectionString;
 
 
@@ -157,11 +159,12 @@ namespace DBI_eDahab.Web.Models
             using (var connection = new SqlConnection(_connectionString))
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = @"SELECT *
-                                       FROM DahabCard 
-                                       WHERE MSISDN = @MSISDN";
+                command.CommandText = @"SELECT * FROM DahabCard WHERE MSISDN = @MSISDN";
                 command.Parameters.AddWithValue("@MSISDN", MSISDN);
-                connection.Open();
+                if(connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
                 var reader = command.ExecuteReader();
                 CustomerForm customer = null;
                 if (reader.Read())
@@ -180,9 +183,7 @@ namespace DBI_eDahab.Web.Models
             using (var connection = new SqlConnection(_connectionString))
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = @"SELECT *
-                                       FROM dbi_Customers 
-                                       WHERE AccountNo = @AccountNo";
+                command.CommandText = @"SELECT * FROM dbi_Customers WHERE AccountNo = @AccountNo";
                 command.Parameters.AddWithValue("@AccountNo", AccountNo);
                 connection.Open();
                 var reader = command.ExecuteReader();

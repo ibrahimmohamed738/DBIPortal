@@ -104,44 +104,44 @@ namespace DBI_eDahab.Web.Controllers
         //    }
         //}
 
-        //[PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Reconciliation)]
-        //public ActionResult Reconciliation(FilterTransactions filter, int page = 1)
-        //{
-        //    GLCheckBalanceRequest req = new GLCheckBalanceRequest();
-        //    req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
-        //    req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
-        //    req.Currency = "USD";
-        //    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-        //    GLCheckBalanceResponse USDBal = _DBIApi.CheckGLBalance(req);
-        //    req.Currency = "SOS";
-        //    GLCheckBalanceResponse SLSBal = _DBIApi.CheckGLBalance(req);
-        //    ReconcilationBalances reconcilationBalances = new ReconcilationBalances();
-        //    reconcilationBalances.eDahabSLSAccountBalance = SLSBal.Balance;
-        //    reconcilationBalances.eDahabUSDAccountBalance = USDBal.Balance;
-        //    //To Do get balances after Farhan provide the API
-            
-        //    eDahabServiceApi.AuthHeader auth = new eDahabServiceApi.AuthHeader
-        //    {
-        //        Username = WebConfigurationManager.AppSettings["eDahabUser"].ToString(),
-        //        Password = WebConfigurationManager.AppSettings["eDahabPassword"].ToString()
-        //    };
-        //    var eDahabBalances = _eDahabApi.CheckAgentBalance(auth);
-        //    reconcilationBalances.DBIAgentSLSBalance = 0;
-        //    reconcilationBalances.DBIAgentUSDBalance = eDahabBalances;
-        //    if (!(filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null ))
-        //    {
-        //        filter.DateFrom = new DateTime(2018, 10, 1);
-        //        filter.DateTo = DateTime.Today;
-        //    }
-        //    filter.Status = "0";
-        //    List<Transaction> list = _repository.Transactions(filter);
-        //    reconcilationBalances.Transactions = list.ToPagedList(1, list.Count>0? list.Count : 1);
-        //    Session["TransactionsSession"] = reconcilationBalances.Transactions;
+        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Reconciliation)]
+        public ActionResult Reconciliation(FilterTransactions filter, int page = 1)
+        {
+            //GLCheckBalanceRequest req = new GLCheckBalanceRequest();
+            //req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
+            //req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
+            //req.Currency = "USD";
+            //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            //GLCheckBalanceResponse USDBal = _DBIApi.CheckGLBalance(req);
+            //req.Currency = "SOS";
+            //GLCheckBalanceResponse SLSBal = _DBIApi.CheckGLBalance(req);
+            ReconcilationBalances reconcilationBalances = new ReconcilationBalances();
+            //reconcilationBalances.eDahabSLSAccountBalance = SLSBal.Balance;
+            //reconcilationBalances.eDahabUSDAccountBalance = USDBal.Balance;
+            //To Do get balances after Farhan provide the API
 
-        //    return View(reconcilationBalances);
-        //}
+            eDahabServiceApi.AuthHeader auth = new eDahabServiceApi.AuthHeader
+            {
+                Username = WebConfigurationManager.AppSettings["eDahabUser"].ToString(),
+                Password = WebConfigurationManager.AppSettings["eDahabPassword"].ToString()
+            };
+            var eDahabBalances = _eDahabApi.GetBankeDahabAgentBalance(auth);
+            reconcilationBalances.DBIAgentSLSBalance = eDahabBalances.Shl;
+            reconcilationBalances.DBIAgentUSDBalance = eDahabBalances.Usd;
+            if (!(filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null))
+            {
+                filter.DateFrom = new DateTime(2018, 10, 1);
+                filter.DateTo = DateTime.Today;
+            }
+            filter.Status = "0";
+            List<Transaction> list = _repository.Transactions(filter);
+            reconcilationBalances.Transactions = list.ToPagedList(1, list.Count > 0 ? list.Count : 1);
+            Session["TransactionsSession"] = reconcilationBalances.Transactions;
 
-        
+            return View(reconcilationBalances);
+        }
+
+
 
         public ActionResult ExportTransactionsExcel()
         {

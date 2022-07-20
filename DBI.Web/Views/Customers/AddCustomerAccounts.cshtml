@@ -42,7 +42,7 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-6">
-                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="62XXXXXXX" />
+                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="6XXXXXXXX" />
                                     @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger", @id = "msisdnValidation" })
                                 </div>
                                 <div class="col-md-3">
@@ -71,27 +71,6 @@
 
                                 </div>
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.AccountType, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-8">
-                                    <select class="form-control" name="AccountType" id="AccountType" disabled>
-                                        <option value="" selected></option>
-                                        <option value="81101">81101  Customer Current Account</option>
-                                        <option value="81102">81102  Staff Current Account</option>
-                                        <option value="81103">81103  Customers Saving Account</option>
-                                        <option value="81105">81105  Companies Current Accounts</option>
-                                    </select>
-                                    @Html.ValidationMessageFor(model => model.AccountType, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Currency, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-8">
-                                    @Html.EditorFor(model => model.Currency, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.AccountHolder, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -99,16 +78,6 @@
                                     @Html.EditorFor(model => model.AccountHolder, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                     @Html.ValidationMessageFor(model => model.AccountHolder, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.NewDailyLimit, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-8">
-                                    @*@Html.EditorFor(model => model.DailyLimit, new { htmlAttributes = new { @class = "form-control", } })*@
-                                    <input type="search" id="NewDailyLimit" name="NewDailyLimit" value="5000" class="form-control" readonly  />
-                                    @Html.ValidationMessageFor(model => model.NewDailyLimit, "", new { @class = "text-danger" })
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -204,9 +173,6 @@
             $("#AccountNo").change(function () {
 
                 $("input[name=AccountHolder]").val("");
-                $("input[name=Currency]").val("");
-                $("#AccountType").val("");
-                $("#AccountType").prop("disabled", true);
             });
 
 
@@ -222,20 +188,8 @@
                         AccountNo: $("#AccountNo").val(),
                     },
 
-
                     success: function (data) {
-                        if (data["Status"] == "0")
-                        {
-
-                            $("input[name=AccountHolder]").val(data["CustomerName"]);
-                            $("input[name=Currency]").val(data["Currency"]);
-                            $("#AccountType").val(data["AccountType"]);
-                            $("#AccountType").prop("disabled", true);
-                        }
-                        else {
-                            alert(data["Message"]);
-                        }
-
+                        $("input[name=AccountHolder]").val(data);
                     }
                 });
             });

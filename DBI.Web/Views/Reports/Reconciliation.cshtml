@@ -46,7 +46,8 @@
                     </div>
 
 
-<!--                    <div class="col-md-6">
+
+                    <div class="col-md-6">
 
                         <div class="form-group">
                             @*@Html.LabelFor(model => model.DBIAgentSLSBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
@@ -74,9 +75,9 @@
                             </div>
                         </div>
                     </div>
--->
 
-                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -84,7 +85,7 @@
 </div>
 
 <div>
-    @Html.Partial("~/Views/Reports/Transactions.cshtml",Model.Transactions)
+    @Html.Partial("~/Views/Reports/Transactions.cshtml", Model.Transactions)
 
 </div>
 @Scripts.Render("~/bundles/jqueryval")

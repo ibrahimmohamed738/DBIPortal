@@ -167,7 +167,6 @@
     <Compile Include="Helpers\EnumHelpers.cs" />
     <Compile Include="Helpers\PermissionRequired.cs" />
     <Compile Include="Models\FluxCubeApi.cs" />
-    <Compile Include="Models\IFluxCubeApi.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\UsersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -302,7 +301,6 @@
     <None Include="Properties\PublishProfiles\Release Profile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
-    <None Include="Scripts\jquery-3.3.1-vsdoc.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />

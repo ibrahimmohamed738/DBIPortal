@@ -11,30 +11,30 @@ using System.Web;
 
 namespace DBI_eDahab.Web.Models
 {
-    public class FluxCubeApi : IFluxCubeApi
+    public class FluxCubeApi
     {
-        private readonly HttpClient _client;
-
-        public FluxCubeApi(HttpClient client)
-        {
-            _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
-            _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
-            _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
-            _client = client;
-        }
+        public HttpClient _client;
 
         public async Task<AccountInfoRespone> GetCustomerInfo(AccountInfoRequest accountInfoRequest)
         {
-            var request = new StringContent(JsonConvert.SerializeObject(accountInfoRequest), Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("api/getcustomerinfo", request);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            using (var _client = new HttpClient())
             {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<AccountInfoRespone>(jsonString);
-            }
+                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
 
-            return null;
+                var request = new StringContent(JsonConvert.SerializeObject(accountInfoRequest), Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync("api/getcustomerinfo", request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<AccountInfoRespone>(jsonString);
+                }
+
+                return null;
+            }
+            
         }
 
 

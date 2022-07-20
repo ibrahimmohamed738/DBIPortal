@@ -18,21 +18,9 @@ namespace DBI_eDahab.Web.Controllers
     public class CustomersController : Controller
     {
         eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
-        private readonly IFluxCubeApi _fluxCubeApi;
-        private readonly Repository _repository;
-        private readonly UsersRepository _usersRepository;
-
-        public CustomersController(IFluxCubeApi fluxCubeApi, Repository repository, UsersRepository usersRepository)
-        {
-            _fluxCubeApi = fluxCubeApi;
-            _repository = repository;
-            _usersRepository = usersRepository;
-        }
-
-        public CustomersController()
-        {
-                
-        }
+        FluxCubeApi _fluxCubeApi = new FluxCubeApi();
+        Repository _repository = new Repository();
+        UsersRepository _usersRepository = new UsersRepository();
 
         public ActionResult GetEdahabName(string MSISDN, string Category)
         {
@@ -55,14 +43,17 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        public async Task<ActionResult> GetDBIAccountHolderAsync(AccountInfoRequest req, string AccountNo)
+        public async Task<ActionResult> GetDBIAccountHolder(AccountInfoRequest req, string AccountNo)
         {
-
-            AccountInfoRespone AccountHolderName = await getAccountInfoAsync(req);
+            req.Entity = "DBI";
+            req.AccountId = AccountNo;
+            req.Currency = "USD";
+            req.AlternateAccountId = AccountNo;
+            AccountInfoRespone AccountHolderName = await getAccountInfo(req);
             return Json(AccountHolderName.Name, JsonRequestBehavior.AllowGet);
         }
 
-        private async Task<AccountInfoRespone> getAccountInfoAsync(AccountInfoRequest req)
+        private async Task<AccountInfoRespone> getAccountInfo(AccountInfoRequest req)
         {
             AccountInfoRespone account = await _fluxCubeApi.GetCustomerInfo(req);
             return account;
