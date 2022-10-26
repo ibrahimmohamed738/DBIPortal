@@ -24,6 +24,8 @@ namespace DBI_eDahab.Web.ViewModels
         public string MSISDN { get; set; }
         [Required, Display(Name = "eDahab Name")]
         public string eDahabName { get; set; }
+        [Required, Display(Name = "eDahab Type")]
+        public string eDahabType { get; set; }
         [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
         [Display(Name = "Created By")]

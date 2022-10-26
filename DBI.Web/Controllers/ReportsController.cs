@@ -12,14 +12,18 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Configuration;
 using System.Net;
+using System.Threading.Tasks;
+using System.Configuration;
+using static DBI_eDahab.Web.ViewModels.Users;
 
 namespace DBI_eDahab.Web.Controllers
 {
     public class ReportsController : Controller
     {
         // GET: Reports
+        FluxCubeApi _fluxCubeApi = new FluxCubeApi();
         Repository _repository = new Repository();
-        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
+        DahabApi _dahab = new DahabApi();
 
         private class CustomerReport
         {
@@ -54,7 +58,7 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Customers_List)]
+        [PermissionRequired(Permissions.Customers_List)]
         public ActionResult Customers(string term, DateTime? DateFrom = null, DateTime? DateTo = null, int page = 1, string Currency = null, string Branch = null, string Active = "", bool? Verified = null)
         {
             List<CustomerForm> list = _repository.GetCustomers(Term: term, DateFrom: DateFrom, DateTo: DateTo, Currency: Currency, Branch: Branch, Active: Active, Verified: Verified);
@@ -64,7 +68,7 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Transactions)]
+        [PermissionRequired(Permissions.Transactions)]
         public ActionResult Transactions(FilterTransactions filter,int page = 1)
         {
             var transaction = new List<Transaction>();
@@ -79,7 +83,7 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        //[PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.ProcessFailures)]
+        //[PermissionRequired(Permissions.ProcessFailures)]
         //public ActionResult ProcessFailedTransaction(string TransactionID)
         //{
         //    try
@@ -104,33 +108,30 @@ namespace DBI_eDahab.Web.Controllers
         //    }
         //}
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Reconciliation)]
-        public ActionResult Reconciliation(FilterTransactions filter, int page = 1)
+        [PermissionRequired(Permissions.Reconciliation)]
+        public async Task<ActionResult> Reconciliation(FilterTransactions filter, int page = 1)
         {
-            //GLCheckBalanceRequest req = new GLCheckBalanceRequest();
-            //req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
-            //req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
-            //req.Currency = "USD";
-            //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            //GLCheckBalanceResponse USDBal = _DBIApi.CheckGLBalance(req);
-            //req.Currency = "SOS";
-            //GLCheckBalanceResponse SLSBal = _DBIApi.CheckGLBalance(req);
+            var glBalance = await _fluxCubeApi.GetGLAccountBalance(new GLAccountRequest {
+                Entity = "DBI",
+                AccountId = "100200102",
+                BranchId = ConfigurationManager.AppSettings["GLBranch"].ToString(),
+                Currency = "USD"
+            });
             ReconcilationBalances reconcilationBalances = new ReconcilationBalances();
-            //reconcilationBalances.eDahabSLSAccountBalance = SLSBal.Balance;
-            //reconcilationBalances.eDahabUSDAccountBalance = USDBal.Balance;
-            //To Do get balances after Farhan provide the API
-
-            eDahabServiceApi.AuthHeader auth = new eDahabServiceApi.AuthHeader
+            foreach (var item in glBalance)
             {
-                Username = WebConfigurationManager.AppSettings["eDahabUser"].ToString(),
-                Password = WebConfigurationManager.AppSettings["eDahabPassword"].ToString()
-            };
-            var eDahabBalances = _eDahabApi.GetBankeDahabAgentBalance(auth);
-            reconcilationBalances.DBIAgentSLSBalance = eDahabBalances.Shl;
-            reconcilationBalances.DBIAgentUSDBalance = eDahabBalances.Usd;
+                if(item.Currency == "SLS")
+                  reconcilationBalances.eDahabSLSAccountBalance = item.Balance;
+                else
+                  reconcilationBalances.eDahabUSDAccountBalance = item.Balance;
+            }
+
+            var agentBalance = await _dahab.GetAgentBalance(ConfigurationManager.AppSettings["AgentMsisdn"]);
+            reconcilationBalances.DBIAgentSLSBalance = agentBalance.SLSBalance;
+            reconcilationBalances.DBIAgentUSDBalance = agentBalance.USDBalance;
             if (!(filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null))
             {
-                filter.DateFrom = new DateTime(2018, 10, 1);
+                filter.DateFrom = new DateTime(2021, 1, 1);
                 filter.DateTo = DateTime.Today;
             }
             filter.Status = "0";

@@ -10,9 +10,7 @@ namespace DBI_eDahab.Web.Models
     public class UsersRepository
     {
         readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBI"].ConnectionString;
-        // readonly string _smsConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SmsServer"].ConnectionString;
-
-
+ 
         internal void AddUser(Users addUser)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -181,7 +179,6 @@ namespace DBI_eDahab.Web.Models
                 command.ExecuteNonQuery();
             }
 
-            //EventsRepository.Create("User Update.", userForm.Id, HttpContext.Current.User.Identity.Name);
         }
 
 
@@ -284,26 +281,6 @@ namespace DBI_eDahab.Web.Models
                 return user;
             }
         }
-
-
-
-        //public void SendSomtelSms(string mobileNumber, string message, bool asFlash = false)
-        //{
-        //    using (var connection = new SqlConnection(_smsConnectionString))
-        //    using (var command = connection.CreateCommand())
-        //    {
-        //        command.CommandText = @"Insert into [Messages](DirectionID,TypeID,StatusDetailsID,StatusID,ChannelID,FromAddress,Priority,ToAddress,Body,BillingID,SysCreator, Modifier)
-        //                                Values(2,1,200,1,1101,'SOMTEL',1,'+' + @MobileNumber,@Message,'Administrator',287840, @AsFlash)";
-
-        //        command.Parameters.AddWithValue("@MobileNumber", mobileNumber);
-        //        command.Parameters.AddWithValue("@Message", message);
-        //        command.Parameters.AddWithValue("@AsFlash", asFlash ? 1 : 0);
-
-        //        connection.Open();
-
-        //        command.ExecuteNonQuery();
-        //    }
-        //}
 
         internal void LogUserAction(AuditLog auditLogRecord)
         {

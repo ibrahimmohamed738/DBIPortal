@@ -13,15 +13,24 @@ namespace DBI_eDahab.Web.Models
 {
     public class FluxCubeApi
     {
-        public HttpClient _client;
-
         public async Task<AccountInfoRespone> GetCustomerInfo(AccountInfoRequest accountInfoRequest)
         {
             using (var _client = new HttpClient())
             {
-                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
-                _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
-                _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                bool isProd;
+                bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
 
                 var request = new StringContent(JsonConvert.SerializeObject(accountInfoRequest), Encoding.UTF8, "application/json");
                 var response = await _client.PostAsync("api/getcustomerinfo", request);
@@ -37,16 +46,11 @@ namespace DBI_eDahab.Web.Models
             
         }
 
-
         public async Task SendSmsAsync(string title, string phone, string message)
         {
             using (var client = new HttpClient())
             {
-                if (phone.StartsWith("65") || phone.StartsWith("66"))
-                    client.BaseAddress = new Uri("http://192.168.21.45:50030/");
-                else
-                    client.BaseAddress = new Uri("http://192.168.23.90:5000/");
-
+                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["SMSUrl"]);
                 var request = new
                 {
                     phone,
@@ -58,5 +62,70 @@ namespace DBI_eDahab.Web.Models
                 await client.PostAsync("SMS", data);
             }
         }
+
+        public async Task<List<GLAccountResponse>> GetGLAccountBalance(GLAccountRequest accountInfo)
+        {
+            using (var _client = new HttpClient())
+            {
+                bool isProd;
+                bool.TryParse(ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
+               
+                var request = new StringContent(JsonConvert.SerializeObject(accountInfo), Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync("api/getglbalances", request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<List<GLAccountResponse>>(jsonString);
+                }
+
+                return null;
+            }
+
+        }
+
+        public async Task<CreateTransactionResponse> CreateTransaction(CreateTransactionRequest CreateRequest)
+        {
+            using (var _client = new HttpClient())
+            {
+                bool isProd;
+                bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
+
+                var request = new StringContent(JsonConvert.SerializeObject(CreateRequest), Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync("api/CreateTransaction", request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<CreateTransactionResponse>(jsonString);
+                }
+                return null;
+            }
+        }
+
     }
 }

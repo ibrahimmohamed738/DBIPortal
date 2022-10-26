@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Reconciliation";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isNorth;
+    bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsNorth"], out isNorth);
 }
 
 <h2>Reconciliation</h2>
@@ -46,35 +48,38 @@
                     </div>
 
 
+                    @if (isNorth)
+                    {
+                        <div class="col-md-6">
 
-                    <div class="col-md-6">
+                            <div class="form-group">
+                                @*@Html.LabelFor(model => model.DBIAgentSLSBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                <label class="control-label col-md-6">Balance As per e-Dahab Books (SLS): </label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.DBIAgentSLSBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.DBIAgentSLSBalance, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
-                        <div class="form-group">
-                            @*@Html.LabelFor(model => model.DBIAgentSLSBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                            <label class="control-label col-md-6">Balance As per e-Dahab Books (SLS): </label>
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.DBIAgentSLSBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.DBIAgentSLSBalance, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @*@Html.LabelFor(model => model.eDahabSLSAccountBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                <label class="control-label col-md-6">Balance As per DBI Books (SLS): </label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.eDahabSLSAccountBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.eDahabSLSAccountBalance, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-6">SLS Difference: </label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SLSDifference, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.SLSDifference, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                         </div>
+                    }
 
-                        <div class="form-group">
-                            @*@Html.LabelFor(model => model.eDahabSLSAccountBalance, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                            <label class="control-label col-md-6">Balance As per DBI Books (SLS): </label>
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.eDahabSLSAccountBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.eDahabSLSAccountBalance, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-md-6">SLS Difference: </label>
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.SLSDifference, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.SLSDifference, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
 
 
                 </div>

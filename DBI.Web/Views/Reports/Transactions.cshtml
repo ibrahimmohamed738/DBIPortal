@@ -5,6 +5,8 @@
 
 @{
     ViewBag.Title = "Transactions";
+    bool isNorth;
+    bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsNorth"], out isNorth);
     // var pageNumbers = Enumerable.Range(1, Model.PageCount).Where(n => n <= 5 || (n >= Model.Page - 2 && n <= Model.Page + 2) || n > Model.PageCount - 5).ToArray();
 
 }
@@ -101,10 +103,26 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <div class="input-group">
+                                  <div class="input-group">
                                         <select name="Branch" class="form-control">
-                                            <option></option>
-                                            <option value="104">Trepiano Branch</option>
+                                            @if (isNorth)
+                                            {
+                                             <option value="" disabled selected>Branch</option>
+                                             <option value="102">102</option>
+                                             <option value="105">105</option>
+                                             <option value="106">106</option>
+                                             <option value="107">107</option>
+                                             <option value="109">109</option>
+                                             <option value="103">103</option>
+                                             <option value="108">108</option>
+                                             <option value="114">114</option>
+                                             <option value="117">117</option>
+                                             <option value="100">100</option>
+                                            }
+                                            else 
+                                            { 
+                                            <option value="" disabled selected>Branch</option>
+                                             <option value="104">Tripiano Branch</option>
                                             <option value="110">Bakara branch</option>
                                             <option value="111">Beledweyne branch</option>
                                             <option value="112">Hamarweyne Branch</option>
@@ -113,6 +131,9 @@
                                             <option value="116">Jowhar Branch</option>
                                             <option value="118">Beledhawo Branch</option>
                                             <option value="119">Sug bad Branch</option>
+                                            <option value="120">Abudwak Branch</option>
+                                            <option value="121">Dusamareb Branch</option>
+                                            }
                                         </select>
                                         <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
 

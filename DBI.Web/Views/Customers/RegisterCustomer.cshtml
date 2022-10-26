@@ -42,7 +42,7 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-6">
-                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="62XXXXXXX" />
+                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="65XXXXXXX / 66XXXXXXX / 62XXXXXXX" />
                                     @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger", @id = "msisdnValidation" })
                                 </div>
                                 <div class="col-md-3">
@@ -186,8 +186,8 @@
                         MSISDN: $("#MSISDN").val()
                     },
                     success: function (data) {
-                        $("input[name=EdahabName]").val(data["Name"]);
-                        $("input[name=eDahabType]").val(data["Category"]);
+                        $("input[name=EdahabName]").val(data["FullName"]);
+                        $("input[name=eDahabType]").val(data["CategoryCode"]);
 
 
                     }

@@ -12,12 +12,8 @@ namespace DBI_eDahab.Web.Models
 {
     public class Repository
     {
-        public static string ConnectionStringOracle = ConfigurationManager.ConnectionStrings["oracleConnection"].ConnectionString;
-        public static string photoLinkConnectionString = ConfigurationManager.ConnectionStrings["PhotoLink"].ConnectionString;
         readonly string _connectionString = ConfigurationManager.ConnectionStrings["DBI"].ConnectionString;
-        // readonly string _smsConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SmsServer"].ConnectionString;
-
-
+        readonly string _hqBranch = ConfigurationManager.AppSettings["HQBranch"];
 
         internal void RegisterCustomer(CustomerForm customer)
         {
@@ -25,14 +21,15 @@ namespace DBI_eDahab.Web.Models
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"INSERT INTO DahabCard
-                                                   (MSISDN, eDahabName, eDahabType, CreatedOn, PIN, CreatedBy, Active, Verified)
-                                             VALUES (@MSISDN, @eDahabName, @eDahabType, GetDate(), @PIN, @CreatedBy, 'Y', 0)";
+                                                   (MSISDN, eDahabName, eDahabType, CreatedOn, PIN, CreatedBy, Active, Verified,Remarks)
+                                             VALUES (@MSISDN, @eDahabName, @eDahabType, GetDate(), @PIN, @CreatedBy, 'Y', 0, @Remarks)";
                 string userName = HttpContext.Current.User.Identity.Name;
                 command.Parameters.AddWithValue("@MSISDN", customer.MSISDN);
                 command.Parameters.AddWithValue("@eDahabName", customer.eDahabName);
                 command.Parameters.AddWithValue("@eDahabType", customer.eDahabType);
                 command.Parameters.AddWithValue("@PIN", customer.PIN);
                 command.Parameters.AddWithValue("@CreatedBy", userName);
+                command.Parameters.AddWithValue("@Remarks", userName + ": New entry.");
                 connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -45,16 +42,17 @@ namespace DBI_eDahab.Web.Models
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"INSERT INTO dbi_Customers
-                                        (MSISDN, AccountNo, AccountType, Currency, NewDailyLimit, Branch, AccountHolder, CreatedBy, CreatedOn, eDahabName, Remarks)
-                                        VALUES 
-                                        (@MSISDN, @AccountNo, @AccountType, @Currency, @NewDailyLimit, @Branch, @AccountHolder, @CreatedBy, GetDate(), @eDahabName, @Remarks)";
+                                        (MSISDN, AccountNo, AccountType, Currency, NewDailyLimit, Branch, eDahabType, AccountHolder, CreatedBy,DailyLimit, CreatedOn, eDahabName, Remarks)
+                                        VALUES (@MSISDN, @AccountNo, @AccountType, @Currency, @NewDailyLimit, @Branch, @eDahabType ,@AccountHolder, @CreatedBy,@NewDailyLimit,GetDate(), @eDahabName, @Remarks)";
                 string userName = HttpContext.Current.User.Identity.Name;
                 command.Parameters.AddWithValue("@MSISDN", customer.MSISDN);
                 command.Parameters.AddWithValue("@AccountNo", customer.AccountNo);
                 command.Parameters.AddWithValue("@AccountType", customer.AccountType);
                 command.Parameters.AddWithValue("@Currency", customer.Currency);
+                command.Parameters.AddWithValue("@DailyLimit", customer.NewDailyLimit);
                 command.Parameters.AddWithValue("@NewDailyLimit", customer.NewDailyLimit);
                 command.Parameters.AddWithValue("@Branch", customer.Branch);
+                command.Parameters.AddWithValue("@eDahabType", customer.eDahabType);
                 command.Parameters.AddWithValue("@AccountHolder", customer.AccountHolder);
                 command.Parameters.AddWithValue("@eDahabName", customer.eDahabName);
                 command.Parameters.AddWithValue("@CreatedBy", userName);
@@ -66,7 +64,6 @@ namespace DBI_eDahab.Web.Models
                 }
                 catch (SqlException e)
                 {
-
                     if (e.Message.Contains("KEY constraint"))
                         result = -2;
                 }
@@ -209,7 +206,7 @@ namespace DBI_eDahab.Web.Models
                                         isnull(c.NewDailyLimit,0) NewDailyLimit, c.CreatedOn CreatedOn, c.Remarks AccountRemarks, d.Remarks Remarks 
                                       from DahabCard d, dbi_Customers c
                                       --left join  dbi_Customers c on d.MSISDN = c.MSISDN
-                                      WHERE (d.MSISDN = c.MSISDN and d.MSISDN = @MSISDN and c.AccountNo = @AccountNo and c.AccountType = @AccountType ) ";
+                                      WHERE (d.MSISDN = c.MSISDN and d.MSISDN = @MSISDN and c.AccountNo = @AccountNo) ";
 
                 command.Parameters.AddWithValue("@MSISDN", MSISDN);
                 command.Parameters.AddWithValue("@AccountNo", AccountNo);
@@ -244,27 +241,6 @@ namespace DBI_eDahab.Web.Models
             }
         }
 
-        internal string GetSubscriberByMobileNumber(string msisdn)
-        {
-            using (var oracleConn = new OracleConnection(ConnectionStringOracle))
-            using (var command = oracleConn.CreateCommand())
-            {
-                command.CommandText = @"select *
-                                        from SOMTEL_PROD.mtx_party
-										where Status = 'Y' and msisdn =:mobileNumber";
-                command.Parameters.Add(new OracleParameter(":mobileNumber", msisdn));
-                oracleConn.Open();
-                OracleDataReader reader;
-                reader = command.ExecuteReader();
-                string user_id = null;
-                if (reader.Read())
-                {
-                    user_id = reader[0].ToString();
-                }
-                return user_id;
-            }
-        }
-
         internal void ChangePin(string MSISDN, string hashedNewPassword)
         {
             var currentUser = HttpContext.Current.Session["User"] as Users;
@@ -272,34 +248,16 @@ namespace DBI_eDahab.Web.Models
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"UPDATE DahabCard SET
-                                        Pin = @Pin, ModifiedBy = @ModifiedBy, ModifiedOn = GetDate() 
+                                        Pin = @PIN, ModifiedBy = @ModifiedBy, ModifiedOn = GetDate() 
                                         WHERE MSISDN = @MSISDN
                                       ";
                 string userName = HttpContext.Current.User.Identity.Name;
                 command.Parameters.AddWithValue("@MSISDN", MSISDN);
                 command.Parameters.AddWithValue("@ModifiedBy", userName);
-                command.Parameters.AddWithValue("@Pin", hashedNewPassword);
+                command.Parameters.AddWithValue("@PIN", hashedNewPassword);
                 connection.Open();
                 command.ExecuteNonQuery();
             }
-        }
-
-        internal byte[] GetCustomerPhotoByUserId(string userId)
-        {
-            byte[] imgString = null;
-            using (var connection = new SqlConnection(photoLinkConnectionString))
-            using (var command = new SqlCommand { Connection = connection })
-            {
-                command.CommandText = "select Photo From CustomerPhotos where Id = @Id";
-                command.Parameters.AddWithValue("@Id", userId);
-                connection.Open();
-                var reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    imgString = reader["Photo"] as byte[];
-                }
-            }
-            return imgString;
         }
 
         public List<CustomerForm> GetCustomers(string Term, DateTime? DateFrom = null, DateTime? DateTo = null, string Currency=null, string Branch=null, string Active = "", bool? Verified = null)
@@ -325,7 +283,7 @@ namespace DBI_eDahab.Web.Models
                 }
                 command.CommandText += " ORDER BY CreatedOn DESC    ";
                 string branch = new UsersRepository().GetUser(HttpContext.Current.User.Identity.Name.ToString()).Branch.ToString();
-                if (branch == "200")
+                if (branch == _hqBranch)
                 {
                     branch = Branch;
                 }
@@ -395,8 +353,8 @@ namespace DBI_eDahab.Web.Models
                 command.Parameters.AddWithValue("@Status", filter.Status + "%%");
                 command.Parameters.AddWithValue("@Currency", filter.Currency + "%%");
                 command.Parameters.AddWithValue("@Amount", "%%" + filter.Amount);
-                string branch = new UsersRepository().GetUser(HttpContext.Current.User.Identity.Name.ToString()).Branch.ToString();
-                if (branch == "200" )
+                string branch = new UsersRepository().GetUser("ibrahim").Branch.ToString();
+                if (branch == _hqBranch)
                 {
                     branch = filter.Branch;
                 }

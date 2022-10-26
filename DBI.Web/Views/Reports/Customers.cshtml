@@ -1,15 +1,9 @@
 ﻿
-
 @model  PagedList<DBI_eDahab.Web.ViewModels.CustomerForm>
-
-
-@{
-    ViewBag.Title = "Customers";
-    // var pageNumbers = Enumerable.Range(1, Model.PageCount).Where(n => n <= 5 || (n >= Model.Page - 2 && n <= Model.Page + 2) || n > Model.PageCount - 5).ToArray();
-
-}
-
-
+@{ ViewBag.Title = "Customers";
+    bool isNorth;
+    bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsNorth"], out isNorth);
+ }
 <body>
 
     <!-- END BREADCRUMB -->
@@ -30,11 +24,10 @@
                     <div class="panel-body">
                         @if (TempData["SuccessMessage"] != null)
                         {
-                            <div class="alert alert-success" role="alert">
-                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                <strong>@TempData["SuccessMessage"]</strong>
-                            </div>
-                        }
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <strong>@TempData["SuccessMessage"]</strong>
+            </div>}
                         <form method="get">
 
 
@@ -62,12 +55,43 @@
 
                                     </div>
                                 </div>
+                                @if (isNorth)
+                                { 
+                                    <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Currency" class="form-control">
+                                            <option value="" disabled selected>Currency</option>
+                                            <option value="SLS">Shilling</option>
+                                            <option value="USD">US Dollar</option>
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+                                }
+                                
 
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <select name="Branch" class="form-control">
-                                            <option></option>
-                                            <option value="104">Tripiano Branch</option>
+                                            @if (isNorth)
+                                            {
+                                             <option value="" disabled selected>Branch</option>
+                                             <option value="102">102</option>
+                                             <option value="105">105</option>
+                                             <option value="106">106</option>
+                                             <option value="107">107</option>
+                                             <option value="109">109</option>
+                                             <option value="103">103</option>
+                                             <option value="108">108</option>
+                                             <option value="114">114</option>
+                                             <option value="117">117</option>
+                                             <option value="100">100</option>
+                                            }
+                                            else 
+                                            { 
+                                            <option value="" disabled selected>Branch</option>
+                                             <option value="104">Tripiano Branch</option>
                                             <option value="110">Bakara branch</option>
                                             <option value="111">Beledweyne branch</option>
                                             <option value="112">Hamarweyne Branch</option>
@@ -76,6 +100,10 @@
                                             <option value="116">Jowhar Branch</option>
                                             <option value="118">Beledhawo Branch</option>
                                             <option value="119">Sug bad Branch</option>
+                                            <option value="120">Abudwak Branch</option>
+                                            <option value="121">Dusamareb Branch</option>
+                                            }
+                                            
                                         </select>
                                         <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
 
@@ -85,7 +113,7 @@
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <select name="Active" class="form-control">
-                                            <option></option>
+                                            <option value="" disabled selected>Status</option>
                                             <option value="Y">Active</option>
                                             <option value="N">Deactive</option>
                                         </select>
@@ -97,7 +125,7 @@
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <select name="Verified" class="form-control">
-                                            <option></option>
+                                            <option value="" disabled selected>Verfification</option>
                                             <option value="True">Verified</option>
                                             <option value="False">Not Verified</option>
                                         </select>
@@ -109,13 +137,13 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Search</button> | 
+                                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Search</button> |
                                         <a href="~/Reports/ExportCustomersExcel" class="btn  btn-warning"> Export Excel</a>
                                     </div>
                                 </div>
 
                             </div>
-                        </form>     
+                        </form>
 
 
                     </div>
@@ -170,81 +198,77 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            @{
-                                int count = (Model.PageNumber-1) * Model.PageSize;
+                            @{ int count = (Model.PageNumber - 1) * Model.PageSize;
 
                                 foreach (var list in Model)
                                 {
                                     count += 1;
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            @count
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink(list.MSISDN, "ModifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "" })
-                                        </td>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @count
+                            </td>
+                            <td>
+                                @Html.ActionLink(list.MSISDN, "ModifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "" })
+                            </td>
 
-                                        <td>@list.eDahabName</td>
-                                        <td>@list.CustomerAccount.AccountNo</td>
-                                        <td>@list.CustomerAccount.AccountType</td>
-                                        <td>@list.CustomerAccount.AccountHolder</td>
-                                        <td>@list.CustomerAccount.Currency</td>
-
-
-                                        <td>@list.CustomerAccount.CreatedOn.ToShortDateString()</td>
-                                        <td>@list.CustomerAccount.CreatedBy</td>
-
-                                        <td>@list.CustomerAccount.DailyLimit</td>
+                            <td>@list.eDahabName</td>
+                            <td>@list.CustomerAccount.AccountNo</td>
+                            <td>@list.CustomerAccount.AccountType</td>
+                            <td>@list.CustomerAccount.AccountHolder</td>
+                            <td>@list.CustomerAccount.Currency</td>
 
 
-                                        @if (list.Active == "Y")
-                                        {
-                                            <td><span class="label label-success">Yes</span></td>
-                                        }
+                            <td>@list.CustomerAccount.CreatedOn.ToShortDateString()</td>
+                            <td>@list.CustomerAccount.CreatedBy</td>
 
-                                        @if (list.Active == "N")
-                                        {
-                                            <td><span class="label label-danger">No</span></td>
-
-                                        }
+                            <td>@list.CustomerAccount.DailyLimit</td>
 
 
-                                        @if (list.CustomerAccount.Verified == true)
-                                        {
-                                            <td><span class="label label-success">Yes</span></td>
-                                        }
+                            @if (list.Active == "Y")
+                            {
+            <td><span class="label label-success">Yes</span></td>
+}
 
-                                        @if (list.CustomerAccount.Verified == false)
-                                        {
-                                            <td><span class="label label-danger">No</span></td>
+                            @if (list.Active == "N")
+                            {
+            <td><span class="label label-danger">No</span></td>
+}
 
-                                        }
+
+                            @if (list.CustomerAccount.Verified == true)
+                            {
+            <td><span class="label label-success">Yes</span></td>
+}
+
+                            @if (list.CustomerAccount.Verified == false)
+                            {
+            <td><span class="label label-danger">No</span></td>
+}
 
 
 
 
-                                        <td>
-                                            @Html.ActionLink("Verify", "VerifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "btn btn-xs btn-primary" })
-                                        </td>
-                                    </tr>
+                            <td>
+                                @Html.ActionLink("Verify", "VerifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "btn btn-xs btn-primary" })
+                            </td>
+                        </tr>
 
-                                </tbody>
-                            }
-                                }
+                    </tbody>
+ } }
                         </table>
                         <div class="pagedList pull-right" data-otf-target="#RestaurantList">
                             @Html.PagedListPager(Model, page => Url.Action("Customers", new
-                       {
-                           page,
-                           term = Request.QueryString["term"],
-                           DateFrom = Request.QueryString["DateFrom"],
-                           DateTo = Request.QueryString["DateTo"],
-                           Currency = Request.QueryString["Currency"],
-                           Branch = Request.QueryString["Branch"],
-                           
-                       }),
-                                             PagedListRenderOptions.MinimalWithItemCountText)
+                            {
+                                page,
+                                term = Request.QueryString["term"],
+                                DateFrom = Request.QueryString["DateFrom"],
+                                DateTo = Request.QueryString["DateTo"],
+                                Currency = Request.QueryString["Currency"],
+                                Branch = Request.QueryString["Branch"],
+
+                            }),
+                                                       PagedListRenderOptions.MinimalWithItemCountText)
                         </div>
                     </div>
                 </div>
@@ -258,15 +282,3 @@
     <!-- PAGE CONTENT WRAPPER -->
 
 </body>
-
-
-
-
-
-
-
-
-
-
-
-

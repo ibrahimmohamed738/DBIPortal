@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using static DBI_eDahab.Web.ViewModels.Users;
 
 namespace DBI_eDahab.Web.Controllers
 {
@@ -22,10 +23,9 @@ namespace DBI_eDahab.Web.Controllers
         // GET: Users
 
         UsersRepository _usersRepository = new UsersRepository();
-        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
+        FluxCubeApi _fluxCubeApi = new FluxCubeApi();
 
-
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Update_Users)]
+        [PermissionRequired(Permissions.Update_Users)]
         public ActionResult Index(UserSearch userSearchForm)
         {
             if (!string.IsNullOrWhiteSpace(userSearchForm.SearchTerm))
@@ -41,13 +41,13 @@ namespace DBI_eDahab.Web.Controllers
 
 
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Create_Users)]
+        [PermissionRequired(Permissions.Create_Users)]
 
         public ActionResult AddUsers()
         {
             return View();
         }
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Create_Users)]
+        [PermissionRequired(Permissions.Create_Users)]
         [HttpPost]
         public async Task<ActionResult> AddUsers(string userId, Users addUser)
         {
@@ -65,16 +65,7 @@ namespace DBI_eDahab.Web.Controllers
                     var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(randomPassword, "SHA1");
                     addUser.Password = hashedPassword;
                     _usersRepository.AddUser(addUser);
-                    //SendSMSRequest sms = new SendSMSRequest()
-                    //{
-                    //    MSG = string.Format("Your Username is {0} and Password is: {1}", addUser.UserName, randomPassword),
-                    //    MSISDN = addUser.MobileNumber,
-                    //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                    //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                    //};
-                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    await SendSmsAsync("DBI", addUser.MobileNumber, $"Your Username is {addUser.UserName} and Password is: {randomPassword}");
-                    //_pentBankApi.Send_SMS(sms);
+                    await _fluxCubeApi.SendSmsAsync("DBI", addUser.MobileNumber, $"Your Username is {addUser.UserName} and Password is: {randomPassword}");
                     TempData["SuccessMessage"] = "User has been successfully created.";
                     AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "CreateUser", Description = $"Create new user: {addUser.FullName},{addUser.MobileNumber}", AffectedParty = addUser.UserName };
                     _usersRepository.LogUserAction(auditLogRecord);
@@ -84,25 +75,7 @@ namespace DBI_eDahab.Web.Controllers
             return View(addUser);
         }
 
-        //[PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Add_Branch)]
-
-        //public ActionResult AddBranchs()
-        //{
-        //    return View();
-        //}
-        //[PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Add_Branch)]
-        //[HttpPost]
-        //public ActionResult AddBranchs(Branchs branch)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _usersRepository.AddBranch(branch);
-        //        if (Request.UrlReferrer != null) return Redirect(Request.UrlReferrer.ToString());
-        //    }
-        //    return View();
-        //}
-
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Update_Users)]
+        [PermissionRequired(Permissions.Update_Users)]
         public ActionResult UpdateUser(string userId)
         {
             var user = _usersRepository.GetUser(userId);
@@ -111,11 +84,11 @@ namespace DBI_eDahab.Web.Controllers
 
             var userForm = new UpdateUserForm(user);
 
-            ViewBag.Permissions = DBI_eDahab.Web.Helpers.EnumHelpers.ToDictionary<DBI_eDahab.Web.ViewModels.Users.Permissions>();
+            ViewBag.Permissions = EnumHelpers.ToDictionary<Permissions>();
             return View(userForm);
         }
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Update_Users)]
+        [PermissionRequired(Permissions.Update_Users)]
         [HttpPost]
         public async Task<ActionResult> UpdateUser([ModelBinder(typeof(UserFormModelBinder))] UpdateUserForm updateUserForm)
         {
@@ -123,7 +96,7 @@ namespace DBI_eDahab.Web.Controllers
             {
                 _usersRepository.UpdateUser(updateUserForm);
                 HttpContext.Cache[string.Format("{0}'s CurrentPermissions", updateUserForm.UserName)] = updateUserForm.CurrentPermissions;
-                ViewBag.Permissions = DBI_eDahab.Web.Helpers.EnumHelpers.ToDictionary<DBI_eDahab.Web.ViewModels.Users.Permissions>();
+                ViewBag.Permissions = EnumHelpers.ToDictionary<Permissions>();
                 TempData["SuccessMessage"] = "User updated successfully.";
                 if (updateUserForm.ResetPassword)
                 {
@@ -132,19 +105,10 @@ namespace DBI_eDahab.Web.Controllers
                     var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(randomPassword, "SHA1");
 #pragma warning restore 618
                     _usersRepository.ChangePassword(updateUserForm.UserName, hashedPassword);
-                    //SendSMSRequest sms = new SendSMSRequest()
-                    //{
-                    //    MSG = string.Format("Your Password is: {0}", randomPassword),
-                    //    MSISDN = updateUserForm.MobileNumber,
-                    //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                    //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                    //};
                     ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    await SendSmsAsync("DBI", updateUserForm.MobileNumber, $"Your Password is: {randomPassword}");
-                    //_pentBankApi.Send_SMS(sms);
+                    await _fluxCubeApi.SendSmsAsync("DBI", updateUserForm.MobileNumber, $"Your Password is: {randomPassword}");
                     AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ResetUserPassword", Description = $"Reset password of: {updateUserForm.Name},{updateUserForm.MobileNumber}", AffectedParty = updateUserForm.UserName };
                     _usersRepository.LogUserAction(auditLogRecord);
-                    //TempData["SuccessMessage"] += string.Format(" New Password is {0}.", randomPassword);
                 }
             }
             return RedirectToAction("UpdateUser", new { UserId = updateUserForm.UserName });
@@ -172,28 +136,6 @@ namespace DBI_eDahab.Web.Controllers
 
             return View(changePasswordForm);
         }
-
-        public async Task SendSmsAsync(string title, string phone, string message)
-        {
-            using (var client = new HttpClient())
-            {
-                if (phone.StartsWith("65") || phone.StartsWith("66"))
-                    client.BaseAddress = new Uri("http://192.168.21.45:50030/");
-                else
-                    client.BaseAddress = new Uri("http://192.168.23.90:5000/");
-
-                var request = new
-                {
-                    phone,
-                    title,
-                    message
-                };
-                var json = JsonConvert.SerializeObject(request);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("SMS", data);
-            }
-        }
-
 
     }
 

@@ -1,39 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using DBI_eDahab.Web.Helpers;
+﻿using DBI_eDahab.Web.Helpers;
 using DBI_eDahab.Web.Models;
 using DBI_eDahab.Web.ViewModels;
-using System.Web.Security;
-using System.Net;
-using System.Web.Configuration;
-using System.Collections.Specialized;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Configuration;
+using System.Web.Mvc;
+using System.Web.Security;
+using static DBI_eDahab.Web.ViewModels.Users;
 
 namespace DBI_eDahab.Web.Controllers
 {
     [Authorize]
     public class CustomersController : Controller
     {
-        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
         FluxCubeApi _fluxCubeApi = new FluxCubeApi();
         Repository _repository = new Repository();
+        DahabApi _dahab = new DahabApi();
         UsersRepository _usersRepository = new UsersRepository();
 
-        public ActionResult GetEdahabName(string MSISDN, string Category)
+        public async Task<ActionResult> GetEdahabName(string MSISDN)
         {
-            eDahabServiceApi.AuthHeader authHeader = new eDahabServiceApi.AuthHeader()
-            {
-                Username = WebConfigurationManager.AppSettings["eDahabUser"].ToString(),
-                Password = WebConfigurationManager.AppSettings["eDahabPassword"].ToString()
-            };
-            var edahabName = _eDahabApi.GetEDahabInfo(MSISDN);
+            var edahabName = await _dahab.GetUserInfo(MSISDN);
             return Json(edahabName, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetEdahabNameFromDB(string MSISDN, string Category)
+        public ActionResult GetEdahabNameFromDB(string MSISDN)
         {
             var edahabName = _repository.CheckIfMSISDNExists(MSISDN);
             if (edahabName == null)
@@ -47,10 +39,9 @@ namespace DBI_eDahab.Web.Controllers
         {
             req.Entity = "DBI";
             req.AccountId = AccountNo;
-            req.Currency = "USD";
             req.AlternateAccountId = AccountNo;
             AccountInfoRespone AccountHolderName = await getAccountInfo(req);
-            return Json(AccountHolderName.Name, JsonRequestBehavior.AllowGet);
+            return Json(AccountHolderName, JsonRequestBehavior.AllowGet);
         }
 
         private async Task<AccountInfoRespone> getAccountInfo(AccountInfoRequest req)
@@ -73,28 +64,23 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        public ActionResult GetEdahabCustomerPhoto(string MSISDN)
+        public async Task<ActionResult> GetEdahabCustomerPhoto(string MSISDN)
         {
-            var customer = _repository.GetSubscriberByMobileNumber(MSISDN);
-            var photo = _repository.GetCustomerPhotoByUserId(customer);
+            var photo = await _dahab.GetSubscriberPhoto(MSISDN);
             return File(photo, "image/jpg");
         }
 
         [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Register_customers)]
         public ActionResult RegisterCustomer()
         {
-            //MSISDN = "659969009";
             string userName = User.Identity.Name.ToString();
             return View();
         }
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Register_customers)]
+        [PermissionRequired(Permissions.Register_customers)]
         [HttpPost]
         public async Task<ActionResult> RegisterCustomer(CustomerForm custForm)
         {
-            //if (ModelState.IsValid)
-            //{
-               // var accountholder = GetAccountInfo(req);
                 if (!ModelState.IsValid)
                 {
                     TempData["Error"] = "This account does not exist";
@@ -114,7 +100,7 @@ namespace DBI_eDahab.Web.Controllers
                         custForm.PIN = hashedPassword;
                         _repository.RegisterCustomer(custForm);
 
-                        await _fluxCubeApi.SendSmsAsync("DBI-MobileBanking", custForm.MSISDN, $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}");
+                        await _fluxCubeApi.SendSmsAsync("DBI", custForm.MSISDN, $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}");
                         TempData["Success"] = "Successfully Saved Customer";
                         AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "RegisterCustomerMSISDN", Description = "Successfully registered customer MSISDN: " + custForm.MSISDN, AffectedParty = custForm.MSISDN };
                         _usersRepository.LogUserAction(auditLogRecord); 
@@ -122,19 +108,18 @@ namespace DBI_eDahab.Web.Controllers
                             return Redirect(Request.UrlReferrer.ToString());
                     }
                 }
-            //}
             return View();
         }
 
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Register_customers)]
+        [PermissionRequired(Permissions.Register_customers)]
         public ActionResult AddCustomerAccounts()
         {
             string userName = User.Identity.Name.ToString();
             return View();
         }
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Register_customers)]
+        [PermissionRequired(Permissions.Register_customers)]
         [HttpPost]
         public ActionResult AddCustomerAccounts(CustomerAccountForm custForm)
         {
@@ -175,51 +160,16 @@ namespace DBI_eDahab.Web.Controllers
             }
             return View();
         }
-        /*
-        // [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.AddCustomerAccounts)]
-        [HttpPost]
-        public ActionResult AddCustomerAccounts(CustomerAccountForm custForm, AccountInfoRequest req)
-        {
-            //if (ModelState.IsValid)
-            //{
-            var accountholder = GetAccountInfo(req);
-            if (_pentBankApi.GetAccountInfo(req).Status != 0)
-            {
-                TempData["Error"] = "This account does not exist";
-            }
-            else
-            {
-                if (_repository.CheckIfMSISDNExists(custForm.MSISDN) == null)
-                {
-                    TempData["MSISDNInUse"] = "Register Customer eDahab First";
-                }
-                else
-                {
-                    //var pin = new Random().Next(1000, 9999).ToString();
-                    //var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(pin, "SHA1");
-                    //custForm.PIN = hashedPassword;
-                    //custForm.Branch = GetUser().Branch.ToString();
-                    _repository.RegisterCustomerAccount(custForm);
-                    //_eDahabApi.SendSMS(custForm.MSISDN, string.Format("Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *885# PIN-kaagu waa {0}", pin));
-                    TempData["Success"] = "Successfully Saved Customer Account";
-                    if (Request.UrlReferrer != null) return Redirect(Request.UrlReferrer.ToString());
-                }
-            }
-            // }
-            return View();
-        }
-        */
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.ModifyCustomers)]
+        [PermissionRequired(Permissions.ModifyCustomers)]
         public ActionResult ModifyCustomer(string MSISDN, string AccountNo, string AccountType)
         {
             var AccountInfo = _repository.GetAccountInfo(MSISDN, AccountNo, AccountType);
-            //AccountInfo.CustomerAccount.AccountType = ((NameValueCollection)WebConfigurationManager.GetSection("accountsTypes"))[AccountInfo.CustomerAccount.AccountType];
             TempData["Active"] = AccountInfo.Active;
             return View(AccountInfo);
         }
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.ModifyCustomers)]
+        [PermissionRequired(Permissions.ModifyCustomers)]
         [HttpPost]
         public async Task<ActionResult> ModifyCustomer(string userId, CustomerForm editCustomer)
         {
@@ -239,24 +189,24 @@ namespace DBI_eDahab.Web.Controllers
             if (editCustomer.ResetPin)
             {
                 var randomPassword = new Random().Next(1000, 9999).ToString();
-#pragma warning disable 618
-                var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(randomPassword, "SHA1");
-#pragma warning restore 618
+                var hasher = System.Security.Cryptography.SHA1.Create();
+                var hash = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(randomPassword));
+                string hashedPassword = string.Join("", hash.Select(b => b.ToString("x2")));
+
                 _repository.ChangePin(editCustomer.MSISDN, hashedPassword);
 
-                await _fluxCubeApi.SendSmsAsync("DBI-MobileBanking", editCustomer.MSISDN, $"Macmiil, Pin-kaagii ayaa laguu badalay , Pin-ka cusubi waa : {randomPassword}");
+                await _fluxCubeApi.SendSmsAsync("DBI", editCustomer.MSISDN, $"Macmiil, Pin-kaagii ayaa laguu badalay , Pin-ka cusubi waa : {randomPassword}");
                 auditLogRecord.ActivityType = "ResetCustomerPIN";
                 auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.MSISDN + ") PIN";
                 auditLogRecord.AffectedParty = editCustomer.MSISDN;
-                //TempData["SuccessMessage"] += string.Format(" New Password is {0}.", randomPassword);
             }
             _usersRepository.LogUserAction(auditLogRecord);
             return RedirectToAction("Customers", "Reports");
-            //return View(editCustomer);
+
         }
 
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Verify)]
+        [PermissionRequired(Permissions.Verify)]
         public ActionResult VerifyCustomer(string MSISDN, string AccountNo, string AccountType)
         {
             var AccountInfo = _repository.GetAccountInfo(MSISDN, AccountNo, AccountType);
@@ -264,7 +214,7 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Verify)]
+        [PermissionRequired(Permissions.Verify)]
         [HttpPost]
         public async Task<ActionResult> VerifyCustomer(CustomerForm customer, string submitButton)
         {
@@ -273,7 +223,7 @@ namespace DBI_eDahab.Web.Controllers
             {
                 case "Verify":
                     _repository.VerifyCustomer(customer.CustomerAccount.AccountNo, customer.CustomerAccount.AccountType);
-                    await _fluxCubeApi.SendSmsAsync("DBI-MobileBanking", customer.MSISDN, $"Dear customer your DBI account {customer.CustomerAccount.AccountNo} has been successfully verified");
+                    await _fluxCubeApi.SendSmsAsync("DBI", customer.MSISDN, $"Dear customer your DBI account {customer.CustomerAccount.AccountNo} has been successfully verified");
                   
                     TempData["SuccessMessage"] = "Successfully Verfied Customer";
                     auditLogRecord.ActivityType = "VerifyCustomerAccount";

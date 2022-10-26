@@ -20,7 +20,7 @@ namespace DBI_eDahab.Web.Controllers
         // GET: Authentication
 
         UsersRepository _usersRepository = new UsersRepository();
-        eDahabServiceApi.eDahabServiceSoapClient _eDahabApi = new eDahabServiceApi.eDahabServiceSoapClient("eDahabServiceSoap");
+        FluxCubeApi _fluxCubeApi = new FluxCubeApi();
 
         public ActionResult Login()
         {
@@ -35,7 +35,6 @@ namespace DBI_eDahab.Web.Controllers
                 var hasher = System.Security.Cryptography.SHA1.Create();
                 var hash = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(loginForm.Password));
                 string hashedPassword = string.Join("", hash.Select(b => b.ToString("x2")));
-                //var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(loginForm.Password, "SHA1");
                 var user = _usersRepository.AuthenticateUser(loginForm.UserName, hashedPassword);
                 var credentialsAreValid = user != null;
                 bool use2FA;
@@ -45,18 +44,7 @@ namespace DBI_eDahab.Web.Controllers
                     var token = new Random().Next(1000, 9999).ToString();
                     Session["User"] = user;
                     HttpContext.Cache[string.Format("{0}'s CurrentPermissions", user.UserName)] = user.CurrentPermissions;
-                    await SendSmsAsync("DBI", user.MobileNumber, token);
-                    //  _usersRepository.SendSomtelSms("252" + user.MobileNumber, token, asFlash: true);
-
-                    //SendSMSRequest sms = new SendSMSRequest()
-                    //{
-                    //    MSG = token,
-                    //    MSISDN = user.MobileNumber,
-                    //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                    //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                    //};
-                    //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    //_pentBankApi.Send_SMS(sms);
+                    await _fluxCubeApi.SendSmsAsync("DBI", user.MobileNumber, token);
                     Session["Token"] = token;
                     return RedirectToAction("Token");
                 }
@@ -82,18 +70,7 @@ namespace DBI_eDahab.Web.Controllers
             if (user != null && expectedToken != null)
             {
                 var token = new Random().Next(1000, 9999).ToString();
-                await SendSmsAsync("DBI",user.MobileNumber,token);
-                //     _usersRepository.SendSomtelSms("252" + user.MobileNumber, token, asFlash: true);
-                //SendSMSRequest sms = new SendSMSRequest()
-                //{
-                //    MSG = token,
-                //    MSISDN = user.MobileNumber,
-                //    CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString(),
-                //    CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString()
-                //};
-                //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                //_pentBankApi.Send_SMS(sms);
-
+                await _fluxCubeApi.SendSmsAsync("DBI",user.MobileNumber,token);
                 Session["Token"] = token;
                 TempData["SuccessMessage"] = "Token has been resent.";
                 return RedirectToAction("Token");
@@ -151,28 +128,6 @@ namespace DBI_eDahab.Web.Controllers
             TempData["SuccessMessage"] = "You have been logged out of the system.";
 
             return RedirectToAction("Login");
-        }
-
-
-        public async Task SendSmsAsync(string title, string phone, string message)
-        {
-            using (var client = new HttpClient())
-            {
-                if(phone.StartsWith("65") || phone.StartsWith("66"))
-                   client.BaseAddress = new Uri("http://192.168.21.45:50030/");
-                else
-                   client.BaseAddress = new Uri("http://192.168.23.90:5000/");
-
-                var request = new
-                {
-                    phone,
-                    title,
-                    message
-                };
-                var json = JsonConvert.SerializeObject(request);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("SMS", data);
-            }
         }
     }
 }
