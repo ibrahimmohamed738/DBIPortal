@@ -18,6 +18,7 @@ using static DBI_eDahab.Web.ViewModels.Users;
 
 namespace DBI_eDahab.Web.Controllers
 {
+    [Authorize]
     public class ReportsController : Controller
     {
         // GET: Reports
@@ -61,7 +62,7 @@ namespace DBI_eDahab.Web.Controllers
         [PermissionRequired(Permissions.Customers_List)]
         public ActionResult Customers(string term, DateTime? DateFrom = null, DateTime? DateTo = null, int page = 1, string Currency = null, string Branch = null, string Active = "", bool? Verified = null)
         {
-            List<CustomerForm> list = _repository.GetCustomers(Term: term, DateFrom: DateFrom, DateTo: DateTo, Currency: Currency, Branch: Branch, Active: Active, Verified: Verified);
+            List<CustomerForm> list = _repository.GetCustomers((Session["User"] as Users).UserName,Term: term, DateFrom: DateFrom, DateTo: DateTo, Currency: Currency, Branch: Branch, Active: Active, Verified: Verified);
             var customers = list.ToPagedList(page, 30);
             Session["CustomersSession"] = customers;
             return View(customers);
@@ -75,7 +76,7 @@ namespace DBI_eDahab.Web.Controllers
             IPagedList<Transaction> transactions = new PagedList<Transaction>(transaction, page,30);
             if (filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null || filter.Status != null || filter.Currency != null || filter.Name != null || filter.Amount != null )
             {
-                List<Transaction> list = _repository.Transactions(filter);
+                List<Transaction> list = _repository.Transactions(filter, (Session["User"] as Users).UserName);
                 transactions = list.ToPagedList(page, list.Count > 0 ? list.Count : 1);
             }
             Session["TransactionsSession"] = transactions;
@@ -83,30 +84,74 @@ namespace DBI_eDahab.Web.Controllers
         }
 
 
-        //[PermissionRequired(Permissions.ProcessFailures)]
-        //public ActionResult ProcessFailedTransaction(string TransactionID)
-        //{
-        //    try
-        //    {
-        //        CorrectTransactionRequest req = new CorrectTransactionRequest();
-        //        req.TransactionID = TransactionID;
-        //        req.CallerID = WebConfigurationManager.AppSettings["APIUser"].ToString();
-        //        req.CallerPassword = WebConfigurationManager.AppSettings["APIPassword"].ToString();
-        //        ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-        //        CorrectTransactionResponse res = _DBIApi.ProcessFailedTransaction(req);
-        //        if (res.Status == 1 || res == null)
-        //            TempData["Error"] = "Exception Occured";
-        //        else
-        //            TempData["Success"] = res.Message;
-        //        return Redirect(Request.UrlReferrer.ToString());
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        TempData["Error"] = e.Message;
-        //        return Redirect(Request.UrlReferrer.ToString());
-        //    }
-        //}
+        [PermissionRequired(Permissions.ProcessFailures)]
+        public async Task<ActionResult> ProcessFailedTransaction(string transactionID)
+        {
+            bool isNorth;
+            bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out isNorth);
+            var trans = _repository.GetPendingTransaction(transactionID, (Session["User"] as Users).UserName);
+            var edahabInfo = await _dahab.GetUserInfo(trans.MSISDN);
+            //var checkDBITrans = await _fluxCubeApi.GetDBITransaction(new CheckDBITransRequest { Entity="DBI", ExternalTransactionId= transactionID });
+            
+            if (trans != null && trans.TransactionType == "DEPOSIT")
+            {
+                var createTrans = new CreateTransactionRequest
+                {
+                    Entity = "DBI",
+                    AlternateAccountId = trans.AccountId,
+                    Amount = trans.Amount,
+                    ExternalTransactionId = trans.EdahabTransactionId,
+                    Narrative = transactionID,
+                    Market = isNorth ? "North" : "South",
+                    TransactionType = "Deposit",
+                    Currency = trans.Currency
+                };
+                var res = await _fluxCubeApi.CreateTransaction(createTrans);
+                if (res.StatusCode == "200")
+                {
+                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, res.TransactionCode,false);
+                    TempData["Success"] = res.Message;
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+                else
+                {
+                    TempData["Error"] = "Process Failed";
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+            }
+
+            if (trans != null && trans.TransactionType == "WITHDRAWAL")
+            {
+                var cashinreq = new CashinRequest
+                {
+                   TransactionId = trans.DBITransactionId,
+                   Phone = trans.MSISDN,
+                   Amount = trans.Amount,
+                   Currency = trans.Currency == "USD" ? "101" : "102",
+                   AgentLongCode = ConfigurationManager.AppSettings["AgentMsisdn"].ToString()
+                };
+                CashResponse dahabRes = null ;
+                if (edahabInfo.CategoryCode.Equals("SUBS", StringComparison.OrdinalIgnoreCase))
+                    dahabRes = await _dahab.SubscriberCashInAsync(cashinreq);
+                else
+                    dahabRes = await _dahab.MerchantInAsync(cashinreq);
+
+                if (dahabRes.StatusCode == "200")
+                {
+                    _repository.UpdateTransactionLog_eDahabSide(true, true, trans.Narration, dahabRes.TransactionId, false);
+                    TempData["Success"] = dahabRes.Message;
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+                else 
+                {
+                    TempData["Error"] = dahabRes.Message;
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+                
+            }
+            TempData["Error"] = "Transaction not found.";
+            return Redirect(Request.UrlReferrer.ToString());
+        }
 
         [PermissionRequired(Permissions.Reconciliation)]
         public async Task<ActionResult> Reconciliation(FilterTransactions filter, int page = 1)
@@ -135,7 +180,7 @@ namespace DBI_eDahab.Web.Controllers
                 filter.DateTo = DateTime.Today;
             }
             filter.Status = "0";
-            List<Transaction> list = _repository.Transactions(filter);
+            List<Transaction> list = _repository.Transactions(filter, (Session["User"] as Users).UserName);
             reconcilationBalances.Transactions = list.ToPagedList(1, list.Count > 0 ? list.Count : 1);
             Session["TransactionsSession"] = reconcilationBalances.Transactions;
 

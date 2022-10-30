@@ -175,6 +175,9 @@
     <Compile Include="ViewModels\AccountInfoRequest.cs" />
     <Compile Include="ViewModels\AccountInfoRespone.cs" />
     <Compile Include="ViewModels\AuditLog.cs" />
+    <Compile Include="ViewModels\CashinRequest.cs" />
+    <Compile Include="ViewModels\CheckDBITransRequest.cs" />
+    <Compile Include="ViewModels\CheckDBITransResponse.cs" />
     <Compile Include="ViewModels\CreateTransactionRequest.cs" />
     <Compile Include="ViewModels\CreateTransactionResponse.cs" />
     <Compile Include="ViewModels\CustomerAccountForm.cs" />

@@ -117,14 +117,48 @@ namespace DBI_eDahab.Web.Models
 
                 var request = new StringContent(JsonConvert.SerializeObject(CreateRequest), Encoding.UTF8, "application/json");
                 var response = await _client.PostAsync("api/CreateTransaction", request);
-
+                string jsonString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(jsonString);
                     return JsonConvert.DeserializeObject<CreateTransactionResponse>(jsonString);
                 }
+                Console.WriteLine(jsonString);
                 return null;
             }
+        }
+
+        public async Task<CheckDBITransResponse> GetDBITransaction(CheckDBITransRequest checkrequest)
+        {
+            using (var _client = new HttpClient())
+            {
+                bool isProd;
+                bool.TryParse(ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
+
+                var request = new StringContent(JsonConvert.SerializeObject(checkrequest), Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync("api/CheckTransactionStatus", request);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    Console.WriteLine(jsonString);
+                    return JsonConvert.DeserializeObject<CheckDBITransResponse>(jsonString);
+                }
+                Console.WriteLine(jsonString);
+                return null;
+            }
+
         }
 
     }

@@ -21,5 +21,7 @@ namespace DBI_eDahab.Web.ViewModels
         public bool Status { get; set; }
         public string TransactionType { get; set; }
         public string Narration { get; set; }
+        public string EdahabTransactionId { get; set; }
+        public string DBITransactionId { get; set; }
     }
 }

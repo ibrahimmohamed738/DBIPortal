@@ -201,7 +201,7 @@ namespace DBI_eDahab.Web.Models
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"select d.MSISDN MSISDN, d.eDahabName eDahabName, d.Active Active, d.eDahabType eDahabType, isnull(c.Verified,0) Verified
-                                      ,   c.AccountHolder AccountHolder, c.CreatedBy CreatedBy, c.AccountNo AccountNo, c.Currency,
+                                      ,   c.AccountHolder AccountHolder, c.CreatedBy CreatedBy, c.AccountNo AccountNo, c.Currency, c.Branch Branch,
                                       c.AccountHolder AccountHolder, c.AccountType AccountType, isnull(c.DailyLimit,0) DailyLimit, 
                                         isnull(c.NewDailyLimit,0) NewDailyLimit, c.CreatedOn CreatedOn, c.Remarks AccountRemarks, d.Remarks Remarks 
                                       from DahabCard d, dbi_Customers c
@@ -235,6 +235,7 @@ namespace DBI_eDahab.Web.Models
                     customer.CustomerAccount.NewDailyLimit = Convert.ToDecimal(reader["NewDailyLimit"].ToString());
                     customer.CustomerAccount.Remarks = reader["AccountRemarks"] as string;
                     customer.Remarks = reader["Remarks"] as string;
+                    customer.CustomerAccount.Branch = reader["Branch"].ToString();
                 }
 
                 return customer;
@@ -260,7 +261,7 @@ namespace DBI_eDahab.Web.Models
             }
         }
 
-        public List<CustomerForm> GetCustomers(string Term, DateTime? DateFrom = null, DateTime? DateTo = null, string Currency=null, string Branch=null, string Active = "", bool? Verified = null)
+        public List<CustomerForm> GetCustomers(string username, string Term, DateTime? DateFrom = null, DateTime? DateTo = null, string Currency=null, string Branch=null, string Active = "", bool? Verified = null)
         {
             using (var connection = new SqlConnection(_connectionString))
             using (var command = connection.CreateCommand())
@@ -282,7 +283,7 @@ namespace DBI_eDahab.Web.Models
                     command.Parameters.AddWithValue("@DateTo", DateTo.Value.AddDays(1).AddSeconds(-1));
                 }
                 command.CommandText += " ORDER BY CreatedOn DESC    ";
-                string branch = new UsersRepository().GetUser(HttpContext.Current.User.Identity.Name.ToString()).Branch.ToString();
+                string branch = new UsersRepository().GetUser(username).Branch.ToString();
                 if (branch == _hqBranch)
                 {
                     branch = Branch;
@@ -328,7 +329,7 @@ namespace DBI_eDahab.Web.Models
             }
         }
 
-        public List<Transaction> Transactions(FilterTransactions filter)
+        public List<Transaction> Transactions(FilterTransactions filter, string username)
         {
             using (var connection = new SqlConnection(_connectionString))
             using (var command = connection.CreateCommand())
@@ -353,7 +354,7 @@ namespace DBI_eDahab.Web.Models
                 command.Parameters.AddWithValue("@Status", filter.Status + "%%");
                 command.Parameters.AddWithValue("@Currency", filter.Currency + "%%");
                 command.Parameters.AddWithValue("@Amount", "%%" + filter.Amount);
-                string branch = new UsersRepository().GetUser("ibrahim").Branch.ToString();
+                string branch = new UsersRepository().GetUser(username).Branch.ToString();
                 if (branch == _hqBranch)
                 {
                     branch = filter.Branch;
@@ -385,5 +386,72 @@ namespace DBI_eDahab.Web.Models
             }
         }
 
+        public Transaction GetPendingTransaction(string transactionID, string username)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"select t.MSISDN, t.AccountId, t.AccountType, t.amount, t.Currency, t.eDahabTransactionID, t.DBITransactionID, t.eDahabStatus, t.DBIStatus, t.Branch, t.Narration, " +
+                             "t.TransactionType, t.Description from Transactions as t where t.Narration =@transaction and t.status = 0 and ProcessingFlag = 0 " +
+                             "and (t.eDahabStatus is not null OR t.DBIStatus is not null)";
+                command.Parameters.AddWithValue("@transaction", transactionID);
+                string branch = new UsersRepository().GetUser(username).Branch.ToString();
+                connection.Open();
+                var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    var transaction = new Transaction
+                    {
+                        MSISDN = reader["MSISDN"] as string,
+                        AccountId = reader["AccountId"] as string,
+                        AccountType = reader["AccountType"] as string,
+                        Currency = reader["Currency"] as string,
+                        Amount = (decimal)reader["Amount"],
+                        TransactionType = reader["TransactionType"] as string,
+                        EdahabTransactionId = reader["eDahabTransactionID"] as string,
+                        DBITransactionId = reader["DBITransactionID"] as string,
+                        Branch = reader["Branch"] as string,
+                        Narration = reader["Narration"] as string
+                    };
+
+                    return transaction;
+                }
+                return null;
+            }
+        }
+
+        public void UpdateTransactionLog_eDahabSide(bool Status, bool eDahabStatus, string Narration, string eDahabTransactionID, bool ProcessingFlag)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"UPDATE Transactions set status = @status, eDahabStatus = @eDahabStatus, eDahabTransactionID = @eDahabTransactionID, ProcessingFlag = @ProcessingFlag where Narration = @Narration";
+                command.Parameters.AddWithValue("@status", Status);
+                command.Parameters.AddWithValue("@Narration", Narration);
+                command.Parameters.AddWithValue("@ProcessingFlag", ProcessingFlag);
+                command.Parameters.AddWithValue("@eDahabTransactionID", eDahabTransactionID);
+                command.Parameters.AddWithValue("@eDahabStatus", eDahabStatus);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateTransactionLog_DBISide(bool Status,bool DBI_Status, string Narration, string DBI_TransactionID, bool ProcessingFlag)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"UPDATE Transactions set status = @status, DBIStatus = @DBIStatus, DBITransactionID = @DBITransactionID, ProcessingFlag = @ProcessingFlag where Narration = @Narration";
+                command.Parameters.AddWithValue("@Status", Status);
+                command.Parameters.AddWithValue("@Narration", Narration);
+                command.Parameters.AddWithValue("@ProcessingFlag", ProcessingFlag);
+                command.Parameters.AddWithValue("@DBITransactionID", DBI_TransactionID);
+                command.Parameters.AddWithValue("@DBIStatus", DBI_Status);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }
