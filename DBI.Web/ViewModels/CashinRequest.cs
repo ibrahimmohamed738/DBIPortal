@@ -31,6 +31,8 @@ namespace DBI_eDahab.Web.ViewModels
 
         public string TransactionId { get; set; }
 
+        public string GTransactionId { get; set; }
+
         public string CellId { get; set; }
 
         public string PIN { get; set; }

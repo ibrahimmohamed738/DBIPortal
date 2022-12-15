@@ -1,7 +1,9 @@
 ﻿using DBI_eDahab.Web.ViewModels;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -131,11 +133,8 @@ namespace DBI_eDahab.Web.Models
         public async Task<CashResponse> SubscriberCashInAsync(CashinRequest request)
         {
             var responseObj = new CashResponse();
-            var xmlFormat = "";
-            if (request.Currency == "101")
-            {
-                xmlFormat = $@"<COMMAND>
-                                       <TYPE>IMTCIREQ</TYPE>
+               var xmlFormat = $@"<COMMAND>
+                                        <TYPE>IMTCIREQ</TYPE>
                                         <TRANSACTIONID>{request.TransactionId}</TRANSACTIONID>  
                                         <SENDONLINEID>{request.TransactionId}</SENDONLINEID>  
                                         <MSISDN>{request.AgentLongCode}</MSISDN>
@@ -148,33 +147,8 @@ namespace DBI_eDahab.Web.Models
                                         <AMOUNT>{request.Amount}</AMOUNT>
                                         <BLOCKSMS></BLOCKSMS>
                                         <CELLID>{request.Phone}</CELLID>
-                                        <FTXNID>{request.TransactionId}</FTXNID>
+                                        <FTXNID>{request.GTransactionId}</FTXNID>
                                   </COMMAND>";
-            }
-
-            else
-            {
-                xmlFormat = $@"<COMMAND>
-                                        <TYPE>RCIREQ</TYPE>
-                                        <MSISDN>{request.AgentLongCode}</MSISDN>		
-                                        <MSISDN2>{request.Phone}</MSISDN2>
-                                        <AMOUNT>{request.Amount}</AMOUNT>
-                                        <IDNO></IDNO>
-                                        <MPIN>000000</MPIN>
-                                        <PIN></PIN>
-                                        <SNDPROVIDER>{request.Currency}</SNDPROVIDER>      
-                                        <RCVPROVIDER>{request.Currency}</RCVPROVIDER>
-                                        <SNDINSTRUMENT>12</SNDINSTRUMENT>           
-                                        <RCVINSTRUMENT>12</RCVINSTRUMENT>        
-                                        <BLOCKSMS></BLOCKSMS>
-                                        <TXNMODE>eDahabDBI</TXNMODE>  
-                                        <LANGUAGE1>2</LANGUAGE1>
-                                        <LANGUAGE2>2</LANGUAGE2>
-                                        <CELLID>{request.Phone}</CELLID>
-                                        <FTXNID>{request.TransactionId}</FTXNID> 
-                                        </COMMAND>";
-            }
-           
             var xml = string.Format(xmlFormat);
             var address = ConfigurationManager.AppSettings["ComvivaApiEndpointWeb"].ToString();
             var client = new HttpClient();
@@ -257,6 +231,36 @@ namespace DBI_eDahab.Web.Models
                 responseObj.TransactionId = transactionIdElement.Value;
             }
             return responseObj;
+        }
+
+        public async Task<DBITransaction> GetDBITransaction(string transactionId)
+        {
+            using (var connection = new OracleConnection(ConfigurationManager.ConnectionStrings["oracleConnection"].ConnectionString))
+            {
+                string sql = @"SELECT TRANSFER_ID,(TRANSFER_VALUE / 100) AS AMOUNT,CELL_ID,FTXN_ID from mtx_transaction_header where TRANSFER_STATUS='TS' AND REFERENCE_NUMBER = :transId ";
+                OracleCommand cmd = new OracleCommand(sql, connection);
+                cmd.Parameters.Add(new OracleParameter(":transId", transactionId));
+                cmd.CommandType = CommandType.Text;
+                if (connection.State == ConnectionState.Closed)
+                    await connection.OpenAsync();
+
+                OracleDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+                if (dr.HasRows)
+                {
+                    return new DBITransaction
+                    {
+                        TransferId = dr.GetString(0),
+                        Amount = dr.GetDecimal(1),
+                        CELLID = dr.GetString(2),
+                        FTXNID = dr.GetString(3)
+                    };
+                }
+
+                else
+                    return null;
+
+            }   
         }
     }
 }

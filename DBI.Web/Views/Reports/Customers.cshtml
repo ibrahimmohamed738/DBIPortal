@@ -74,36 +74,41 @@
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <select name="Branch" class="form-control">
-                                            @if (isNorth)
-                                            {
-                                             <option value="" disabled selected>Branch</option>
-                                             <option value="102">102</option>
-                                             <option value="105">105</option>
-                                             <option value="106">106</option>
-                                             <option value="107">107</option>
-                                             <option value="109">109</option>
-                                             <option value="103">103</option>
-                                             <option value="108">108</option>
-                                             <option value="114">114</option>
-                                             <option value="117">117</option>
-                                             <option value="100">100</option>
-                                            }
-                                            else 
-                                            { 
+                                       @if (isNorth)
+                                        {
+                                              <option value="" disabled selected>Branch</option>
+                                              <option value="200">RO1 Somaliland</option>
+                                              <option value="201">Hargeisa Branch</option>
+                                              <option value="202">Burao Branch</option>
+                                              <option value="203">Berbera Branch</option>
+                                              <option value="204">Borama Branch</option>
+                                              <option value="205">Lasanod Branch</option>
+                                              <option value="206">Erigavo Branch</option>
+                                              <option value="207">Wajaale Branch</option>
+                                              <option value="208">Star Branch</option>
+                                              <option value="209">Jigjiga Yar Branch</option>
+                                              <option value="210">Theatre Branch</option>
+                                              <option value="302">Bosaso Branch</option>
+                                              <option value="306">Garowe Branch</option>
+                                              <option value="307">Galkayo Branch</option> 
+                                        }
+                                        else
+                                        {
                                             <option value="" disabled selected>Branch</option>
-                                             <option value="104">Tripiano Branch</option>
-                                            <option value="110">Bakara branch</option>
-                                            <option value="111">Beledweyne branch</option>
-                                            <option value="112">Hamarweyne Branch</option>
-                                            <option value="113">Baidoa Branch</option>
-                                            <option value="115">Kismayo Branch</option>
-                                            <option value="116">Jowhar Branch</option>
-                                            <option value="118">Beledhawo Branch</option>
-                                            <option value="119">Sug bad Branch</option>
-                                            <option value="120">Abudwak Branch</option>
-                                            <option value="121">Dusamareb Branch</option>
-                                            }
-                                            
+                                            <option value="300">RO2 Somalia</option>
+                                            <option value="301">Mogadishu Branch</option>
+                                            <option value="303">Beladweyn Branch</option>
+                                            <option value="304">Baidao Branch</option>
+                                            <option value="305">Kismayo Branch</option>
+                                            <option value="308">Bakaro Branch</option>
+                                            <option value="309">Hamarweyne Branchh</option>
+                                            <option value="310">Suuq baad</option>
+                                            <option value="311">Jowhar Branch</option>
+                                            <option value="312">Beledhawo Branch</option>
+                                            <option value="313">Abud waaq</option>
+                                            <option value="314">Dusamareb Branch</option>
+                                        }
+
                                         </select>
                                         <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
 

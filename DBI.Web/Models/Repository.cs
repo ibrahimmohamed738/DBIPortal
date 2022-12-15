@@ -392,7 +392,7 @@ namespace DBI_eDahab.Web.Models
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"select t.MSISDN, t.AccountId, t.AccountType, t.amount, t.Currency, t.eDahabTransactionID, t.DBITransactionID, t.eDahabStatus, t.DBIStatus, t.Branch, t.Narration, " +
-                             "t.TransactionType, t.Description from Transactions as t where t.Narration =@transaction and t.status = 0 and ProcessingFlag = 0 " +
+                             "t.TransactionType, t.Description as Description from Transactions as t where t.Narration =@transaction and t.status = 0 and ProcessingFlag = 0 " +
                              "and (t.eDahabStatus is not null OR t.DBIStatus is not null)";
                 command.Parameters.AddWithValue("@transaction", transactionID);
                 string branch = new UsersRepository().GetUser(username).Branch.ToString();
@@ -411,7 +411,8 @@ namespace DBI_eDahab.Web.Models
                         EdahabTransactionId = reader["eDahabTransactionID"] as string,
                         DBITransactionId = reader["DBITransactionID"] as string,
                         Branch = reader["Branch"] as string,
-                        Narration = reader["Narration"] as string
+                        Narration = reader["Narration"] as string,
+                        Description = reader["Description"] as string
                     };
 
                     return transaction;

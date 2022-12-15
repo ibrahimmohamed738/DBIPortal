@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -34,10 +35,14 @@ namespace DBI_eDahab.Web.Models
 
                 var request = new StringContent(JsonConvert.SerializeObject(accountInfoRequest), Encoding.UTF8, "application/json");
                 var response = await _client.PostAsync("api/getcustomerinfo", request);
-
+                var jsonString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
                     return JsonConvert.DeserializeObject<AccountInfoRespone>(jsonString);
                 }
 
@@ -84,10 +89,14 @@ namespace DBI_eDahab.Web.Models
                
                 var request = new StringContent(JsonConvert.SerializeObject(accountInfo), Encoding.UTF8, "application/json");
                 var response = await _client.PostAsync("api/getglbalances", request);
-
+                var jsonString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
                     return JsonConvert.DeserializeObject<List<GLAccountResponse>>(jsonString);
                 }
 
@@ -114,13 +123,17 @@ namespace DBI_eDahab.Web.Models
                     _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
                     _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
                 }
-
+               
                 var request = new StringContent(JsonConvert.SerializeObject(CreateRequest), Encoding.UTF8, "application/json");
                 var response = await _client.PostAsync("api/CreateTransaction", request);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    Console.WriteLine(jsonString);
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
                     return JsonConvert.DeserializeObject<CreateTransactionResponse>(jsonString);
                 }
                 Console.WriteLine(jsonString);
@@ -152,7 +165,11 @@ namespace DBI_eDahab.Web.Models
                 var jsonString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    Console.WriteLine(jsonString);
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
                     return JsonConvert.DeserializeObject<CheckDBITransResponse>(jsonString);
                 }
                 Console.WriteLine(jsonString);

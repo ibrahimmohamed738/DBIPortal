@@ -15,6 +15,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Configuration;
 using static DBI_eDahab.Web.ViewModels.Users;
+using System.Diagnostics;
 
 namespace DBI_eDahab.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace DBI_eDahab.Web.Controllers
         FluxCubeApi _fluxCubeApi = new FluxCubeApi();
         Repository _repository = new Repository();
         DahabApi _dahab = new DahabApi();
+        UsersRepository _usersRepository = new UsersRepository();
 
         private class CustomerReport
         {
@@ -91,17 +93,28 @@ namespace DBI_eDahab.Web.Controllers
             bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out isNorth);
             var trans = _repository.GetPendingTransaction(transactionID, (Session["User"] as Users).UserName);
             var edahabInfo = await _dahab.GetUserInfo(trans.MSISDN);
-            //var checkDBITrans = await _fluxCubeApi.GetDBITransaction(new CheckDBITransRequest { Entity="DBI", ExternalTransactionId= transactionID });
-            
             if (trans != null && trans.TransactionType == "DEPOSIT")
             {
+                var checkDBITrans = await _fluxCubeApi.GetDBITransaction(new CheckDBITransRequest { Entity = "DBI", ExternalTransactionId = trans.EdahabTransactionId });
+                if (checkDBITrans != null)
+                {
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(checkDBITrans.ExternalTransactionId + checkDBITrans.FCUBSTransactionId, EventLogEntryType.Information, 101, 1);
+                    }
+                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, checkDBITrans.TransactionCode, true);
+                    _usersRepository.LogUserAction(new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ProcessFailedTransaction", Description = "Process Failed Transaction", AffectedParty = trans.AccountId });
+                    TempData["SuccessMessage"] = "Transaction updated successfully";
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
                 var createTrans = new CreateTransactionRequest
                 {
                     Entity = "DBI",
                     AlternateAccountId = trans.AccountId,
                     Amount = trans.Amount,
                     ExternalTransactionId = trans.EdahabTransactionId,
-                    Narrative = transactionID,
+                    Narrative = trans.Description,
                     Market = isNorth ? "North" : "South",
                     TransactionType = "Deposit",
                     Currency = trans.Currency
@@ -109,8 +122,9 @@ namespace DBI_eDahab.Web.Controllers
                 var res = await _fluxCubeApi.CreateTransaction(createTrans);
                 if (res.StatusCode == "200")
                 {
-                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, res.TransactionCode,false);
-                    TempData["Success"] = res.Message;
+                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, res.TransactionCode,true);
+                    _usersRepository.LogUserAction(new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ProcessFailedTransaction", Description = "Process Failed Transaction", AffectedParty = trans.AccountId });
+                    TempData["SuccessMessage"] = "Transaction processed successfully";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
                 else
@@ -124,6 +138,7 @@ namespace DBI_eDahab.Web.Controllers
             {
                 var cashinreq = new CashinRequest
                 {
+                   GTransactionId = trans.Narration,
                    TransactionId = trans.DBITransactionId,
                    Phone = trans.MSISDN,
                    Amount = trans.Amount,
@@ -138,8 +153,20 @@ namespace DBI_eDahab.Web.Controllers
 
                 if (dahabRes.StatusCode == "200")
                 {
-                    _repository.UpdateTransactionLog_eDahabSide(true, true, trans.Narration, dahabRes.TransactionId, false);
-                    TempData["Success"] = dahabRes.Message;
+                    _repository.UpdateTransactionLog_eDahabSide(true, true, trans.Narration, dahabRes.TransactionId, true);
+                    TempData["SuccessMessage"] = $"Transaction processed successfully.\n{dahabRes.Message}";
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+                else if (dahabRes.StatusCode == "IMTCODE31")
+                {
+                    var edahabCheck = await _dahab.GetDBITransaction(trans.DBITransactionId);
+                    if (edahabCheck == null)
+                    {
+                        TempData["Error"] = "Transaction not found in eDahab side."; ;
+                        return Redirect(Request.UrlReferrer.ToString());
+                    }
+                    _repository.UpdateTransactionLog_eDahabSide(true, true, transactionID, edahabCheck.TransferId, true);
+                    TempData["SuccessMessage"] = "Transaction updated successfully";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
                 else 

@@ -208,14 +208,9 @@ namespace DBI_eDahab.Web.Models
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM dbi_users WHERE UserName = @UserName ";
-
                 command.Parameters.AddWithValue("@UserName", userId);
-                // command.Parameters.AddWithValue("@MobileNumber", UserId);
-
                 connection.Open();
-
                 var reader = command.ExecuteReader();
-
                 Users user = null;
 
                 if (reader.Read())

@@ -23,5 +23,6 @@ namespace DBI_eDahab.Web.ViewModels
         public string Narration { get; set; }
         public string EdahabTransactionId { get; set; }
         public string DBITransactionId { get; set; }
+        public string Description { get; set; }
     }
 }
