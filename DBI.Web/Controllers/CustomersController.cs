@@ -70,7 +70,7 @@ namespace DBI_eDahab.Web.Controllers
             return File(photo, "image/jpg");
         }
 
-        [PermissionRequired(DBI_eDahab.Web.ViewModels.Users.Permissions.Register_customers)]
+        [PermissionRequired(Permissions.Register_customers)]
         public ActionResult RegisterCustomer()
         {
             string userName = User.Identity.Name.ToString();
