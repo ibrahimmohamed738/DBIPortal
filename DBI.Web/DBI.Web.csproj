@@ -75,8 +75,15 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -138,8 +145,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http">
-    </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
     <Reference Include="System.Web.Optimization">
@@ -168,6 +173,7 @@
     <Compile Include="Helpers\PermissionRequired.cs" />
     <Compile Include="Models\DahabApi.cs" />
     <Compile Include="Models\FluxCubeApi.cs" />
+    <Compile Include="Models\MobileBankAPI.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\UsersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -175,8 +181,11 @@
     <Compile Include="ViewModels\AccountInfoRespone.cs" />
     <Compile Include="ViewModels\AuditLog.cs" />
     <Compile Include="ViewModels\CashinRequest.cs" />
+    <Compile Include="ViewModels\ChangePinRequest.cs" />
     <Compile Include="ViewModels\CheckDBITransRequest.cs" />
     <Compile Include="ViewModels\CheckDBITransResponse.cs" />
+    <Compile Include="ViewModels\CreateBankAccount.cs" />
+    <Compile Include="ViewModels\CreateBankAccountExternal.cs" />
     <Compile Include="ViewModels\CreateTransactionRequest.cs" />
     <Compile Include="ViewModels\CreateTransactionResponse.cs" />
     <Compile Include="ViewModels\CustomerAccountForm.cs" />
@@ -187,17 +196,24 @@
     <Compile Include="ViewModels\DahabResponse.cs" />
     <Compile Include="ViewModels\DBITransaction.cs" />
     <Compile Include="ViewModels\FilterTransactions.cs" />
+    <Compile Include="ViewModels\GetBankAccount.cs" />
+    <Compile Include="ViewModels\GetCustomerAccount.cs" />
+    <Compile Include="ViewModels\GetCustomerAccountResponse.cs" />
     <Compile Include="ViewModels\GLAccountRequest.cs" />
     <Compile Include="ViewModels\GLAccountResponse.cs" />
+    <Compile Include="ViewModels\LinkAccount.cs" />
     <Compile Include="ViewModels\ListForm.cs" />
     <Compile Include="ViewModels\LoginForm.cs" />
+    <Compile Include="ViewModels\ModifyRequest.cs" />
     <Compile Include="ViewModels\ReconcilationBalances.cs" />
+    <Compile Include="ViewModels\SendSMSRequest.cs" />
     <Compile Include="ViewModels\Transactions.cs" />
     <Compile Include="ViewModels\UpdateUserForm.cs" />
     <Compile Include="ViewModels\UserFormModelBinder.cs" />
     <Compile Include="ViewModels\UserInfo.cs" />
     <Compile Include="ViewModels\Users.cs" />
     <Compile Include="ViewModels\UserSearch.cs" />
+    <Compile Include="ViewModels\VerifyCustomer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fava.png" />
@@ -371,6 +387,8 @@
     <Content Include="Views\Customers\VerifyCustomer.cshtml" />
     <Content Include="Views\Customers\AddCustomerAccounts.cshtml" />
     <Content Include="Views\Reports\Reconciliation.cshtml" />
+    <Content Include="Views\Customers\RegisterExternalCustomer.cshtml" />
+    <Content Include="Views\Customers\AddExternalCustomerAccounts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

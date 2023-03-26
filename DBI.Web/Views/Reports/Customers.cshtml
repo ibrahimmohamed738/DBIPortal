@@ -1,9 +1,8 @@
-﻿
-@model  PagedList<DBI_eDahab.Web.ViewModels.CustomerForm>
+﻿@model  PagedList<DBI_eDahab.Web.ViewModels.GetCustomerAccount>
+@*@model  PagedList<DBI_eDahab.Web.ViewModels.CustomerForm>*@
 @{ ViewBag.Title = "Customers";
     bool isNorth;
-    bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsNorth"], out isNorth);
- }
+    bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsNorth"], out isNorth); }
 <body>
 
     <!-- END BREADCRUMB -->
@@ -40,106 +39,48 @@
                                 </div>
 
                                 <div class="col-md-2">
-
-                                    <div class="input-group">
-
-                                        <input type="text" name="DateFrom" class="form-control datepicker" placeholder="From Date" id="dp-4" data-date="07-07-2014" data-date-format="dd-mm-yyyy" data-date-viewmode="months" />
-                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                                        <input type="text" name="DateTo" class="form-control datepicker" placeholder="To Date" id="dp-4" data-date="07-07-2014" data-date-format="dd-mm-yyyy" data-date-viewmode="months" />
-
-                                    </div>
-                                </div>
-                                @if (isNorth)
-                                { 
-                                    <div class="col-md-2">
-                                    <div class="input-group">
-                                        <select name="Currency" class="form-control">
-                                            <option value="" disabled selected>Currency</option>
-                                            <option value="SLS">Shilling</option>
-                                            <option value="USD">US Dollar</option>
-                                        </select>
-                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
-
-                                    </div>
-                                </div>
-                                }
-                                
-
-                                <div class="col-md-2">
                                     <div class="input-group">
                                         <select name="Branch" class="form-control">
-                                       @if (isNorth)
-                                        {
-                                              <option value="" disabled selected>Branch</option>
-                                              <option value="200">RO1 Somaliland</option>
-                                              <option value="201">Hargeisa Branch</option>
-                                              <option value="202">Burao Branch</option>
-                                              <option value="203">Berbera Branch</option>
-                                              <option value="204">Borama Branch</option>
-                                              <option value="205">Lasanod Branch</option>
-                                              <option value="206">Erigavo Branch</option>
-                                              <option value="207">Wajaale Branch</option>
-                                              <option value="208">Star Branch</option>
-                                              <option value="209">Jigjiga Yar Branch</option>
-                                              <option value="210">Theatre Branch</option>
-                                              <option value="302">Bosaso Branch</option>
-                                              <option value="306">Garowe Branch</option>
-                                              <option value="307">Galkayo Branch</option> 
-                                        }
-                                        else
-                                        {
-                                            <option value="" disabled selected>Branch</option>
-                                            <option value="300">RO2 Somalia</option>
-                                            <option value="301">Mogadishu Branch</option>
-                                            <option value="303">Beladweyn Branch</option>
-                                            <option value="304">Baidao Branch</option>
-                                            <option value="305">Kismayo Branch</option>
-                                            <option value="308">Bakaro Branch</option>
-                                            <option value="309">Hamarweyne Branchh</option>
-                                            <option value="310">Suuq baad</option>
-                                            <option value="311">Jowhar Branch</option>
-                                            <option value="312">Beledhawo Branch</option>
-                                            <option value="313">Abud waaq</option>
-                                            <option value="314">Dusamareb Branch</option>
-                                            <option value="315">Banadir Branch</option>
-                                        }
+                                            @if (isNorth)
+                                            {
+                                <option value="" disabled selected>Branch</option>
+                                                <option value="200">RO1 Somaliland</option>
+                                                                <option value="201">Hargeisa Branch</option>
+                                                                                <option value="202">Burao Branch</option>
+                                                                                                <option value="203">Berbera Branch</option>
+                                                                                                                <option value="204">Borama Branch</option>
+                                                                                                                                <option value="205">Lasanod Branch</option>
+                                                                                                                                                <option value="206">Erigavo Branch</option>
+                                                                                                                                                                <option value="207">Wajaale Branch</option>
+                                                                                                                                                                                <option value="208">Star Branch</option>
+                                                                                                                                                                                                <option value="209">Jigjiga Yar Branch</option>
+                                                                                                                                                                                                                <option value="210">Theatre Branch</option>
+                                                                                                                                                                                                                                <option value="302">Bosaso Branch</option>
+                                                                                                                                                                                                                                                <option value="306">Garowe Branch</option>
+                                                                                                                                                                                                                                                                <option value="307">Galkayo Branch</option>
+ }
+                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                <option value="" disabled selected>Branch</option>
+                                                                                                                                                                                                                                                                <option value="300">RO2 Somalia</option>
+                                                                                                                                                                                                                                                                <option value="301">Mogadishu Branch</option>
+                                                                                                                                                                                                                                                                <option value="303">Beladweyn Branch</option>
+                                                                                                                                                                                                                                                                <option value="304">Baidao Branch</option>
+                                                                                                                                                                                                                                                                <option value="305">Kismayo Branch</option>
+                                                                                                                                                                                                                                                                <option value="308">Bakaro Branch</option>
+                                                                                                                                                                                                                                                                <option value="309">Hamarweyne Branchh</option>
+                                                                                                                                                                                                                                                                <option value="310">Suuq baad</option>
+                                                                                                                                                                                                                                                                <option value="311">Jowhar Branch</option>
+                                                                                                                                                                                                                                                                <option value="312">Beledhawo Branch</option>
+                                                                                                                                                                                                                                                                <option value="313">Abud waaq</option>
+                                                                                                                                                                                                                                                                <option value="314">Dusamareb Branch</option>
+                                                                                                                                                                                                                                                                                <option value="315">Banadir Branch</option>}
 
                                         </select>
                                         <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
 
                                     </div>
                                 </div>
-
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <select name="Active" class="form-control">
-                                            <option value="" disabled selected>Status</option>
-                                            <option value="Y">Active</option>
-                                            <option value="N">Deactive</option>
-                                        </select>
-                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <select name="Verified" class="form-control">
-                                            <option value="" disabled selected>Verfification</option>
-                                            <option value="True">Verified</option>
-                                            <option value="False">Not Verified</option>
-                                        </select>
-                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
-
-                                    </div>
-                                </div>
-
 
                                 <div class="col-md-3">
                                     <div class="input-group">
@@ -215,66 +156,64 @@
                                 @count
                             </td>
                             <td>
-                                @Html.ActionLink(list.MSISDN, "ModifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "" })
+                                @Html.ActionLink(list.MSISDN, "ModifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.AccountNo, AccountType = list.AccountType }, new { @class = "" })
                             </td>
 
-                            <td>@list.eDahabName</td>
-                            <td>@list.CustomerAccount.AccountNo</td>
-                            <td>@list.CustomerAccount.AccountType</td>
-                            <td>@list.CustomerAccount.AccountHolder</td>
-                            <td>@list.CustomerAccount.Currency</td>
+                            <td>@list.EDahabName</td>
+                            <td>@list.AccountNo</td>
+                            <td>@list.AccountType</td>
+                            <td>@list.AccountHolder</td>
+                            <td>@list.Currency</td>
 
 
-                            <td>@list.CustomerAccount.CreatedOn.ToShortDateString()</td>
-                            <td>@list.CustomerAccount.CreatedBy</td>
+                            <td>@list.CreatedOn.ToShortDateString()</td>
+                            <td>@list.CreatedBy</td>
 
-                            <td>@list.CustomerAccount.DailyLimit</td>
+                            <td>@list.DailyLimit</td>
 
 
                             @if (list.Active == "Y")
                             {
-            <td><span class="label label-success">Yes</span></td>
-}
+            <td><span class="label label-success">Yes</span></td>}
 
                             @if (list.Active == "N")
                             {
-            <td><span class="label label-danger">No</span></td>
-}
+            <td><span class="label label-danger">No</span></td>}
 
 
-                            @if (list.CustomerAccount.Verified == true)
+                            @if (list.Verified == true)
                             {
-            <td><span class="label label-success">Yes</span></td>
-}
+            <td><span class="label label-success">Yes</span></td>}
 
-                            @if (list.CustomerAccount.Verified == false)
+                            @if (list.Verified == false)
                             {
-            <td><span class="label label-danger">No</span></td>
-}
+            <td><span class="label label-danger">No</span></td>}
 
 
 
 
                             <td>
-                                @Html.ActionLink("Verify", "VerifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.CustomerAccount.AccountNo, AccountType = list.CustomerAccount.AccountType }, new { @class = "btn btn-xs btn-primary" })
+                                @Html.ActionLink("Verify", "VerifyCustomer", "Customers", new { MSISDN = list.MSISDN, AccountNo = list.AccountNo, AccountType = list.AccountType }, new { @class = "btn btn-xs btn-primary" })
                             </td>
                         </tr>
 
-                    </tbody>
- } }
+                    </tbody> } }
                         </table>
                         <div class="pagedList pull-right" data-otf-target="#RestaurantList">
+                            @*@for (int i = 1; i <= ViewBag.Pages; i++)
+                            {
+                                <a class="@(i == ViewBag.CurrentPage ? "btn-info" : "btn-outline-info")"
+                                   href="/Reports/Customers?term=@(Request.QueryString["term"] ?? "%")&page=@i&branch=@(Request.QueryString["Branch"] ?? "%")">@i</a>
+                                
+                            }*@
                             @Html.PagedListPager(Model, page => Url.Action("Customers", new
                             {
                                 page,
                                 term = Request.QueryString["term"],
-                                DateFrom = Request.QueryString["DateFrom"],
-                                DateTo = Request.QueryString["DateTo"],
-                                Currency = Request.QueryString["Currency"],
                                 Branch = Request.QueryString["Branch"],
 
                             }),
-                                                       PagedListRenderOptions.MinimalWithItemCountText)
+                            PagedListRenderOptions.MinimalWithItemCountText)
                         </div>
                     </div>
                 </div>

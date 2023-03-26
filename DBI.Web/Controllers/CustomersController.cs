@@ -18,11 +18,17 @@ namespace DBI_eDahab.Web.Controllers
         Repository _repository = new Repository();
         DahabApi _dahab = new DahabApi();
         UsersRepository _usersRepository = new UsersRepository();
-
+        MobileBankAPI _mobileBankAPI = new MobileBankAPI();
         public async Task<ActionResult> GetEdahabName(string MSISDN)
         {
             var edahabName = await _dahab.GetUserInfo(MSISDN);
             return Json(edahabName, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetExternalName(string MSISDN)
+        {
+            var result = await _mobileBankAPI.GetCustomerAccount(MSISDN);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetEdahabNameFromDB(string MSISDN)
@@ -38,7 +44,6 @@ namespace DBI_eDahab.Web.Controllers
         public async Task<ActionResult> GetDBIAccountHolder(AccountInfoRequest req, string AccountNo)
         {
             req.Entity = "DBI";
-            req.AccountId = AccountNo;
             req.AlternateAccountId = AccountNo;
             AccountInfoRespone AccountHolderName = await getAccountInfo(req);
             return Json(AccountHolderName, JsonRequestBehavior.AllowGet);
@@ -79,35 +84,94 @@ namespace DBI_eDahab.Web.Controllers
 
         [PermissionRequired(Permissions.Register_customers)]
         [HttpPost]
-        public async Task<ActionResult> RegisterCustomer(CustomerForm custForm)
-        {
+        public async Task<ActionResult> RegisterCustomer(CreateBankAccount custForm)
+        {       
+            custForm.MSISDN = 252 + custForm.MSISDN;
                 if (!ModelState.IsValid)
                 {
                     TempData["Error"] = "This account does not exist";
                 }
                 else
                 {
-                    if (_repository.CheckIfMSISDNExists(custForm.MSISDN) != null)
-                    {
-                        TempData["MSISDNInUse"] = "Customer With this Mobile Number Exists";
-                    }
-                    else
-                    {
-                        var pin = new Random().Next(1000, 9999).ToString();
-                        var hasher = System.Security.Cryptography.SHA1.Create();
-                        var hash = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(pin));
-                        string hashedPassword = string.Join("", hash.Select(b => b.ToString("x2")));
-                        custForm.PIN = hashedPassword;
-                        _repository.RegisterCustomer(custForm);
+                var pin = new Random().Next(1000, 9999).ToString();
+                string userName = User.Identity.Name.ToString();
+                custForm.PIN = pin;
+                custForm.CreatedBy = userName;
+                custForm.Remarks = userName + " new entry";
+                custForm.EDahabType = "";
+                var response = await _mobileBankAPI.CreateAccount(custForm);
 
-                        await _fluxCubeApi.SendSmsAsync("DBI", custForm.MSISDN, $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}");
-                        TempData["Success"] = "Successfully Saved Customer";
-                        AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "RegisterCustomerMSISDN", Description = "Successfully registered customer MSISDN: " + custForm.MSISDN, AffectedParty = custForm.MSISDN };
-                        _usersRepository.LogUserAction(auditLogRecord); 
-                        if (Request.UrlReferrer != null)
-                            return Redirect(Request.UrlReferrer.ToString());
-                    }
+                if (response.Success)
+                {
+                    await _fluxCubeApi.SendSmsAsync("DBI", custForm.MSISDN, $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}");
+                    TempData["Success"] = response.Message;
                 }
+                    
+                else
+                    TempData["Error"] = response.Message;
+
+                AuditLog auditLogRecord = new AuditLog { UserName = userName, ActivityType = "RegisterCustomerMSISDN", Description = "Successfully registered customer MSISDN: " + custForm.MSISDN, AffectedParty = custForm.MSISDN };
+                 _usersRepository.LogUserAction(auditLogRecord); 
+                 if (Request.UrlReferrer != null)
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+            return View();
+        }
+
+
+        [PermissionRequired(Permissions.Register_customers)]
+        public ActionResult RegisterExternalCustomer()
+        {
+            string userName = User.Identity.Name.ToString();
+            return View();
+        }
+
+
+        [PermissionRequired(Permissions.Register_customers)]
+        [HttpPost]
+        public async Task<ActionResult> RegisterExternalCustomer(CreateBankAccountExternal custForm)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "This account does not exist";
+            }
+            else
+            {
+                var pin = new Random().Next(1000, 9999).ToString();
+                string userName = User.Identity.Name.ToString();
+                custForm.PIN = pin;
+                custForm.CreatedBy = userName;
+                custForm.Remarks = userName + " new entry";
+                custForm.EDahabType = "";
+
+                var model = new CreateBankAccount
+                {
+                    MSISDN = custForm.MSISDN,
+                    PIN = custForm.PIN,
+                    CreatedBy = custForm.CreatedBy,
+                    Remarks = custForm.Remarks,
+                    EDahabName = custForm.Name,
+                    EDahabType = custForm.EDahabType,
+                    Active = custForm.Active,
+                    Verified = custForm.Verified,
+                    CreatedOn = custForm.CreatedOn
+                };
+                var response = await _mobileBankAPI.CreateAccount(model);
+
+                if (response.Success)
+                {
+                    await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity = "DBI", Message= $"Macmiil,Dahabshil Bank International waxay kuu furtay adeega Dahabi,PIN-kaagu waa {pin}", Mobile = custForm.MSISDN });
+                    TempData["Success"] = response.Message;
+                }
+
+                else
+                    TempData["Error"] = response.Message;
+
+                AuditLog auditLogRecord = new AuditLog { UserName = userName, ActivityType = "RegisterExternalCustomer", Description = "Successfully registered customer MSISDN: " + custForm.MSISDN, AffectedParty = custForm.MSISDN };
+                _usersRepository.LogUserAction(auditLogRecord);
+                if (Request.UrlReferrer != null)
+                    return Redirect(Request.UrlReferrer.ToString());
+            }
             return View();
         }
 
@@ -115,13 +179,12 @@ namespace DBI_eDahab.Web.Controllers
         [PermissionRequired(Permissions.Register_customers)]
         public ActionResult AddCustomerAccounts()
         {
-            string userName = User.Identity.Name.ToString();
             return View();
         }
 
         [PermissionRequired(Permissions.Register_customers)]
         [HttpPost]
-        public ActionResult AddCustomerAccounts(CustomerAccountForm custForm)
+        public async Task<ActionResult> AddCustomerAccounts(LinkAccount custForm)
         {
             if (!ModelState.IsValid)
             {
@@ -129,76 +192,94 @@ namespace DBI_eDahab.Web.Controllers
             }
             else
             {
-                AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "AddCustomerAccount", AffectedParty = custForm.AccountNo };
-                if (_repository.CheckIfMSISDNExists(custForm.MSISDN) == null)
+                var username = User.Identity.Name.ToString();
+                AuditLog auditLogRecord = new AuditLog { UserName = username, ActivityType = "AddCustomerAccount", AffectedParty = custForm.AccountNo };
+                custForm.AccountNo = (await _fluxCubeApi.GetCustomerInfo(new AccountInfoRequest { AlternateAccountId = custForm.AccountNo, Entity = "DBI" })).AlternateAccountId;
+                custForm.CreatedBy = username;
+                custForm.EDahabType = "";
+                custForm.DailyLimit = custForm.NewDailyLimit;
+                custForm.Remarks = username + " New entry.";
+                var response = await _mobileBankAPI.LinkAccount(custForm);
+                if (response.Success)
                 {
-                    TempData["MSISDNInUse"] = "Register eDahab account first";
+                    auditLogRecord.Description = "Successful attempt to Add account no. to MSISDN: " + custForm.MSISDN;
+                    _usersRepository.LogUserAction(auditLogRecord);
+                    TempData["Success"] = response.Message;
                 }
                 else
                 {
-                    switch(_repository.RegisterCustomerAccount(custForm))
-                    {
-                        case -2:
-                            TempData["Error"] = "This account is already exists";
-                            auditLogRecord.Description = "Failed attempt to Add account no. to MSISDN: " + custForm.MSISDN;
-                            break;
-                        case 0:
-                            auditLogRecord.Description = "Failed attempt to Add account no. to MSISDN: " + custForm.MSISDN;
-                            TempData["Error"] = "SQL Exception occured";
-                            break;
-                        case 1:
-                            auditLogRecord.Description = "Successful attempt to Add account no. to MSISDN: " + custForm.MSISDN;
-                            TempData["Success"] = "Successfully added account, please verify it";
-                            break;
-                        case -1: 
-                        default: TempData["Error"] = "Exception occured";
-                        break;
-                    }
-                    _usersRepository.LogUserAction(auditLogRecord);
-                    if (Request.UrlReferrer != null) return Redirect(Request.UrlReferrer.ToString());
+                    auditLogRecord.Description = response.Message;
+                     _usersRepository.LogUserAction(auditLogRecord);
+                    TempData["Error"] = response.Message;
                 }
+                   
+                
+              
+                if (Request.UrlReferrer != null) return Redirect(Request.UrlReferrer.ToString());
             }
             return View();
         }
 
+
         [PermissionRequired(Permissions.ModifyCustomers)]
-        public ActionResult ModifyCustomer(string MSISDN, string AccountNo, string AccountType)
+        public async Task<ActionResult> ModifyCustomer(string MSISDN, string AccountNo, string AccountType)
         {
-            var AccountInfo = _repository.GetAccountInfo(MSISDN, AccountNo, AccountType);
-            TempData["Active"] = AccountInfo.Active;
-            return View(AccountInfo);
+            var accountInfo = await _mobileBankAPI.GetByAccountByMsisdn(MSISDN, AccountNo);
+            var modify = new ModifyRequest 
+            {
+                Msisdn = accountInfo.MSISDN,
+                EDahabName = accountInfo.EDahabName,
+                Currency = accountInfo.Currency,
+                AccountHolder = accountInfo.AccountHolder,
+                AccountType = accountInfo.AccountType,
+                AccountNo = accountInfo.AccountNo,
+                Active = accountInfo.Active,
+                DailyLimit = accountInfo.DailyLimit,
+                NewDailyLimit = accountInfo.NewDailyLimit,
+                Remarks = accountInfo.Remarks,
+            };
+            if (string.IsNullOrEmpty(modify.Remarks))
+                modify.Remarks = User.Identity.Name.ToString();
+
+            //var AccountInfo = _repository.GetAccountInfo(MSISDN, AccountNo, AccountType);
+            TempData["Active"] = accountInfo.Active;
+            return View(modify);
         }
 
         [PermissionRequired(Permissions.ModifyCustomers)]
         [HttpPost]
-        public async Task<ActionResult> ModifyCustomer(string userId, CustomerForm editCustomer)
+        public async Task<ActionResult> ModifyCustomer(string userId, ModifyRequest editCustomer)
         {
             AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ModifyCustomerAccount" };
-            _repository.UpdateCustomer(editCustomer, TempData["Active"].ToString());
-            if (!(TempData["Active"].ToString().Equals(editCustomer.Active)))
+            editCustomer.ModifiedBy = User.Identity.Name.ToString();
+            editCustomer.Remarks = User.Identity.Name.ToString() + editCustomer.Remarks;
+            var updated =  await _mobileBankAPI.UpdateAccount(editCustomer);
+            //_repository.UpdateCustomer(editCustomer, TempData["Active"].ToString());
+            if (updated.Success)
             {
-                auditLogRecord.AffectedParty = editCustomer.MSISDN;
-                auditLogRecord.Description = "Successully updated customer(" + editCustomer.MSISDN + ") status to: " + editCustomer.Active;
+                auditLogRecord.AffectedParty = editCustomer.Msisdn;
+                auditLogRecord.Description = "Successully updated customer(" + editCustomer.Msisdn + ") status to: " + editCustomer.Active;
             }
-            else if(editCustomer.CustomerAccount.NewDailyLimit != editCustomer.CustomerAccount.DailyLimit && editCustomer.CustomerAccount.NewDailyLimit > 0)
-            {
-                auditLogRecord.AffectedParty = editCustomer.CustomerAccount.AccountNo;
-                auditLogRecord.Description = "Successully updated customer(" + editCustomer.MSISDN + ") daily limit to: " + editCustomer.CustomerAccount.NewDailyLimit;
-            }
-            TempData["SuccessMessage"] = "Successfully Updated Customer";
+            TempData["SuccessMessage"] = updated.Message;
             if (editCustomer.ResetPin)
             {
                 var randomPassword = new Random().Next(1000, 9999).ToString();
-                var hasher = System.Security.Cryptography.SHA1.Create();
-                var hash = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(randomPassword));
-                string hashedPassword = string.Join("", hash.Select(b => b.ToString("x2")));
 
-                _repository.ChangePin(editCustomer.MSISDN, hashedPassword);
-
-                await _fluxCubeApi.SendSmsAsync("DBI", editCustomer.MSISDN, $"Macmiil, Pin-kaagii ayaa laguu badalay , Pin-ka cusubi waa : {randomPassword}");
-                auditLogRecord.ActivityType = "ResetCustomerPIN";
-                auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.MSISDN + ") PIN";
-                auditLogRecord.AffectedParty = editCustomer.MSISDN;
+                var result = await _mobileBankAPI.ChangePin(new ChangePinRequest { Msisdn = editCustomer.Msisdn, ModifiedBy = User.Identity.Name.ToString(), NewPassword = randomPassword });
+                if (result.Success)
+                {
+                    await _fluxCubeApi.SendSmsAsync("DBI", editCustomer.Msisdn.Substring(3), $"Macmiil, Pin-kaagii ayaa laguu badalay , Pin-ka cusubi waa : {randomPassword}");
+                    auditLogRecord.ActivityType = "ResetCustomerPIN";
+                    auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.Msisdn + ") PIN";
+                    auditLogRecord.AffectedParty = editCustomer.Msisdn;
+                }
+                else
+                {
+                    auditLogRecord.ActivityType = "ResetCustomerPIN";
+                    auditLogRecord.Description = "Customer(" + editCustomer.Msisdn + ") PIN not reseted";
+                    auditLogRecord.AffectedParty = editCustomer.Msisdn;
+                }
+               
             }
             _usersRepository.LogUserAction(auditLogRecord);
             return RedirectToAction("Customers", "Reports");
@@ -207,33 +288,52 @@ namespace DBI_eDahab.Web.Controllers
 
 
         [PermissionRequired(Permissions.Verify)]
-        public ActionResult VerifyCustomer(string MSISDN, string AccountNo, string AccountType)
+        public async Task<ActionResult> VerifyCustomer(string MSISDN, string AccountNo, string AccountType)
         {
-            var AccountInfo = _repository.GetAccountInfo(MSISDN, AccountNo, AccountType);
+            var AccountInfo = await _mobileBankAPI.GetByAccountByMsisdn(MSISDN, AccountNo);
+            //var AccountInfo = _repository.GetAccountInfo(MSISDN, AccountNo, AccountType);
             return View(AccountInfo);
         }
 
 
         [PermissionRequired(Permissions.Verify)]
         [HttpPost]
-        public async Task<ActionResult> VerifyCustomer(CustomerForm customer, string submitButton)
+        public async Task<ActionResult> VerifyCustomer(GetCustomerAccount customer, string submitButton)
         {
-            AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), AffectedParty = customer.CustomerAccount.AccountNo };
+            AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), AffectedParty = customer.AccountNo };
             switch (submitButton)
             {
                 case "Verify":
-                    _repository.VerifyCustomer(customer.CustomerAccount.AccountNo, customer.CustomerAccount.AccountType);
-                    await _fluxCubeApi.SendSmsAsync("DBI", customer.MSISDN, $"Dear customer your DBI account {customer.CustomerAccount.AccountNo} has been successfully verified");
-                  
-                    TempData["SuccessMessage"] = "Successfully Verfied Customer";
-                    auditLogRecord.ActivityType = "VerifyCustomerAccount";
-                    auditLogRecord.Description = "Successfully verified customer("+ customer.MSISDN+") account";
+                    var response = await _mobileBankAPI.VerifyAccount(new VerifyCustomer { AccountNo = customer.AccountNo, VerifiedBy = User.Identity.Name.ToString() });
+                    if (response.Success)
+                    {
+                        await _fluxCubeApi.SendSmsAsync("DBI", customer.MSISDN, $"Dear customer your DBI account {customer.AccountNo} has been successfully verified");
+                        TempData["SuccessMessage"] = response.Message;
+                        auditLogRecord.ActivityType = "VerifyCustomerAccount";
+                        auditLogRecord.Description = "Successfully verified customer(" + customer.MSISDN + ") account";
+                    }
+                    else 
+                    {
+                        TempData["SuccessMessage"] = response.Message;
+                        auditLogRecord.ActivityType = "VerifyCustomerAccount";
+                        auditLogRecord.Description = "Failed to verify customer(" + customer.MSISDN + ") account";
+                    }
                     break;
                 case "Delete":
-                    _repository.DeleteCustomer(customer);
-                    TempData["SuccessMessage"] = "Successfully deleted customer account";
-                    auditLogRecord.ActivityType = "DeleteCustomerAccount";
-                    auditLogRecord.Description = "Successfully deleted customer(" + customer.MSISDN + ") account";
+                    //_repository.DeleteCustomer(customer);
+                    var result = await _mobileBankAPI.DeleteAccount(customer.AccountNo);
+                    if (result.Success)
+                    {
+                        TempData["SuccessMessage"] = result.Message;
+                        auditLogRecord.ActivityType = "DeleteCustomerAccount";
+                        auditLogRecord.Description = $"Successfully deleted customer({customer.AccountNo}-{customer.MSISDN}) account";
+                    }
+                    else
+                    {
+                        TempData["Error"] = result.Message;
+                        auditLogRecord.ActivityType = "DeleteCustomerAccount";
+                        auditLogRecord.Description = $"Failed to delete customer({customer.AccountNo}-{customer.MSISDN}) account";
+                    }
                     break;
             }
             _usersRepository.LogUserAction(auditLogRecord);

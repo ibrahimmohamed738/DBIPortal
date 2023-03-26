@@ -1,6 +1,6 @@
 ﻿@model DBI_eDahab.Web.ViewModels.LinkAccount
 @{
-    ViewBag.Title = "Add Customer Accounts";
+    ViewBag.Title = "Add External Customer Accounts";
 }
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
@@ -190,6 +190,8 @@
                     success: function (data) {
                         $("input[name=EdahabName]").val(data["EDahabName"]);
                         $("input[name=eDahabType]").val(data["EDahabType"]);
+
+
                     }
                 });
             });
@@ -245,3 +247,4 @@
         });
     </script>
 }
+

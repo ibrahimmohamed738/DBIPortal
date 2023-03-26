@@ -27,6 +27,7 @@ namespace DBI_eDahab.Web.Controllers
         Repository _repository = new Repository();
         DahabApi _dahab = new DahabApi();
         UsersRepository _usersRepository = new UsersRepository();
+        MobileBankAPI _mobileBankAPI = new MobileBankAPI();
 
         private class CustomerReport
         {
@@ -62,10 +63,16 @@ namespace DBI_eDahab.Web.Controllers
 
 
         [PermissionRequired(Permissions.Customers_List)]
-        public ActionResult Customers(string term, DateTime? DateFrom = null, DateTime? DateTo = null, int page = 1, string Currency = null, string Branch = null, string Active = "", bool? Verified = null)
+        public async Task<ActionResult> Customers(string term = "%", int page = 1)
         {
-            List<CustomerForm> list = _repository.GetCustomers((Session["User"] as Users).UserName,Term: term, DateFrom: DateFrom, DateTo: DateTo, Currency: Currency, Branch: Branch, Active: Active, Verified: Verified);
-            var customers = list.ToPagedList(page, 30);
+            string branch = new UsersRepository().GetUser(User.Identity.Name.ToString()).Branch.ToString();
+            if (branch == ConfigurationManager.AppSettings["HQBranch"])
+                branch = "%";
+            var result = await _mobileBankAPI.GetCustomers(page,term,branch);
+            //List<CustomerForm> list = _repository.GetCustomers((Session["User"] as Users).UserName,Term: term, DateFrom: DateFrom, DateTo: DateTo, Currency: Currency, Branch: Branch, Active: Active, Verified: Verified);
+            ViewBag.CurrentPage = result.Data.CurrentPage;
+            ViewBag.Pages = result.Data.Pages;
+            var customers = result.Data.Accounts.ToPagedList(page, 30);
             Session["CustomersSession"] = customers;
             return View(customers);
         }
@@ -120,6 +127,7 @@ namespace DBI_eDahab.Web.Controllers
                     Currency = trans.Currency
                 };
                 var res = await _fluxCubeApi.CreateTransaction(createTrans);
+
                 if (res.StatusCode == "200")
                 {
                     _repository.UpdateTransactionLog_DBISide(true, true, transactionID, res.TransactionCode,true);

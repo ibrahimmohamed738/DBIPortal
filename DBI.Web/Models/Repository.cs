@@ -270,7 +270,6 @@ namespace DBI_eDahab.Web.Models
                                       c.CreatedBy, c.AccountNo,  c.Currency,
                                       c.AccountHolder, c.AccountType, isnull(c.DailyLimit,0) DailyLimit, c.CreatedOn 
                                       from DahabCard d, dbi_Customers c
-                                      --left join  dbi_Customers c on d.MSISDN = c.MSISDN
                                       WHERE (d.MSISDN = c.MSISDN and (d.MSISDN LIKE @MSISDN or c.AccountNo like @AccountNo) ) and c.Currency like @Currency and c.Branch like @Branch 
                                       and d.Active like @Active and (c.Verified = @Verified1 or c.Verified = @Verified2) AND d.eDahabType != 'AGNT'";
 

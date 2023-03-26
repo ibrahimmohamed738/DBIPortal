@@ -1,6 +1,6 @@
-﻿@model DBI_eDahab.Web.ViewModels.CustomerForm
+﻿@model DBI_eDahab.Web.ViewModels.CreateBankAccount
 @{
-    ViewBag.Title = "RegisterCustomer";
+    ViewBag.Title = "Register Customer";
 }
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
@@ -47,23 +47,23 @@
                                 </div>
                                 <div class="col-md-3">
 
-                                    <button type="button" id="validateEdahabName" enabled = "false" class="btn btn-sm btn-info">Validate</button>
+                                    <button type="button" id="validateEdahabName" enabled="false" class="btn btn-sm btn-info">Validate</button>
                                     <button type="button" id="GetCustomerPhoto" class="btn btn-sm btn-primary pull-right">Get Photo</button>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.eDahabType, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.EDahabType, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="eDahabType" readonly />
-                                    @Html.ValidationMessageFor(model => model.eDahabType, "", new { @class = "text-danger" })
+                                    <input type="text" class="form-control" name="EDahabType" readonly />
+                                    @Html.ValidationMessageFor(model => model.EDahabType, "", new { @class = "text-danger" })
                                 </div>
 
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.eDahabName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.EDahabName, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="EdahabName" readonly />
-                                    @Html.ValidationMessageFor(model => model.eDahabName, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.EDahabName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
 
 
 @*<button id="button" value="Add" onClick:"javascript:add();">Add INput</button>*@
- 
+
 
 
 @section scripts {

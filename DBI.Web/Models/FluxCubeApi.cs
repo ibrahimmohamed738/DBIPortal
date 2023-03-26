@@ -68,6 +68,43 @@ namespace DBI_eDahab.Web.Models
             }
         }
 
+        public async Task<string> SendSMS(SendSMSRequest smsRequest)
+        {
+            var request = new StringContent(JsonConvert.SerializeObject(smsRequest), Encoding.UTF8, "application/json");
+            using (var _client = new HttpClient())
+            {
+                bool isProd;
+                bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
+
+                var response = await _client.PostAsync("api/SMS", request);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
+
+                    return JsonConvert.DeserializeObject<string>(jsonString);
+                }
+                return null;
+            }
+             
+        }
+
         public async Task<List<GLAccountResponse>> GetGLAccountBalance(GLAccountRequest accountInfo)
         {
             using (var _client = new HttpClient())

@@ -1,0 +1,100 @@
+﻿@model DBI_eDahab.Web.ViewModels.CreateBankAccountExternal
+@{
+    ViewBag.Title = "Register External Customer";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script src="~/Scripts/jquery-2.0.3.min.js"></script>
+
+<br />
+
+<div class="container">
+    @using (Html.BeginForm("RegisterExternalCustomer", "Customers"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4> </h4>
+            @if (TempData["Success"] != null)
+            {
+                <h4 class="alert alert-success"> @TempData["Success"]</h4>
+            }
+            @if (TempData["MSISDNInUse"] != null)
+            {
+                <h4 class="alert alert-danger"> @TempData["MSISDNInUse"]</h4>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <h4 class="alert alert-danger"> @TempData["Error"]</h4>
+            }
+
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Customer Registeration Form</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <p></p>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="start with country code like 252xxxxx" />
+                                    @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger", @id = "msisdnValidation" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="Name" placeholder="Customer Name" />
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body panel-body-image">
+                                    <div id="modal-body" widh="424" height="238" class="img-responsive">
+                                        <div class="well">
+                                        </div>
+                                    </div>
+                                    @*<img src="~/Content/gorilla.jpg" class="img-responsive" alt="Gorilla" />*@
+                                    <a href="#" class="panel-body-inform">
+                                        <span class="fa fa-heart-o"></span>
+                                    </a>
+                                </div>
+                                <div class="panel-body">
+                                    <h3>Customer Picture</h3>
+                                    <p></p>
+                                </div>
+                                <div class="panel-footer text-muted">
+                                    <span class="fa fa-clock-o"></span> 3d ago &nbsp;&nbsp;&nbsp;
+                                    <span class="fa fa-comment-o"></span> 36
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <div class="col-md-offset-1 col-md-8">
+                            <input type="submit" value="Submit" class="btn btn-success" />
+
+                            <input type="reset" value="Clear Form" class="btn btn-warning" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section scripts {
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+}
+
+
