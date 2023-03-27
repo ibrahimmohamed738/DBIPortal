@@ -31,6 +31,18 @@ namespace DBI_eDahab.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public async Task<ActionResult> GetCustomerSign(string AccountNo)
+        {
+            var result = await _fluxCubeApi.GetCustomerSignature(new AccountInfoRequest { AlternateAccountId = AccountNo, Entity="DBI" });
+            return File(result, "image/jpg");
+        }
+
+        public async Task<ActionResult> GetCustomerPhoto(string AccountNo)
+        {
+            var result = await _fluxCubeApi.GetCustomerPhoto(new AccountInfoRequest { AlternateAccountId = AccountNo, Entity = "DBI" });
+            return File(result, "image/jpg");
+        }
+
         public ActionResult GetEdahabNameFromDB(string MSISDN)
         {
             var edahabName = _repository.CheckIfMSISDNExists(MSISDN);

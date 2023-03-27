@@ -215,5 +215,83 @@ namespace DBI_eDahab.Web.Models
 
         }
 
+
+        public async Task<byte []> GetCustomerSignature(AccountInfoRequest accountInfoRequest)
+        {
+            using (var _client = new HttpClient())
+            {
+                bool isProd;
+                bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
+
+                var request = new StringContent(JsonConvert.SerializeObject(accountInfoRequest), Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync("api/GetCustomerSignature", request);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
+                    return JsonConvert.DeserializeObject<byte[]>(jsonString);
+                }
+
+                return null;
+            }
+
+        }
+
+        public async Task<byte[]> GetCustomerPhoto(AccountInfoRequest accountInfoRequest)
+        {
+            using (var _client = new HttpClient())
+            {
+                bool isProd;
+                bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
+
+                var request = new StringContent(JsonConvert.SerializeObject(accountInfoRequest), Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync("api/GetCustomerPhoto", request);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
+                    return JsonConvert.DeserializeObject<byte[]>(jsonString);
+                }
+
+                return null;
+            }
+
+        }
+
+
+
+
     }
 }

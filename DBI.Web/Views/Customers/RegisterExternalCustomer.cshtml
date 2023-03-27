@@ -7,7 +7,6 @@
 <script src="~/Scripts/jquery-2.0.3.min.js"></script>
 
 <br />
-
 <div class="container">
     @using (Html.BeginForm("RegisterExternalCustomer", "Customers"))
     {
@@ -40,43 +39,78 @@
                         <div class="col-lg-8">
                             <p></p>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-6">
-                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="start with country code like 252xxxxx" />
-                                    @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger", @id = "msisdnValidation" })
+                                    <input type="search" id="AccountId" name="AccountId" value="" class="form-control" placeholder="Enter Account Number" />
+                                    @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger", @id = "msisdnValidation" })
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" id="validateBankInfo" enabled="false" class="btn btn-sm btn-info">Validate</button>
                                 </div>
                             </div>
                             <div class="form-group">
+                                @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="MSISDN" readonly />
+                                    @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" name="Name" placeholder="Customer Name" />
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="Name" readonly />
                                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-body panel-body-image">
-                                    <div id="modal-body" widh="424" height="238" class="img-responsive">
-                                        <div class="well">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <button type="button" id="GetCustomerPhoto" class="btn btn-sm btn-primary pull-right">Get Photo</button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" id="GetCustomerSignature" class="btn btn-sm btn-primary pull-right">Get Signature</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-lg-12 col-md-12">
+                                <div class="col-lg-8 col-md-8"></div>
+                                    <div class="col-lg-9 col-md-9">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body panel-body-image">
+                                                <div id="modal-sign" widh="424" height="238" class="img-responsive">
+                                                    <div class="well">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <h3>Customer &mdash;Signature</h3>
+                                                <p></p>
+                                            </div>
+                                            <div class="panel-footer text-muted">
+                                            </div>
                                         </div>
                                     </div>
-                                    @*<img src="~/Content/gorilla.jpg" class="img-responsive" alt="Gorilla" />*@
-                                    <a href="#" class="panel-body-inform">
-                                        <span class="fa fa-heart-o"></span>
-                                    </a>
                                 </div>
-                                <div class="panel-body">
-                                    <h3>Customer Picture</h3>
-                                    <p></p>
-                                </div>
-                                <div class="panel-footer text-muted">
-                                    <span class="fa fa-clock-o"></span> 3d ago &nbsp;&nbsp;&nbsp;
-                                    <span class="fa fa-comment-o"></span> 36
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-body panel-body-image">
+                                        <div id="modal-body" widh="424" height="238" class="img-responsive">
+                                            <div class="well">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <h3>Customer &mdash;Photo</h3>
+                                        <p></p>
+                                    </div>
+                                    <div class="panel-footer text-muted">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <div class="panel-footer">
                     <div class="form-group">
@@ -93,8 +127,80 @@
 </div>
 
 
-@section scripts {
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-}
+    @section scripts {
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script>
+        $(document).ready(function () {
+
+            $("#clickMe").click(function () {
+                document.getElementById("#place").innerHTML = "<input type='text' value=''>"
+            });
+
+            $('input').on("keypress", function (e) {
+                /* ENTER PRESSED*/
+                if (e.keyCode == 13) {
+                    /* FOCUS ELEMENT */
+                    var inputs = $(this).parents("form").eq(0).find(":input");
+                    var idx = inputs.index(this);
+
+                    if (idx == inputs.length - 1) {
+                        inputs[0].select()
+                    } else {
+                        inputs[idx + 1].focus(); //  handles submit buttons
+
+                        inputs[idx + 1].select();
+                    }
+                    return false;
+                }
+            });
+
+
+            $("#validateBankInfo").click(function () {
+                $.ajax({
+                    url: "@Url.Content("~/Customers/GetDBIAccountHolder")",
+
+                    dataType: 'json', contentType: 'application/json',
+
+                    data: {
+                        AccountNo: $("#AccountId").val(),
+                    },
+                    success: function (data) {
+                        $("input[name=MSISDN]").val(data["Mobile"]);
+                        $("input[name=Name]").val(data["Name"]);
+                    }
+                });
+            });
+
+            $("#GetCustomerPhoto").click(function () {
+                var appRootUrl = "@Url.Content("~/")";
+                var url = appRootUrl;
+                if (!$("#AccountId").val()) {
+                    $("#AccountId").focus();
+                    return;
+                }
+                url = appRootUrl + "Customers/GetCustomerPhoto?AccountNo=" + $("#AccountId").val();
+
+                $("#modal-body").html("<img   src='" + url + "' />");
+
+                //$("#ajax-loader").html('');
+            });
+
+            $("#GetCustomerSignature").click(function () {
+                var appRootUrl = "@Url.Content("~/")";
+                var url = appRootUrl;
+                if (!$("#AccountId").val()) {
+                    $("#AccountId").focus();
+                    return;
+                }
+                 url = appRootUrl + "Customers/GetCustomerSign?AccountNo=" + $("#AccountId").val();
+
+                 $("#modal-sign").html("<img   src='" + url + "' />");
+
+                //$("#ajax-loader").html('');
+            });
+
+        });
+        </script>
+    }
 
 
