@@ -206,7 +206,7 @@ namespace DBI_eDahab.Web.Controllers
             {
                 var username = User.Identity.Name.ToString();
                 AuditLog auditLogRecord = new AuditLog { UserName = username, ActivityType = "AddCustomerAccount", AffectedParty = custForm.AccountNo };
-                custForm.AccountNo = (await _fluxCubeApi.GetCustomerInfo(new AccountInfoRequest { AlternateAccountId = custForm.AccountNo, Entity = "DBI" })).AlternateAccountId;
+                custForm.AccountNo = (await _fluxCubeApi.GetCustomerInfo(new AccountInfoRequest { AlternateAccountId = custForm.AccountNo, Entity = "DBI" })).AccountId;
                 custForm.CreatedBy = username;
                 custForm.EDahabType = "";
                 custForm.DailyLimit = custForm.NewDailyLimit;
