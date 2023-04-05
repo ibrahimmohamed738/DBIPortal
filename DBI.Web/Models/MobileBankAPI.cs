@@ -78,7 +78,8 @@ namespace DBI_eDahab.Web.Models
                     Active = result.Data.Active,
                     ModifiedBy = result.Data.ModifiedBy,
                     ModifiedOn = result.Data.ModifiedOn,
-                    Remarks = result.Data.Remarks
+                    Remarks = result.Data.Remarks,
+                    Email = result.Data.Email
                 };
                 return account;
             }

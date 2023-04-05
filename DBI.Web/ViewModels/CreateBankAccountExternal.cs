@@ -21,5 +21,6 @@ namespace DBI_eDahab.Web.ViewModels
         public string Active { get; set; } = "Y";
         public bool Verified { get; set; } = false;
         public string Remarks { get; set; }
+        public string Email { get; set; }
     }
 }

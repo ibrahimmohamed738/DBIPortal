@@ -64,6 +64,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="Email" readonly />
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <button type="button" id="GetCustomerPhoto" class="btn btn-sm btn-primary pull-right">Get Photo</button>
@@ -76,24 +83,24 @@
                             <br />
                             <div class="col-lg-12 col-md-12">
                                 <div class="col-lg-8 col-md-8"></div>
-                                    <div class="col-lg-9 col-md-9">
-                                        <div class="panel panel-default">
-                                            <div class="panel-body panel-body-image">
-                                                <div id="modal-sign" widh="424" height="238" class="img-responsive">
-                                                    <div class="well">
-                                                    </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body panel-body-image">
+                                            <div id="modal-sign" widh="424" height="238" class="img-responsive">
+                                                <div class="well">
                                                 </div>
                                             </div>
-                                            <div class="panel-body">
-                                                <h3>Customer &mdash;Signature</h3>
-                                                <p></p>
-                                            </div>
-                                            <div class="panel-footer text-muted">
-                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <h3>Customer &mdash;Signature</h3>
+                                            <p></p>
+                                        </div>
+                                        <div class="panel-footer text-muted">
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="panel panel-default">
                                     <div class="panel-body panel-body-image">
@@ -167,6 +174,7 @@
                     success: function (data) {
                         $("input[name=MSISDN]").val(data["Mobile"]);
                         $("input[name=Name]").val(data["Name"]);
+                        $("input[name=Email]").val(data["Email"]);
                     }
                 });
             });

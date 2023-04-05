@@ -166,7 +166,9 @@ namespace DBI_eDahab.Web.Controllers
                     EDahabType = custForm.EDahabType,
                     Active = custForm.Active,
                     Verified = custForm.Verified,
-                    CreatedOn = custForm.CreatedOn
+                    CreatedOn = custForm.CreatedOn,
+                    Email = custForm.Email ?? ""
+           
                 };
                 var response = await _mobileBankAPI.CreateAccount(model);
 
