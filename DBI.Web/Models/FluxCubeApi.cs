@@ -291,7 +291,42 @@ namespace DBI_eDahab.Web.Models
         }
 
 
+        public async Task<bool> SendEmail(SendEmailOTP sendEmail)
+        {
+            using (var _client = new HttpClient())
+            {
+                bool isProd;
+                bool.TryParse(ConfigurationManager.AppSettings["IsProduction"], out isProd);
+                if (isProd)
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["Url"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKeyP"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecretP"]);
+                }
+                else
+                {
+                    _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UrlUAT"]);
+                    _client.DefaultRequestHeaders.Add("ApiKey", ConfigurationManager.AppSettings["ApiKey"]);
+                    _client.DefaultRequestHeaders.Add("ApiSecret", ConfigurationManager.AppSettings["ApiSecret"]);
+                }
 
+                var request = new StringContent(JsonConvert.SerializeObject(sendEmail), Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync("api/sendemail", request);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    using (EventLog eventLog = new EventLog("Application"))
+                    {
+                        eventLog.Source = "Application";
+                        eventLog.WriteEntry(jsonString, EventLogEntryType.Information, 101, 1);
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+
+        }
 
     }
 }

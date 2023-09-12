@@ -150,6 +150,22 @@ namespace DBI_eDahab.Web.Models
         }
 
 
+        public async Task<DahabResponse<int>> UpdateAccountLimit(UpdateLimitRequest request)
+        {
+
+            using (var _client = new HttpClient())
+            {
+                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
+                await GetToken();
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
+
+                var response = await _client.PostAsJsonAsync("DahabBank/update-account-limit", request);
+                var result = await response.Content.ReadAsAsync<DahabResponse<int>>();
+                return result;
+            }
+
+        }
+
         public async Task<DahabResponse<bool>> VerifyAccount(VerifyCustomer verifyRequest)
         {
 

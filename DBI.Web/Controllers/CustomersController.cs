@@ -111,11 +111,12 @@ namespace DBI_eDahab.Web.Controllers
                 custForm.CreatedBy = userName;
                 custForm.Remarks = userName + " new entry";
                 custForm.EDahabType = "";
+                custForm.Email = custForm.Email ?? "";
                 var response = await _mobileBankAPI.CreateAccount(custForm);
 
                 if (response.Success)
                 {
-                    await _fluxCubeApi.SendSmsAsync("DBI", custForm.MSISDN, $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}");
+                   // await _fluxCubeApi.SendSmsAsync("DBI", custForm.MSISDN, $"Macmiil, Dahabshil Bank International waxay kuu furtay adeega Dahabi, short-code-ka adeegu waa *777# PIN-kaagu waa {pin}");
                     TempData["Success"] = response.Message;
                 }
                     
@@ -174,7 +175,7 @@ namespace DBI_eDahab.Web.Controllers
 
                 if (response.Success)
                 {
-                    await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity = "DBI", Message= $"Macmiil,Dahabshil Bank International waxay kuu furtay adeega Dahabi,PIN-kaagu waa {pin}", Mobile = custForm.MSISDN });
+                   // await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity = "DBI", Message= $"Macmiil,Dahabshil Bank International waxay kuu furtay adeega Dahabi,PIN-kaagu waa {pin}", Mobile = custForm.MSISDN });
                     TempData["Success"] = response.Message;
                 }
 
@@ -251,7 +252,11 @@ namespace DBI_eDahab.Web.Controllers
                 DailyLimit = accountInfo.DailyLimit,
                 NewDailyLimit = accountInfo.NewDailyLimit,
                 Remarks = accountInfo.Remarks,
+                Email = (await _fluxCubeApi.GetCustomerInfo(new AccountInfoRequest { AlternateAccountId = accountInfo.AccountNo, Entity = "DBI" })).Email,
             };
+
+            TempData["Email"] = modify.Email;
+
             if (string.IsNullOrEmpty(modify.Remarks))
                 modify.Remarks = User.Identity.Name.ToString();
 
@@ -282,7 +287,8 @@ namespace DBI_eDahab.Web.Controllers
                 var result = await _mobileBankAPI.ChangePin(new ChangePinRequest { Msisdn = editCustomer.Msisdn, ModifiedBy = User.Identity.Name.ToString(), NewPassword = randomPassword });
                 if (result.Success)
                 {
-                    await _fluxCubeApi.SendSmsAsync("DBI", editCustomer.Msisdn.Substring(3), $"Macmiil, Pin-kaagii ayaa laguu badalay , Pin-ka cusubi waa : {randomPassword}");
+                    await _fluxCubeApi.SendSmsAsync("DBI", editCustomer.Msisdn.Remove(0,3), $"Macmiil, Pin-ka cusubi waa : {randomPassword}");
+                    //await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity= "DBI", Message = $"Macmiil, Pin-ka cusubi waa : {randomPassword}", Mobile = editCustomer.Msisdn });
                     auditLogRecord.ActivityType = "ResetCustomerPIN";
                     auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.Msisdn + ") PIN";
                     auditLogRecord.AffectedParty = editCustomer.Msisdn;
@@ -294,6 +300,29 @@ namespace DBI_eDahab.Web.Controllers
                     auditLogRecord.AffectedParty = editCustomer.Msisdn;
                 }
                
+            }
+            if (editCustomer.ResetPinEmail)
+            {
+                var randomPassword = new Random().Next(1000, 9999).ToString();
+
+                var result = await _mobileBankAPI.ChangePin(new ChangePinRequest { Msisdn = editCustomer.Msisdn, ModifiedBy = User.Identity.Name.ToString(), NewPassword = randomPassword });
+                if (result.Success)
+                {
+                     
+                    if (!string.IsNullOrWhiteSpace(TempData["Email"].ToString()))
+                        await _fluxCubeApi.SendEmail(new SendEmailOTP { Entity = "DBI", Email = TempData["Email"].ToString(), Message = $"Macmiil, Pin-kagu waa : {randomPassword}" });
+
+                    auditLogRecord.ActivityType = "ResetCustomerPIN";
+                    auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.Msisdn + ") PIN";
+                    auditLogRecord.AffectedParty = editCustomer.Msisdn;
+                }
+                else
+                {
+                    auditLogRecord.ActivityType = "ResetCustomerPIN";
+                    auditLogRecord.Description = "Customer(" + editCustomer.Msisdn + ") PIN not reseted";
+                    auditLogRecord.AffectedParty = editCustomer.Msisdn;
+                }
+
             }
             _usersRepository.LogUserAction(auditLogRecord);
             return RedirectToAction("Customers", "Reports");
@@ -321,7 +350,7 @@ namespace DBI_eDahab.Web.Controllers
                     var response = await _mobileBankAPI.VerifyAccount(new VerifyCustomer { AccountNo = customer.AccountNo, VerifiedBy = User.Identity.Name.ToString() });
                     if (response.Success)
                     {
-                        await _fluxCubeApi.SendSmsAsync("DBI", customer.MSISDN, $"Dear customer your DBI account {customer.AccountNo} has been successfully verified");
+                        await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity = "DBI", Message = $"Dear customer your DBI account {customer.AccountNo} has been successfully verified", Mobile = customer.MSISDN });
                         TempData["SuccessMessage"] = response.Message;
                         auditLogRecord.ActivityType = "VerifyCustomerAccount";
                         auditLogRecord.Description = "Successfully verified customer(" + customer.MSISDN + ") account";
@@ -355,5 +384,41 @@ namespace DBI_eDahab.Web.Controllers
 
             //return View();
         }
+
+        [PermissionRequired(Permissions.Update_Limit)]
+        public ActionResult UpdateCustomerLimit()
+        {
+            return View();
+        }
+
+
+        [PermissionRequired(Permissions.Verify)]
+        [HttpPost]
+        public async Task<ActionResult> UpdateCustomerLimit(UpdateLimitRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Error in data";
+            }
+            else
+            {
+                AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "UpdateCustomerLimit", AffectedParty = request.AccountNo };
+                var response = await _mobileBankAPI.UpdateAccountLimit(request);
+                if (response.Success)
+                {
+                    auditLogRecord.Description = $"Successful attempt to update accountNo {request.AccountNo} limit  to {request.NewLimit}";
+                    _usersRepository.LogUserAction(auditLogRecord);
+                    TempData["SuccessMessage"] = response.Message;
+                }
+                else
+                {
+                    auditLogRecord.Description = $"Failed attempt to update accountNo {request.AccountNo} limit  to {request.NewLimit}";
+                    _usersRepository.LogUserAction(auditLogRecord);
+                    TempData["Error"] = response.Message;
+                }
+            }
+            return RedirectToAction("UpdateCustomerLimit", "Customers");
+        }
+
     }
 }

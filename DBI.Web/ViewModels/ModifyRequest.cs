@@ -20,7 +20,10 @@ namespace DBI_eDahab.Web.ViewModels
         public decimal NewDailyLimit { get; set; }
         public decimal DailyLimit { get; set; }
         public string Active { get; set; }
-        [Display(Name = "Reset Pin")]
+        [Display(Name = "Reset Pin Via SMS")]
         public bool ResetPin { get; set; }
+        [Display(Name = "Reset Pin Via Email")]
+        public bool ResetPinEmail { get; set; }
+        public string Email { get; set; }
     }
 }

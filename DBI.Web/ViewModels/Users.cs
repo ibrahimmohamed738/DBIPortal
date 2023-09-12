@@ -35,7 +35,8 @@ namespace DBI_eDahab.Web.ViewModels
             ModifyCustomers = 1 <<5,
             Verify = 1 << 6,
             Reconciliation = 1 << 7,
-            ProcessFailures = 1 << 8
+            ProcessFailures = 1 << 8,
+            Update_Limit = 1 << 9,
         }
     }
 }
