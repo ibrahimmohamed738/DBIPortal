@@ -84,7 +84,7 @@ namespace DBI_eDahab.Web.Models
                 _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["EDahabLoacalAPI"]);
                 await GetToken();
                 _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
-                var response = await _client.GetAsync($"EDahab/GetUserInfo/{Msisdn}");
+                var response = await _client.GetAsync($"EDahab/get-user-info/{Msisdn}");
                 if (!response.IsSuccessStatusCode)
                 {
                     return null;
@@ -102,7 +102,8 @@ namespace DBI_eDahab.Web.Models
                     FullName = result.Data.FullName,
                     CategoryCode = result.Data.CategoryCode,
                     Gender = result.Data.Gender,
-                    Status = result.Data.Status
+                    Status = result.Data.Status,
+                    AgentCode = result.Data.AgentCode
                 };
                 return user;
             }

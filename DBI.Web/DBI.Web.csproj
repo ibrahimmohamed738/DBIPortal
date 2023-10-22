@@ -199,6 +199,7 @@
     <Compile Include="ViewModels\GetBankAccount.cs" />
     <Compile Include="ViewModels\GetCustomerAccount.cs" />
     <Compile Include="ViewModels\GetCustomerAccountResponse.cs" />
+    <Compile Include="ViewModels\GetRegistrationReport.cs" />
     <Compile Include="ViewModels\GLAccountRequest.cs" />
     <Compile Include="ViewModels\GLAccountResponse.cs" />
     <Compile Include="ViewModels\LinkAccount.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="ViewModels\LoginForm.cs" />
     <Compile Include="ViewModels\ModifyRequest.cs" />
     <Compile Include="ViewModels\ReconcilationBalances.cs" />
+    <Compile Include="ViewModels\RegistrationReportRequest.cs" />
     <Compile Include="ViewModels\SendEmailOTP.cs" />
     <Compile Include="ViewModels\SendSMSRequest.cs" />
     <Compile Include="ViewModels\Transactions.cs" />
@@ -392,6 +394,8 @@
     <Content Include="Views\Customers\RegisterExternalCustomer.cshtml" />
     <Content Include="Views\Customers\AddExternalCustomerAccounts.cshtml" />
     <Content Include="Views\Customers\UpdateCustomerLimit.cshtml" />
+    <Content Include="Views\Reports\GetRegistrationReport.cshtml" />
+    <Content Include="Views\Reports\GetRegistraterReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

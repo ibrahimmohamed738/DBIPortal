@@ -22,5 +22,6 @@ namespace DBI_eDahab.Web.ViewModels
         [Display(Name = "Name")]
         public string EDahabName { get; set; } 
         public string Remarks { get; set; }
+        public string AgentCode { get; set; }
     }
 }

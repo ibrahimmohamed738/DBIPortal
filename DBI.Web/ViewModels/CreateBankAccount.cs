@@ -20,5 +20,6 @@ namespace DBI_eDahab.Web.ViewModels
         public bool Verified { get; set; } = false;
         public string Remarks { get; set; }
         public string Email { get; set; }
+        public string AgentCode { get; set; }
     }
 }

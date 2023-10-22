@@ -297,5 +297,88 @@ namespace DBI_eDahab.Web.Controllers
             return RedirectToAction("Customers");
         }
 
+
+        [PermissionRequired(Permissions.Registration_Report)]
+        public ActionResult GetRegistrationReport()
+        {
+            ViewBag.Message = TempData["Message"];
+            return View();
+        }
+
+
+        [HttpGet]
+        [PermissionRequired(Permissions.Registration_Report)]
+        public async Task<ActionResult> GetRegistraterReport(RegistrationReportRequest request, int page = 1)
+        {
+            List<GetRegistrationReport> list = new List<GetRegistrationReport>();
+            var regisertation = new List<GetRegistrationReport>();
+            IPagedList<GetRegistrationReport> registrationReport = new PagedList<GetRegistrationReport>(regisertation, page, 30);
+            if (request.FromDate.HasValue && request.ToDate.HasValue || request.Market != null || request.Type != null)
+            {
+                if (request.Type == "SUBS")
+                {
+                    list = await _mobileBankAPI.GetSubscribersRegistration(request.Market, request.FromDate, request.ToDate);
+                    if (list == null)
+                    {
+                        TempData["Error"] = "Sorry! No data found ! 🤦‍♂️";
+                        RedirectToAction("GetRegistraterReport");
+                    }
+                    else
+                    {
+                        registrationReport = list.ToPagedList(page, list.Count > 0 ? list.Count : 1);
+                    }
+                }
+                else
+                {
+                    list = await _mobileBankAPI.GetMerchantsRegistration(request.Market, request.FromDate, request.ToDate);
+                    if (list == null)
+                    {
+                        TempData["Error"] = "Sorry! No data found ! 🤦‍♂️";
+                        RedirectToAction("GetRegistraterReport");
+                    }
+                    else 
+                    {
+                        registrationReport = list.ToPagedList(page, list.Count > 0 ? list.Count : 1);
+                    }
+                    
+                }
+            }
+            Session["RegisterationsSession"] = registrationReport;
+            return View(registrationReport);
+        }
+
+        public ActionResult ExportRegistrationsExcel()
+        {
+            var result = (PagedList<GetRegistrationReport>)Session["RegisterationsSession"];
+            if (result.Count == 0)
+            {
+                TempData["SessionNull"] = "Nothing to export";
+            }
+            else
+            {
+                GridView gv = new GridView();
+                /*List<Transaction> ExportedData = result.ToList();
+                for(int pageNumber = 2; pageNumber <= result.PageCount; pageNumber ++)
+                {
+                    List<Transaction> temp = (result.ToPagedList<Transaction>(pageNumber,result.PageSize).ToList());
+                    ExportedData.AddRange(temp);
+                }*/
+                gv.DataSource = result;
+                gv.DataBind();
+                Response.ClearContent();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment; filename=Registerations.xls");
+                Response.ContentType = "application/ms-excel";
+                Response.Charset = "";
+                StringWriter sw = new StringWriter();
+                HtmlTextWriter htw = new HtmlTextWriter(sw);
+                gv.RenderControl(htw);
+                Response.Output.Write(sw.ToString());
+                Response.Flush();
+                Response.End();
+                return RedirectToAction("GetRegistraterReport");
+            }
+            return RedirectToAction("GetRegistraterReport");
+        }
     }
 }

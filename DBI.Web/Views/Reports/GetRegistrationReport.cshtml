@@ -1,0 +1,113 @@
+﻿@model DBI_eDahab.Web.ViewModels.RegistrationReportRequest
+@{
+    ViewBag.Title = "Registration Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isNorth;
+    bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsNorth"], out isNorth);
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script src="~/Scripts/jquery-2.0.3.min.js"></script>
+
+<br />
+
+<div class="container">
+    @using (Html.BeginForm("GetRegistraterReport", "Reports", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-horizontal">
+            <h4> </h4>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <label>@ViewBag.Message</label>
+                </div>
+            }
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Customer Registeration Form</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <p></p>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FromDate, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(model => model.FromDate, new { @class = "form-control datepickerOne", autocomplete = "off", placeholder = "From Date", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ToDate, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(model => model.ToDate, new { @class = "form-control datepickerOne", autocomplete = "off", placeholder = "From Date", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            @if (isNorth)
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Market, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-6">
+                                        @Html.DropDownList("Market", new List<SelectListItem> { new SelectListItem { Text = "Somaliland", Value = "25265%", Selected = true }, { new SelectListItem { Text = "Puntaland", Value = "25266%" } } }, new { @class = "form-control" })
+
+                                        @Html.ValidationMessageFor(model => model.Market, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Market, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-7">
+                                        @Html.DropDownList("Market", new List<SelectListItem> { new SelectListItem { Text = "Somalia", Value = "25262%" } }, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Market, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            }
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Type, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-7">
+                                    @Html.DropDownList("Type", new List<SelectListItem> { new SelectListItem { Text = "SUBSCRIBER", Value = "SUBS", Selected = true }, { new SelectListItem { Text = "MERCHANT", Value = "MER" } } }, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <div class="col-md-offset-1 col-md-8">
+                            <input type="submit" value="Submit" class="btn btn-success" />
+
+                            <input type="reset" value="Clear Form" class="btn btn-warning" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section scripts
+ {
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".datepickerOne").datepicker();
+        });
+    </script>
+}

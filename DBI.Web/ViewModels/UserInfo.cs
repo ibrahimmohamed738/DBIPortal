@@ -13,5 +13,6 @@ namespace DBI_eDahab.Web.ViewModels
         public string Gender { get; set; }
         public string Msisdn { get; set; }
         public string Status { get; set; }
+        public string AgentCode { get; set; }
     }
 }

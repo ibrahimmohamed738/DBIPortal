@@ -1,0 +1,193 @@
+﻿@model  PagedList<DBI_eDahab.Web.ViewModels.GetRegistrationReport>
+@{
+    ViewBag.Title = "Registratration Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isNorth;
+    bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsNorth"], out isNorth);
+}
+<body>
+
+    <!-- END BREADCRUMB -->
+    <!-- PAGE TITLE -->
+    <!-- END PAGE TITLE -->
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- START DEFAULT DATATABLE -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3></h3>
+                    </div>
+                    <div class="panel-body">
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <strong>@TempData["SuccessMessage"]</strong>
+                            </div>
+                        }
+
+
+
+                        @if (TempData["Error"] != null)
+                        {
+                            <h4 class="alert alert-danger"> @TempData["Error"]</h4>
+                        }
+
+
+                        @if (TempData["SessionNull"] != null)
+                        {
+                            <h3 class="alert alert-danger">@TempData["SessionNull"]</h3>
+                        }
+
+                        <form method="get">
+
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+
+                                    <div class="input-group">
+
+                                        <input type="text" name="FromDate" class="form-control datepickerOne" placeholder="From Date" value="@DateTime.Now.ToShortDateString()" />
+                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <input type="text" name="ToDate" class="form-control datepickerOne" placeholder="To Date" value="@DateTime.Now.ToShortDateString()" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Market" class="form-control">
+                                            @if (isNorth)
+                                            {
+                                                <option value="25265%">Somaliland</option>
+                                                <option value="25266%">Puntland</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="25262%">Somalia</option>
+                                            }
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select name="Type" class="form-control">
+                                            <option value="SUBS">SUBSCRIBER</option>
+                                            <option value="MER">MERCHANT</option>
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Search</button> |
+                                        <a href="~/Reports/ExportRegistrationsExcel" class="btn  btn-warning"> Export Excel</a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        EDahabName
+                                    </th>
+                                    <th>
+                                        Msisdn
+                                    </th>
+                                    <th>
+                                        AgentCode
+                                    </th>
+                                    <th>
+                                        AccountNo
+                                    </th>
+                                    <th>
+                                        CreatedOn
+                                    </th>
+                                    <th>
+                                        EDahabType
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            @{
+                                <tbody>
+
+                                    @foreach (var list in Model)
+                                    {
+                                        <tr>
+                                            <td>@list.EDahabName</td>
+                                            <td>@list.Msisdn</td>
+                                            <td>@list.AgentCode</td>
+                                            <td>@list.AccountNo</td>
+                                            <td>@list.CreatedOn.ToShortDateString()</td>
+                                            <td>@list.EDahabType</td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            }
+                        </table>
+                        <div class="pagedList pull-right" data-otf-target="#RestaurantList">
+                            @Html.PagedListPager(Model, page => Url.Action("GetRegistraterReport", new
+                       {
+                           page,
+                           FromDate = Request.QueryString["FromDate"],
+                           ToDate = Request.QueryString["ToDate"],
+                           Market = Request.QueryString["Market"],
+                           Type = Request.QueryString["Type"],
+
+                       }),PagedListRenderOptions.MinimalWithItemCountText)
+                        </div>
+                    </div>
+                </div>
+                <!-- END DEFAULT DATATABLE -->
+                <!-- START SIMPLE DATATABLE -->
+                <!-- END SIMPLE DATATABLE -->
+            </div>
+        </div>
+
+    </div>
+    <!-- PAGE CONTENT WRAPPER -->
+
+</body>
+
+
+@section scripts
+ {
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".datepickerOne").datepicker();
+        });
+    </script>
+}

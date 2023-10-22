@@ -83,7 +83,8 @@ namespace DBI_eDahab.Web.Controllers
 
         public async Task<ActionResult> GetEdahabCustomerPhoto(string MSISDN)
         {
-            var photo = await _dahab.GetSubscriberPhoto(MSISDN);
+            var userInfo = await _dahab.GetUserInfo(MSISDN);
+            var photo = await _dahab.GetSubscriberPhoto(userInfo.Msisdn);
             return File(photo, "image/jpg");
         }
 
@@ -97,8 +98,10 @@ namespace DBI_eDahab.Web.Controllers
         [PermissionRequired(Permissions.Register_customers)]
         [HttpPost]
         public async Task<ActionResult> RegisterCustomer(CreateBankAccount custForm)
-        {       
-            custForm.MSISDN = 252 + custForm.MSISDN;
+        {
+            var userInfo = await _dahab.GetUserInfo(custForm.MSISDN);
+
+            custForm.MSISDN = 252 + userInfo.Msisdn;
                 if (!ModelState.IsValid)
                 {
                     TempData["Error"] = "This account does not exist";
@@ -110,8 +113,9 @@ namespace DBI_eDahab.Web.Controllers
                 custForm.PIN = pin;
                 custForm.CreatedBy = userName;
                 custForm.Remarks = userName + " new entry";
-                custForm.EDahabType = "";
+                custForm.EDahabType = custForm.EDahabType ?? "";
                 custForm.Email = custForm.Email ?? "";
+                custForm.AgentCode = userInfo.AgentCode;
                 var response = await _mobileBankAPI.CreateAccount(custForm);
 
                 if (response.Success)
@@ -168,7 +172,8 @@ namespace DBI_eDahab.Web.Controllers
                     Active = custForm.Active,
                     Verified = custForm.Verified,
                     CreatedOn = custForm.CreatedOn,
-                    Email = custForm.Email ?? ""
+                    Email = custForm.Email ?? "",
+                    AgentCode = custForm.MSISDN ?? ""
            
                 };
                 var response = await _mobileBankAPI.CreateAccount(model);
@@ -207,11 +212,23 @@ namespace DBI_eDahab.Web.Controllers
             }
             else
             {
+                var userInfo = await _dahab.GetUserInfo(custForm.MSISDN.StartsWith("252") ? custForm.MSISDN.Remove(0,3) : custForm.MSISDN);
+
+                if (userInfo != null)
+                {
+                    custForm.MSISDN = "252" + userInfo.Msisdn;
+                    custForm.AgentCode = userInfo.AgentCode;
+                }
+                else
+                {
+                    custForm.MSISDN = custForm.MSISDN;
+                    custForm.AgentCode = custForm.MSISDN;
+                }
                 var username = User.Identity.Name.ToString();
                 AuditLog auditLogRecord = new AuditLog { UserName = username, ActivityType = "AddCustomerAccount", AffectedParty = custForm.AccountNo };
                 custForm.AccountNo = (await _fluxCubeApi.GetCustomerInfo(new AccountInfoRequest { AlternateAccountId = custForm.AccountNo, Entity = "DBI" })).AccountId;
                 custForm.CreatedBy = username;
-                custForm.EDahabType = "";
+                custForm.EDahabType = custForm.EDahabType ?? "";
                 custForm.DailyLimit = custForm.NewDailyLimit;
                 custForm.Remarks = username + " New entry.";
                 var response = await _mobileBankAPI.LinkAccount(custForm);

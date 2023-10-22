@@ -19,5 +19,6 @@ namespace DBI_eDahab.Web.ViewModels
         public DateTime ModifiedOn { get; set; }
         public string Remarks { get; set; }
         public string Email { get; set; }
+        public string AgentCode { get; set; }
     }
 }

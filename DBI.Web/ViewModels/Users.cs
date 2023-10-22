@@ -37,6 +37,7 @@ namespace DBI_eDahab.Web.ViewModels
             Reconciliation = 1 << 7,
             ProcessFailures = 1 << 8,
             Update_Limit = 1 << 9,
+            Registration_Report = 1 << 10,
         }
     }
 }

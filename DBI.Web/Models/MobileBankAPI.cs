@@ -79,7 +79,8 @@ namespace DBI_eDahab.Web.Models
                     ModifiedBy = result.Data.ModifiedBy,
                     ModifiedOn = result.Data.ModifiedOn,
                     Remarks = result.Data.Remarks,
-                    Email = result.Data.Email
+                    Email = result.Data.Email,
+                    AgentCode = result.Data.AgentCode
                 };
                 return account;
             }
@@ -234,6 +235,65 @@ namespace DBI_eDahab.Web.Models
 
         }
 
+        public async Task<GetCustomerAccount> GetMerchantsRegistration(string msisdn, string accountNo)
+        {
+
+            using (var _client = new HttpClient())
+            {
+                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
+                await GetToken();
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
+                var response = await _client.GetAsync($"DahabBank/get-account/{msisdn}/{accountNo}");
+                var result = await response.Content.ReadAsAsync<DahabResponse<GetCustomerAccount>>();
+                if (result == null)
+                    return null;
+
+                return result.Data;
+            }
+
+        }
+
+
+        public async Task<List<GetRegistrationReport>> GetSubscribersRegistration(string market, DateTime? fromDate, DateTime? toDate)
+        {
+
+            using (var _client = new HttpClient())
+            {
+                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
+                await GetToken();
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
+                var response = await _client.GetAsync($"DahabBank/get-registration-report-subscribers?market={market}&fromDate={fromDate?.ToShortDateString()}&toDate={toDate?.ToShortDateString()}");
+                var result = await response.Content.ReadAsAsync<DahabResponse<List<GetRegistrationReport>>>();
+                if (result is null)
+                {
+                    return new List<GetRegistrationReport>();
+                }
+
+                return result.Data;
+            }
+
+        }
+
+
+        public async Task<List<GetRegistrationReport>> GetMerchantsRegistration(string market, DateTime? fromDate, DateTime? toDate)
+        {
+
+            using (var _client = new HttpClient())
+            {
+                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
+                await GetToken();
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
+                var response = await _client.GetAsync($"DahabBank/get-registration-report-merchants?market={market}&fromDate={fromDate?.ToShortDateString()}&toDate={toDate?.ToShortDateString()}");
+                var result = await response.Content.ReadAsAsync<DahabResponse<List<GetRegistrationReport>>>();
+                if (result is null)
+                {
+                    return new List<GetRegistrationReport>();
+                }
+
+                return result.Data;
+            }
+
+        }
 
     }
 }
