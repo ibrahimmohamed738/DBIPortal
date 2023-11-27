@@ -110,9 +110,9 @@ namespace DBI_eDahab.Web.Controllers
                         eventLog.Source = "Application";
                         eventLog.WriteEntry(checkDBITrans.ExternalTransactionId + checkDBITrans.FCUBSTransactionId, EventLogEntryType.Information, 101, 1);
                     }
-                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, checkDBITrans.TransactionCode, true);
+                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, checkDBITrans.FCUBSTransactionId, true);
                     _usersRepository.LogUserAction(new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ProcessFailedTransaction", Description = "Process Failed Transaction", AffectedParty = trans.AccountId });
-                    TempData["SuccessMessage"] = "Transaction updated successfully";
+                    TempData["SuccessMessage"] = $"Transaction updated successfully With Bank transactions Id {checkDBITrans.FCUBSTransactionId}";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
                 var createTrans = new CreateTransactionRequest
@@ -132,7 +132,7 @@ namespace DBI_eDahab.Web.Controllers
                 {
                     _repository.UpdateTransactionLog_DBISide(true, true, transactionID, res.TransactionCode,true);
                     _usersRepository.LogUserAction(new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ProcessFailedTransaction", Description = "Process Failed Transaction", AffectedParty = trans.AccountId });
-                    TempData["SuccessMessage"] = "Transaction processed successfully";
+                    TempData["SuccessMessage"] = $"Transaction processed successfully With Bank transactions Id {res.TransactionCode}";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
                 else
@@ -162,7 +162,7 @@ namespace DBI_eDahab.Web.Controllers
                 if (dahabRes.StatusCode == "200")
                 {
                     _repository.UpdateTransactionLog_eDahabSide(true, true, trans.Narration, dahabRes.TransactionId, true);
-                    TempData["SuccessMessage"] = $"Transaction processed successfully.\n{dahabRes.Message}";
+                    TempData["SuccessMessage"] = $"Transaction processed successfully with eDahab Transaction ID {dahabRes.TransactionId}.";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
                 else if (dahabRes.StatusCode == "IMTCODE31")
@@ -174,7 +174,7 @@ namespace DBI_eDahab.Web.Controllers
                         return Redirect(Request.UrlReferrer.ToString());
                     }
                     _repository.UpdateTransactionLog_eDahabSide(true, true, transactionID, edahabCheck.TransferId, true);
-                    TempData["SuccessMessage"] = "Transaction updated successfully";
+                    TempData["SuccessMessage"] = $"Transaction updated successfully with eDahab Transaction ID {edahabCheck.TransferId}";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
                 else 
@@ -313,11 +313,11 @@ namespace DBI_eDahab.Web.Controllers
             List<GetRegistrationReport> list = new List<GetRegistrationReport>();
             var regisertation = new List<GetRegistrationReport>();
             IPagedList<GetRegistrationReport> registrationReport = new PagedList<GetRegistrationReport>(regisertation, page, 30);
-            if (request.FromDate.HasValue && request.ToDate.HasValue || request.Market != null || request.Type != null)
+            if (request.FromDate.HasValue && request.ToDate.HasValue || request.Market != null || request.Type != null || request.Branch != null)
             {
                 if (request.Type == "SUBS")
                 {
-                    list = await _mobileBankAPI.GetSubscribersRegistration(request.Market, request.FromDate, request.ToDate);
+                    list = await _mobileBankAPI.GetSubscribersRegistration(request.Market, request.FromDate, request.ToDate, request.Branch);
                     if (list == null)
                     {
                         TempData["Error"] = "Sorry! No data found ! 🤦‍♂️";
@@ -330,7 +330,7 @@ namespace DBI_eDahab.Web.Controllers
                 }
                 else
                 {
-                    list = await _mobileBankAPI.GetMerchantsRegistration(request.Market, request.FromDate, request.ToDate);
+                    list = await _mobileBankAPI.GetMerchantsRegistration(request.Market, request.FromDate, request.ToDate, request.Branch);
                     if (list == null)
                     {
                         TempData["Error"] = "Sorry! No data found ! 🤦‍♂️";

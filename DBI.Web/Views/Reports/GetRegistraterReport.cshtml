@@ -80,6 +80,49 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
+                                        <select name="Branch" class="form-control">
+                                            @if (isNorth)
+                                            {
+                                                <option value="%" selected>All</option>
+                                                <option value="200">RO1 Somaliland</option>
+                                                <option value="201">Hargeisa Branch</option>
+                                                <option value="202">Burao Branch</option>
+                                                <option value="203">Berbera Branch</option>
+                                                <option value="204">Borama Branch</option>
+                                                <option value="205">Lasanod Branch</option>
+                                                <option value="206">Erigavo Branch</option>
+                                                <option value="207">Wajaale Branch</option>
+                                                <option value="208">Star Branch</option>
+                                                <option value="209">Jigjiga Yar Branch</option>
+                                                <option value="210">Theatre Branch</option>
+                                                <option value="302">Bosaso Branch</option>
+                                                <option value="306">Garowe Branch</option>
+                                                <option value="307">Galkayo Branch</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="%" selected>All</option>
+                                                <option value="300">RO2 Somalia</option>
+                                                <option value="301">Mogadishu Branch</option>
+                                                <option value="303">Beladweyn Branch</option>
+                                                <option value="304">Baidao Branch</option>
+                                                <option value="305">Kismayo Branch</option>
+                                                <option value="308">Bakaro Branch</option>
+                                                <option value="309">Hamarweyne Branchh</option>
+                                                <option value="310">Suuq baad</option>
+                                                <option value="311">Jowhar Branch</option>
+                                                <option value="312">Beledhawo Branch</option>
+                                                <option value="313">Abud waaq</option>
+                                                <option value="314">Dusamareb Branch</option>
+                                                <option value="315">Banadir Branch</option>
+                                            }
+                                        </select>
+                                        <span class="input-group-addon add-on"><span class="fa fa-angle-down"></span></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
                                         <select name="Type" class="form-control">
                                             <option value="SUBS">SUBSCRIBER</option>
                                             <option value="MER">MERCHANT</option>
@@ -130,6 +173,10 @@
                                     <th>
                                         EDahabType
                                     </th>
+                                    <th>Branch</th>
+                                    <th>Created By</th>
+                                    <th>Verified By</th>
+                                    <th>Verified</th>
                                 </tr>
                             </thead>
 
@@ -145,6 +192,19 @@
                                             <td>@list.AccountNo</td>
                                             <td>@list.CreatedOn.ToShortDateString()</td>
                                             <td>@list.EDahabType</td>
+                                            <td>@list.Branch</td>
+                                            <td>@list.CreatedBy</td>
+                                            <td>@list.VerifiedBy</td>
+                                            @if (list.Verified == true)
+                                            {
+                                                <td><span class="label label-success">Yes</span></td>
+                                            }
+
+                                            @if (list.Verified == false)
+                                            {
+                                                <td><span class="label label-danger">No</span></td>
+                                            }
+
                                         </tr>
                                     }
                                 </tbody>
@@ -159,8 +219,9 @@
                            ToDate = Request.QueryString["ToDate"],
                            Market = Request.QueryString["Market"],
                            Type = Request.QueryString["Type"],
+                           Branch = Request.QueryString["Branch"]
 
-                       }),PagedListRenderOptions.MinimalWithItemCountText)
+                       }), PagedListRenderOptions.MinimalWithItemCountText)
                         </div>
                     </div>
                 </div>

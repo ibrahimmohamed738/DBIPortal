@@ -13,5 +13,9 @@ namespace DBI_eDahab.Web.ViewModels
         public string AccountNo { get; set; }
         public DateTime CreatedOn { get; set; }
         public string EDahabType { get; set; }
+        public int Branch { get; set; }
+        public string CreatedBy { get; set; }
+        public string VerifiedBy { get; set; }
+        public bool Verified { get; set; }
     }
 }

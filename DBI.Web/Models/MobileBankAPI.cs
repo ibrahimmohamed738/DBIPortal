@@ -254,7 +254,7 @@ namespace DBI_eDahab.Web.Models
         }
 
 
-        public async Task<List<GetRegistrationReport>> GetSubscribersRegistration(string market, DateTime? fromDate, DateTime? toDate)
+        public async Task<List<GetRegistrationReport>> GetSubscribersRegistration(string market, DateTime? fromDate, DateTime? toDate, string branch)
         {
 
             using (var _client = new HttpClient())
@@ -262,7 +262,7 @@ namespace DBI_eDahab.Web.Models
                 _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
                 await GetToken();
                 _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
-                var response = await _client.GetAsync($"DahabBank/get-registration-report-subscribers?market={market}&fromDate={fromDate?.ToShortDateString()}&toDate={toDate?.ToShortDateString()}");
+                var response = await _client.GetAsync($"DahabBank/get-registration-report-subscribers?market={market}&fromDate={fromDate?.ToShortDateString()}&toDate={toDate?.ToShortDateString()}&branch={branch}");
                 var result = await response.Content.ReadAsAsync<DahabResponse<List<GetRegistrationReport>>>();
                 if (result is null)
                 {
@@ -275,7 +275,7 @@ namespace DBI_eDahab.Web.Models
         }
 
 
-        public async Task<List<GetRegistrationReport>> GetMerchantsRegistration(string market, DateTime? fromDate, DateTime? toDate)
+        public async Task<List<GetRegistrationReport>> GetMerchantsRegistration(string market, DateTime? fromDate, DateTime? toDate, string branch)
         {
 
             using (var _client = new HttpClient())
@@ -283,7 +283,7 @@ namespace DBI_eDahab.Web.Models
                 _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
                 await GetToken();
                 _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
-                var response = await _client.GetAsync($"DahabBank/get-registration-report-merchants?market={market}&fromDate={fromDate?.ToShortDateString()}&toDate={toDate?.ToShortDateString()}");
+                var response = await _client.GetAsync($"DahabBank/get-registration-report-merchants?market={market}&fromDate={fromDate?.ToShortDateString()}&toDate={toDate?.ToShortDateString()}&branch={branch}");
                 var result = await response.Content.ReadAsAsync<DahabResponse<List<GetRegistrationReport>>>();
                 if (result is null)
                 {

@@ -16,5 +16,6 @@ namespace DBI_eDahab.Web.ViewModels
         public DateTime? ToDate { get; set; }
         [Required]
         public string Type { get; set; }
+        public string Branch { get; set; }
     }
 }
