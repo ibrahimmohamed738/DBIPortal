@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace DBI_eDahab.Web.Controllers
 {
@@ -32,19 +33,28 @@ namespace DBI_eDahab.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out bool isNorth);
                 var hasher = System.Security.Cryptography.SHA1.Create();
                 var hash = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(loginForm.Password));
                 string hashedPassword = string.Join("", hash.Select(b => b.ToString("x2")));
                 var user = _usersRepository.AuthenticateUser(loginForm.UserName, hashedPassword);
                 var credentialsAreValid = user != null;
                 bool use2FA;
-                bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["Use2FA"], out use2FA);
+                bool.TryParse(ConfigurationManager.AppSettings["Use2FA"], out use2FA);
                 if (credentialsAreValid && use2FA)
                 {
                     var token = new Random().Next(1000, 9999).ToString();
                     Session["User"] = user;
                     HttpContext.Cache[string.Format("{0}'s CurrentPermissions", user.UserName)] = user.CurrentPermissions;
-                    await _fluxCubeApi.SendSmsAsync("DBI", user.MobileNumber, token);
+                    if (isNorth)
+                    {
+                        await _fluxCubeApi.SendSmsAsyncNorth("DBI", user.MobileNumber, token);
+                    }
+                    else
+                    {
+                        await _fluxCubeApi.SendSmsAsync("DBI", user.MobileNumber, token);
+                    }
+                    
                     Session["Token"] = token;
                     return RedirectToAction("Token");
                 }
@@ -65,11 +75,20 @@ namespace DBI_eDahab.Web.Controllers
         }
         public async Task<ActionResult> ResendToken()
         {
+            bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out bool isNorth);
             var user = Session["User"] as Users;
             var expectedToken = Session["Token"] as string;
             if (user != null && expectedToken != null)
             {
                 var token = new Random().Next(1000, 9999).ToString();
+                if (isNorth)
+                {
+                    await _fluxCubeApi.SendSmsAsyncNorth("DBI", user.MobileNumber, token);
+                }
+                else
+                {
+                    await _fluxCubeApi.SendSmsAsync("DBI", user.MobileNumber, token);
+                }
                 await _fluxCubeApi.SendSmsAsync("DBI",user.MobileNumber,token);
                 Session["Token"] = token;
                 TempData["SuccessMessage"] = "Token has been resent.";

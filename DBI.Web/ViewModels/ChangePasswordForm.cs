@@ -18,9 +18,10 @@ namespace DBI_eDahab.Web.ViewModels
         public string OldPassword { get; set; }
 
         [Required, StringLength(32, MinimumLength = 8), Display(Name = "New Password")]
+        [RegularExpression("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])|(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])).{8,}$", ErrorMessage = "Passwords must be at least 8 characters and contain the following: upper case (A-Z), lower case (a-z), number (0-9) and special character (e.g. !@#$%^&*)")]
         public string NewPassword { get; set; }
 
-        [Required, StringLength(32, MinimumLength = 8), Display(Name = "Confirm New Password")]
+        [Compare("NewPassword", ErrorMessage = "Password and Confirm Password Should be Same")]
         public string ConfirmNewPassword { get; set; }
 
         public static string HashedPassword(string password)

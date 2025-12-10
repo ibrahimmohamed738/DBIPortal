@@ -9,6 +9,8 @@ namespace DBI_eDahab.Web.ViewModels
     public class CreateBankAccount
     {
         [Required]
+        public string AccountId { get; set; }
+        [Required]
         public string MSISDN { get; set; }
         [Required]
         public string EDahabName { get; set; }

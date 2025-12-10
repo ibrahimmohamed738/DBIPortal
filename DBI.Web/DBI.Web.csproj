@@ -52,6 +52,15 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EPPlus, Version=7.5.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.5.1\lib\net35\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=7.5.0.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.7.5.0\lib\net35\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=7.5.0.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.7.5.0\lib\net35\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -70,6 +79,8 @@
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -86,6 +97,7 @@
       <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Cors, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.6\lib\net45\System.Web.Cors.dll</HintPath>
@@ -155,6 +167,7 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -172,6 +185,7 @@
     <Compile Include="Helpers\EnumHelpers.cs" />
     <Compile Include="Helpers\PermissionRequired.cs" />
     <Compile Include="Models\DahabApi.cs" />
+    <Compile Include="Models\ExcelData.cs" />
     <Compile Include="Models\FluxCubeApi.cs" />
     <Compile Include="Models\MobileBankAPI.cs" />
     <Compile Include="Models\Repository.cs" />
@@ -212,6 +226,7 @@
     <Compile Include="ViewModels\SendSMSRequest.cs" />
     <Compile Include="ViewModels\Transactions.cs" />
     <Compile Include="ViewModels\UpdateLimitRequest.cs" />
+    <Compile Include="ViewModels\UpdateStatusRequest.cs" />
     <Compile Include="ViewModels\UpdateUserForm.cs" />
     <Compile Include="ViewModels\UserFormModelBinder.cs" />
     <Compile Include="ViewModels\UserInfo.cs" />
@@ -259,7 +274,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\gorilla.jpg" />
     <Content Include="Content\logo.png" />
     <Content Include="Content\theme-dark.css" />
     <Content Include="Content\theme-default.css" />
@@ -396,9 +410,12 @@
     <Content Include="Views\Customers\UpdateCustomerLimit.cshtml" />
     <Content Include="Views\Reports\GetRegistrationReport.cshtml" />
     <Content Include="Views\Reports\GetRegistraterReport.cshtml" />
+    <Content Include="Views\Customers\RegisterCustomer - Copy.cshtml" />
+    <Content Include="Views\Reports\BulkUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Templates\" />
     <Folder Include="Infrastructure\" />
     <Folder Include="Views\Registration\" />
   </ItemGroup>
@@ -429,7 +446,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54868</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56878/</IISUrl>
+          <IISUrl>http://localhost:56879/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

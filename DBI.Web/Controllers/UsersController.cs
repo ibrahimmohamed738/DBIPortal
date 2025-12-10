@@ -11,10 +11,8 @@ using DBI_eDahab.Web.Helpers;
 using System.Web.Configuration;
 using System.Net;
 using System.Threading.Tasks;
-using System.Net.Http;
-using Newtonsoft.Json;
-using System.Text;
 using static DBI_eDahab.Web.ViewModels.Users;
+using System.Configuration;
 
 namespace DBI_eDahab.Web.Controllers
 {
@@ -51,6 +49,7 @@ namespace DBI_eDahab.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> AddUsers(string userId, Users addUser)
         {
+            bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out bool isNorth);
             if (ModelState.IsValid)
             {
                 if (_usersRepository.GetUser(addUser.UserName) != null)
@@ -65,7 +64,15 @@ namespace DBI_eDahab.Web.Controllers
                     var hashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(randomPassword, "SHA1");
                     addUser.Password = hashedPassword;
                     _usersRepository.AddUser(addUser);
-                    await _fluxCubeApi.SendSmsAsync("DBI", addUser.MobileNumber, $"Your Username is {addUser.UserName} and Password is: {randomPassword}");
+                    if (isNorth)
+                    {
+                        await _fluxCubeApi.SendSmsAsyncNorth("DBI", addUser.MobileNumber, $"Your Username is {addUser.UserName} and Password is: {randomPassword}");
+                    }
+                    else
+                    {
+                        await _fluxCubeApi.SendSmsAsync("DBI", addUser.MobileNumber, $"Your Username is {addUser.UserName} and Password is: {randomPassword}");
+                    }
+                    // await _fluxCubeApi.SendSmsAsync("DBI", addUser.MobileNumber, $"Your Username is {addUser.UserName} and Password is: {randomPassword}");
                     TempData["SuccessMessage"] = "User has been successfully created.";
                     AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "CreateUser", Description = $"Create new user: {addUser.FullName},{addUser.MobileNumber}", AffectedParty = addUser.UserName };
                     _usersRepository.LogUserAction(auditLogRecord);
@@ -92,6 +99,7 @@ namespace DBI_eDahab.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateUser([ModelBinder(typeof(UserFormModelBinder))] UpdateUserForm updateUserForm)
         {
+            bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out bool isNorth);
             if (_usersRepository != null)
             {
                 _usersRepository.UpdateUser(updateUserForm);
@@ -106,7 +114,15 @@ namespace DBI_eDahab.Web.Controllers
 #pragma warning restore 618
                     _usersRepository.ChangePassword(updateUserForm.UserName, hashedPassword);
                     ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    await _fluxCubeApi.SendSmsAsync("DBI", updateUserForm.MobileNumber, $"Your Password is: {randomPassword}");
+                    if (isNorth)
+                    {
+                        await _fluxCubeApi.SendSmsAsyncNorth("DBI", updateUserForm.MobileNumber, $"Your Password is: {randomPassword}");
+                    }
+                    else
+                    {
+                        await _fluxCubeApi.SendSmsAsync("DBI", updateUserForm.MobileNumber, $"Your Password is: {randomPassword}");
+                    }
+                    //await _fluxCubeApi.SendSmsAsync("DBI", updateUserForm.MobileNumber, $"Your Password is: {randomPassword}");
                     AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ResetUserPassword", Description = $"Reset password of: {updateUserForm.Name},{updateUserForm.MobileNumber}", AffectedParty = updateUserForm.UserName };
                     _usersRepository.LogUserAction(auditLogRecord);
                 }

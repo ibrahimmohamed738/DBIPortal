@@ -261,7 +261,7 @@ namespace DBI_eDahab.Web.Models
                 if (reader.Read())
                 {
                     user = new Users();
-                    user.Id = (int)reader["Id"];
+                    user.Id = Convert.ToInt32(reader["Id"]);
                     user.FullName = reader["FullName"] as string;
                     user.UserName = reader["UserName"] as string;
                     user.MobileNumber = reader["MobileNumber"] as string;

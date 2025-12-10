@@ -2,6 +2,7 @@
 using DBI_eDahab.Web.Models;
 using DBI_eDahab.Web.ViewModels;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Configuration;
@@ -21,7 +22,17 @@ namespace DBI_eDahab.Web.Controllers
         MobileBankAPI _mobileBankAPI = new MobileBankAPI();
         public async Task<ActionResult> GetEdahabName(string MSISDN)
         {
-            var edahabName = await _dahab.GetUserInfo(MSISDN);
+            var normalMsisdn = "";
+            if (MSISDN.Length == 12)
+            {
+                normalMsisdn = MSISDN.Substring(3);
+            }
+            else 
+            {
+                normalMsisdn = MSISDN;
+            }
+            
+            var edahabName = await _dahab.GetUserInfo(normalMsisdn);
             return Json(edahabName, JsonRequestBehavior.AllowGet);
         }
 
@@ -83,7 +94,16 @@ namespace DBI_eDahab.Web.Controllers
 
         public async Task<ActionResult> GetEdahabCustomerPhoto(string MSISDN)
         {
-            var userInfo = await _dahab.GetUserInfo(MSISDN);
+            var normalMsisdn = "";
+            if (MSISDN.Length == 12)
+            {
+                normalMsisdn = MSISDN.Substring(3);
+            }
+            else
+            {
+                normalMsisdn = MSISDN;
+            }
+            var userInfo = await _dahab.GetUserInfo(normalMsisdn);
             var photo = await _dahab.GetSubscriberPhoto(userInfo.Msisdn);
             return File(photo, "image/jpg");
         }
@@ -99,7 +119,17 @@ namespace DBI_eDahab.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> RegisterCustomer(CreateBankAccount custForm)
         {
-            var userInfo = await _dahab.GetUserInfo(custForm.MSISDN);
+            var normalMsisdn = "";
+            if (custForm.MSISDN.Length == 12)
+            {
+                normalMsisdn = custForm.MSISDN.Substring(3);
+            }
+            else
+            {
+                normalMsisdn = custForm.MSISDN;
+            }
+
+            var userInfo = await _dahab.GetUserInfo(normalMsisdn);
 
             custForm.MSISDN = 252 + userInfo.Msisdn;
                 if (!ModelState.IsValid)
@@ -226,12 +256,18 @@ namespace DBI_eDahab.Web.Controllers
                 }
                 var username = User.Identity.Name.ToString();
                 AuditLog auditLogRecord = new AuditLog { UserName = username, ActivityType = "AddCustomerAccount", AffectedParty = custForm.AccountNo };
-                custForm.AccountNo = (await _fluxCubeApi.GetCustomerInfo(new AccountInfoRequest { AlternateAccountId = custForm.AccountNo, Entity = "DBI" })).AccountId;
+                var accountInfo = await _fluxCubeApi.GetCustomerInfo(new AccountInfoRequest { AlternateAccountId = custForm.AccountNo, Entity = "DBI" });
+                if (accountInfo.Mobile != custForm.MSISDN)
+                {
+                    TempData["Error"] = "eDahab mobile number and Account mobile doesn't match.";
+                }
+                custForm.AccountNo = accountInfo.AccountId;
                 custForm.CreatedBy = username;
                 custForm.EDahabType = custForm.EDahabType ?? "";
                 custForm.DailyLimit = custForm.NewDailyLimit;
                 custForm.Remarks = username + " New entry.";
                 var response = await _mobileBankAPI.LinkAccount(custForm);
+
                 if (response.Success)
                 {
                     auditLogRecord.Description = "Successful attempt to Add account no. to MSISDN: " + custForm.MSISDN;
@@ -286,6 +322,7 @@ namespace DBI_eDahab.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> ModifyCustomer(string userId, ModifyRequest editCustomer)
         {
+            bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out bool isNorth);
             AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ModifyCustomerAccount" };
             editCustomer.ModifiedBy = User.Identity.Name.ToString();
             editCustomer.Remarks = User.Identity.Name.ToString() + editCustomer.Remarks;
@@ -304,7 +341,15 @@ namespace DBI_eDahab.Web.Controllers
                 var result = await _mobileBankAPI.ChangePin(new ChangePinRequest { Msisdn = editCustomer.Msisdn, ModifiedBy = User.Identity.Name.ToString(), NewPassword = randomPassword });
                 if (result.Success)
                 {
-                    await _fluxCubeApi.SendSmsAsync("DBI", editCustomer.Msisdn.Remove(0,3), $"Macmiil, Pin-ka cusubi waa : {randomPassword}");
+                    if (isNorth)
+                    {
+                        await _fluxCubeApi.SendSmsAsyncNorth("DBI", editCustomer.Msisdn.Remove(0, 3), $"Macmiil, Pin-ka cusubi waa : {randomPassword}");
+                    }
+                    else
+                    {
+                        await _fluxCubeApi.SendSmsAsync("DBI", editCustomer.Msisdn.Remove(0, 3), $"Macmiil, Pin-ka cusubi waa : {randomPassword}");
+                    }
+                    
                     //await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity= "DBI", Message = $"Macmiil, Pin-ka cusubi waa : {randomPassword}", Mobile = editCustomer.Msisdn });
                     auditLogRecord.ActivityType = "ResetCustomerPIN";
                     auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.Msisdn + ") PIN";
@@ -360,6 +405,7 @@ namespace DBI_eDahab.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> VerifyCustomer(GetCustomerAccount customer, string submitButton)
         {
+            bool.TryParse(ConfigurationManager.AppSettings["IsNorth"], out bool isNorth);
             AuditLog auditLogRecord = new AuditLog { UserName = User.Identity.Name.ToString(), AffectedParty = customer.AccountNo };
             switch (submitButton)
             {
@@ -367,7 +413,15 @@ namespace DBI_eDahab.Web.Controllers
                     var response = await _mobileBankAPI.VerifyAccount(new VerifyCustomer { AccountNo = customer.AccountNo, VerifiedBy = User.Identity.Name.ToString() });
                     if (response.Success)
                     {
-                        await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity = "DBI", Message = $"Dear customer your DBI account {customer.AccountNo} has been successfully verified", Mobile = customer.MSISDN });
+                        if (isNorth)
+                        {
+                            await _fluxCubeApi.SendSmsAsyncNorth("DBI", customer.MSISDN, $"Dear customer your DBI account {customer.AccountNo} has been successfully verified");
+                        }
+                        else
+                        {
+                            await _fluxCubeApi.SendSmsAsync("DBI", customer.MSISDN, $"Dear customer your DBI account {customer.AccountNo} has been successfully verified");
+                        }
+                        //await _fluxCubeApi.SendSMS(new SendSMSRequest { Entity = "DBI", Message = $"Dear customer your DBI account {customer.AccountNo} has been successfully verified", Mobile = customer.MSISDN });
                         TempData["SuccessMessage"] = response.Message;
                         auditLogRecord.ActivityType = "VerifyCustomerAccount";
                         auditLogRecord.Description = "Successfully verified customer(" + customer.MSISDN + ") account";
@@ -382,7 +436,7 @@ namespace DBI_eDahab.Web.Controllers
                 case "Delete":
                     //_repository.DeleteCustomer(customer);
                     var result = await _mobileBankAPI.DeleteAccount(customer.AccountNo);
-                    if (result.Success)
+                    if (result != null && result.Success)
                     {
                         TempData["SuccessMessage"] = result.Message;
                         auditLogRecord.ActivityType = "DeleteCustomerAccount";

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 using static DBI_eDahab.Web.ViewModels.Users;
 using System.Diagnostics;
+using OfficeOpenXml;
 
 namespace DBI_eDahab.Web.Controllers
 {
@@ -68,7 +69,7 @@ namespace DBI_eDahab.Web.Controllers
             string branch = new UsersRepository().GetUser(User.Identity.Name.ToString()).Branch.ToString();
             if (branch == ConfigurationManager.AppSettings["HQBranch"])
                 branch = "%";
-            var result = await _mobileBankAPI.GetCustomers(page,term,branch);
+            var result = await _mobileBankAPI.GetCustomers(page, term, branch);
             //List<CustomerForm> list = _repository.GetCustomers((Session["User"] as Users).UserName,Term: term, DateFrom: DateFrom, DateTo: DateTo, Currency: Currency, Branch: Branch, Active: Active, Verified: Verified);
             ViewBag.CurrentPage = result.Data.CurrentPage;
             ViewBag.Pages = result.Data.Pages;
@@ -79,11 +80,11 @@ namespace DBI_eDahab.Web.Controllers
 
 
         [PermissionRequired(Permissions.Transactions)]
-        public ActionResult Transactions(FilterTransactions filter,int page = 1)
+        public ActionResult Transactions(FilterTransactions filter, int page = 1)
         {
             var transaction = new List<Transaction>();
-            IPagedList<Transaction> transactions = new PagedList<Transaction>(transaction, page,30);
-            if (filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null || filter.Status != null || filter.Currency != null || filter.Name != null || filter.Amount != null )
+            IPagedList<Transaction> transactions = new PagedList<Transaction>(transaction, page, 30);
+            if (filter.DateFrom.HasValue && filter.DateTo.HasValue || filter.term != null || filter.Status != null || filter.Currency != null || filter.Name != null || filter.Amount != null)
             {
                 List<Transaction> list = _repository.Transactions(filter, (Session["User"] as Users).UserName);
                 transactions = list.ToPagedList(page, list.Count > 0 ? list.Count : 1);
@@ -130,8 +131,8 @@ namespace DBI_eDahab.Web.Controllers
 
                 if (res.StatusCode == "200")
                 {
-                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, res.TransactionCode,true);
-                    _usersRepository.LogUserAction(new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "ProcessFailedTransaction", Description = "Process Failed Transaction", AffectedParty = trans.AccountId });
+                    _repository.UpdateTransactionLog_DBISide(true, true, transactionID, res.TransactionCode, true);
+                    _usersRepository.LogUserAction(new AuditLog { UserName = User.Identity.Name.ToString(), ActivityType = "SuccessProcesTransaction", Description = "Transaction Process Success", AffectedParty = trans.AccountId });
                     TempData["SuccessMessage"] = $"Transaction processed successfully With Bank transactions Id {res.TransactionCode}";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
@@ -146,14 +147,14 @@ namespace DBI_eDahab.Web.Controllers
             {
                 var cashinreq = new CashinRequest
                 {
-                   GTransactionId = trans.Narration,
-                   TransactionId = trans.DBITransactionId,
-                   Phone = trans.MSISDN,
-                   Amount = trans.Amount,
-                   Currency = trans.Currency == "USD" ? "101" : "102",
-                   AgentLongCode = ConfigurationManager.AppSettings["AgentMsisdn"].ToString()
+                    GTransactionId = trans.Narration,
+                    TransactionId = trans.DBITransactionId,
+                    Phone = trans.MSISDN,
+                    Amount = trans.Amount,
+                    Currency = trans.Currency == "USD" ? "101" : "102",
+                    AgentLongCode = ConfigurationManager.AppSettings["AgentMsisdn"].ToString()
                 };
-                CashResponse dahabRes = null ;
+                CashResponse dahabRes = null;
                 if (edahabInfo.CategoryCode.Equals("SUBS", StringComparison.OrdinalIgnoreCase))
                     dahabRes = await _dahab.SubscriberCashInAsync(cashinreq);
                 else
@@ -177,12 +178,12 @@ namespace DBI_eDahab.Web.Controllers
                     TempData["SuccessMessage"] = $"Transaction updated successfully with eDahab Transaction ID {edahabCheck.TransferId}";
                     return Redirect(Request.UrlReferrer.ToString());
                 }
-                else 
+                else
                 {
                     TempData["Error"] = dahabRes.Message;
                     return Redirect(Request.UrlReferrer.ToString());
                 }
-                
+
             }
             TempData["Error"] = "Transaction not found.";
             return Redirect(Request.UrlReferrer.ToString());
@@ -191,7 +192,8 @@ namespace DBI_eDahab.Web.Controllers
         [PermissionRequired(Permissions.Reconciliation)]
         public async Task<ActionResult> Reconciliation(FilterTransactions filter, int page = 1)
         {
-            var glBalance = await _fluxCubeApi.GetGLAccountBalance(new GLAccountRequest {
+            var glBalance = await _fluxCubeApi.GetGLAccountBalance(new GLAccountRequest
+            {
                 Entity = "DBI",
                 AccountId = "100200102",
                 BranchId = ConfigurationManager.AppSettings["GLBranch"].ToString(),
@@ -200,10 +202,10 @@ namespace DBI_eDahab.Web.Controllers
             ReconcilationBalances reconcilationBalances = new ReconcilationBalances();
             foreach (var item in glBalance)
             {
-                if(item.Currency == "SLS")
-                  reconcilationBalances.eDahabSLSAccountBalance = item.Balance;
+                if (item.Currency == "SLS")
+                    reconcilationBalances.eDahabSLSAccountBalance = item.Balance;
                 else
-                  reconcilationBalances.eDahabUSDAccountBalance = item.Balance;
+                    reconcilationBalances.eDahabUSDAccountBalance = item.Balance;
             }
 
             var agentBalance = await _dahab.GetAgentBalance(ConfigurationManager.AppSettings["AgentMsisdn"]);
@@ -336,11 +338,11 @@ namespace DBI_eDahab.Web.Controllers
                         TempData["Error"] = "Sorry! No data found ! 🤦‍♂️";
                         RedirectToAction("GetRegistraterReport");
                     }
-                    else 
+                    else
                     {
                         registrationReport = list.ToPagedList(page, list.Count > 0 ? list.Count : 1);
                     }
-                    
+
                 }
             }
             Session["RegisterationsSession"] = registrationReport;
@@ -379,6 +381,79 @@ namespace DBI_eDahab.Web.Controllers
                 return RedirectToAction("GetRegistraterReport");
             }
             return RedirectToAction("GetRegistraterReport");
+        }
+
+        [PermissionRequired(Permissions.Bulk_Update)]
+        [HttpGet]
+        public ActionResult BulkUpdate()
+        {
+            return View();
+        }
+
+
+        [PermissionRequired(Permissions.Bulk_Update)]
+        [HttpPost]
+        public async Task<ActionResult> BulkUpdate(HttpPostedFileBase file)
+        {
+            if (file == null || file.ContentLength == 0)
+            {
+                ViewBag.Message = "Please upload a valid Excel file.";
+                return View();
+            }
+
+            try
+            {
+                var excelDataList = new List<ExcelData>();
+
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    var worksheet = package.Workbook.Worksheets[0]; // First worksheet
+                    int rowCount = worksheet.Dimension.Rows;
+
+                    for (int row = 2; row <= rowCount; row++) // Start from row 2 (skip header)
+                    {
+                        excelDataList.Add(new ExcelData
+                        {
+                            AccountNumber = worksheet.Cells[row, 1].Value.ToString(),
+                            IsActive = Convert.ToBoolean(worksheet.Cells[row, 2].Value?.ToString())
+                        });
+                    }
+                }
+
+                await UpdateDatabase(excelDataList);
+                ViewBag.Message = "Data successfully uploaded and processed.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = $"Error: {ex.Message}";
+            }
+
+            return View();
+        }
+
+        [PermissionRequired(Permissions.Bulk_Update)]
+        [HttpGet]
+        public ActionResult DownloadTemplate()
+        {
+            string filePath = Server.MapPath("~/Content/Templates/Template.xlsx");
+            string fileName = "ExcelTemplate.xlsx";
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return HttpNotFound("Template file not found.");
+            }
+
+            return File(filePath, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        private async Task UpdateDatabase(IEnumerable<ExcelData> data)
+        {
+
+            foreach (var item in data)
+            {
+                var result = await _mobileBankAPI.UpdateAccountStatus(new UpdateStatusRequest { AccountNo = item.AccountNumber, Status = item.IsActive });
+            }
+
         }
     }
 }

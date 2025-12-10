@@ -167,6 +167,22 @@ namespace DBI_eDahab.Web.Models
 
         }
 
+        public async Task<DahabResponse<int>> UpdateAccountStatus(UpdateStatusRequest request)
+        {
+
+            using (var _client = new HttpClient())
+            {
+                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
+                await GetToken();
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
+
+                var response = await _client.PostAsJsonAsync("DahabBank/update-account-status", request);
+                var result = await response.Content.ReadAsAsync<DahabResponse<int>>();
+                return result;
+            }
+
+        }
+
         public async Task<DahabResponse<bool>> VerifyAccount(VerifyCustomer verifyRequest)
         {
 
@@ -191,7 +207,7 @@ namespace DBI_eDahab.Web.Models
                 _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["MobileBankAPI"]);
                 await GetToken();
                 _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
-                var response = await _client.DeleteAsync($"DahabBank/delete-customer-account/{accountNo}");
+                var response = await _client.PostAsJsonAsync($"DahabBank/delete-customer-account/{accountNo}","");
                 var result = await response.Content.ReadAsAsync<DahabResponse<bool>>();
                 return result;
             }

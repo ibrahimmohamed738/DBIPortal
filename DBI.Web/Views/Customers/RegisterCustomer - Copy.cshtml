@@ -40,22 +40,13 @@
                         <div class="col-lg-8">
                             <p></p>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-6">
-                                    <input type="search" id="AccountId" name="AccountId" value="" class="form-control" placeholder="Enter Account Number" />
-                                    @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger", @id = "msisdnValidation" })
-                                </div>
-                                <div class="col-md-3">
-                                    <button type="button" id="validateBankInfo" enabled="false" class="btn btn-sm btn-info">Validate</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 @Html.LabelFor(model => model.MSISDN, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-6">
-                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" readonly />
+                                    <input type="search" id="MSISDN" name="MSISDN" value="" class="form-control" placeholder="6XXXXXXX / Merchant Code" />
                                     @Html.ValidationMessageFor(model => model.MSISDN, "", new { @class = "text-danger", @id = "msisdnValidation" })
                                 </div>
                                 <div class="col-md-3">
+
                                     <button type="button" id="validateEdahabName" enabled="false" class="btn btn-sm btn-info">Validate</button>
                                     <button type="button" id="GetCustomerPhoto" class="btn btn-sm btn-primary pull-right">Get Photo</button>
                                 </div>
@@ -182,20 +173,7 @@
 
 
 
-        $("#validateBankInfo").click(function () {
-                $.ajax({
-                    url: "@Url.Content("~/Customers/GetDBIAccountHolder")",
 
-                    dataType: 'json', contentType: 'application/json',
-
-                    data: {
-                        AccountNo: $("#AccountId").val(),
-                    },
-                    success: function (data) {
-                        $("input[name=MSISDN]").val(data["Mobile"]);
-                    }
-                });
-            });
 
 
             $("#validateEdahabName").click(function () {

@@ -68,6 +68,23 @@ namespace DBI_eDahab.Web.Models
             }
         }
 
+        public async Task SendSmsAsyncNorth(string title, string phone, string message)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["SMSUrlNorth"]);
+                var request = new
+                {
+                    phone,
+                    title,
+                    message
+                };
+                var json = JsonConvert.SerializeObject(request);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                await client.PostAsync("DBI", data);
+            }
+        }
+
         public async Task<string> SendSMS(SendSMSRequest smsRequest)
         {
             var request = new StringContent(JsonConvert.SerializeObject(smsRequest), Encoding.UTF8, "application/json");

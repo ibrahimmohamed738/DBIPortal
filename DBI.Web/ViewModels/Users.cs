@@ -38,6 +38,7 @@ namespace DBI_eDahab.Web.ViewModels
             ProcessFailures = 1 << 8,
             Update_Limit = 1 << 9,
             Registration_Report = 1 << 10,
+            Bulk_Update = 1 << 11,
         }
     }
 }
