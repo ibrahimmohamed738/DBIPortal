@@ -372,7 +372,7 @@ namespace DBI_eDahab.Web.Controllers
                 {
                      
                     if (!string.IsNullOrWhiteSpace(TempData["Email"].ToString()))
-                        await _fluxCubeApi.SendEmail(new SendEmailOTP { Entity = "DBI", Email = TempData["Email"].ToString(), Message = $"Macmiil, Pin-kagu waa : {randomPassword}" });
+                        await _fluxCubeApi.SendEmail(new SendEmailOTP { Entity = "DBI", Email = TempData["Email"].ToString(), Message = $"{randomPassword}" });
 
                     auditLogRecord.ActivityType = "ResetCustomerPIN";
                     auditLogRecord.Description = "Successfully reseted customer(" + editCustomer.Msisdn + ") PIN";
