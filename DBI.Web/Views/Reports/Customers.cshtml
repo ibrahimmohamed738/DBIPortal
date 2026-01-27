@@ -57,23 +57,24 @@
                                                                                                                                                                                                                 <option value="210">Theatre Branch</option>
                                                                                                                                                                                                                                 <option value="302">Bosaso Branch</option>
                                                                                                                                                                                                                                                 <option value="306">Garowe Branch</option>
-                                                                                                                                                                                                                                                                <option value="307">Galkayo Branch</option> }
-                                                                                                                                                                                                                                                                            else
-                                                                                                                                                                                                                                                                            {
-                                                                                                                                                                                                                                                                <option value="" disabled selected>Branch</option>
-                                                                                                                                                                                                                                                                                <option value="300">RO2 Somalia</option>
-                                                                                                                                                                                                                                                                                                <option value="301">Mogadishu Branch</option>
-                                                                                                                                                                                                                                                                                                                <option value="303">Beladweyn Branch</option>
-                                                                                                                                                                                                                                                                                                                                <option value="304">Baidao Branch</option>
-                                                                                                                                                                                                                                                                                                                                                <option value="305">Kismayo Branch</option>
-                                                                                                                                                                                                                                                                                                                                                                <option value="308">Bakaro Branch</option>
-                                                                                                                                                                                                                                                                                                                                                                                <option value="309">Hamarweyne Branchh</option>
-                                                                                                                                                                                                                                                                                                                                                                                                <option value="310">Suuq baad</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                <option value="311">Jowhar Branch</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="312">Beledhawo Branch</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="313">Abud waaq</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="314">Dusamareb Branch</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="315">Banadir Branch</option>
+                                                                                                                                                                                                                                                                <option value="307">Galkayo Branch</option>
+                                                                                                                                                                                                                                                                                <option value="316">Biyo Kulule Branch</option> }
+                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                <option value="" disabled selected>Branch</option>
+                                                                                                                                                                                                                                                                                                <option value="300">RO2 Somalia</option>
+                                                                                                                                                                                                                                                                                                                <option value="301">Mogadishu Branch</option>
+                                                                                                                                                                                                                                                                                                                                <option value="303">Beladweyn Branch</option>
+                                                                                                                                                                                                                                                                                                                                                <option value="304">Baidao Branch</option>
+                                                                                                                                                                                                                                                                                                                                                                <option value="305">Kismayo Branch</option>
+                                                                                                                                                                                                                                                                                                                                                                                <option value="308">Bakaro Branch</option>
+                                                                                                                                                                                                                                                                                                                                                                                                <option value="309">Hamarweyne Branchh</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                <option value="310">Suuq baad</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="311">Jowhar Branch</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="312">Beledhawo Branch</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="313">Abud waaq</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="314">Dusamareb Branch</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="315">Banadir Branch</option>
 }
 
                                         </select>
@@ -174,24 +175,20 @@
 
                             @if (list.Active == "Y")
                             {
-            <td><span class="label label-success">Yes</span></td>
-}
+            <td><span class="label label-success">Yes</span></td>}
 
                             @if (list.Active == "N")
                             {
-            <td><span class="label label-danger">No</span></td>
-}
+            <td><span class="label label-danger">No</span></td>}
 
 
                             @if (list.Verified == true)
                             {
-            <td><span class="label label-success">Yes</span></td>
-}
+            <td><span class="label label-success">Yes</span></td>}
 
                             @if (list.Verified == false)
                             {
-            <td><span class="label label-danger">No</span></td>
-}
+            <td><span class="label label-danger">No</span></td>}
 
 
 
@@ -201,8 +198,7 @@
                             </td>
                         </tr>
 
-                    </tbody>
- } }
+                    </tbody> } }
                         </table>
                         <div class="pagedList pull-right" data-otf-target="#RestaurantList">
                             @*@for (int i = 1; i <= ViewBag.Pages; i++)
@@ -218,7 +214,7 @@
                                 Branch = Request.QueryString["Branch"],
 
                             }),
-                                 PagedListRenderOptions.MinimalWithItemCountText)
+                                                PagedListRenderOptions.MinimalWithItemCountText)
                         </div>
                     </div>
                 </div>
