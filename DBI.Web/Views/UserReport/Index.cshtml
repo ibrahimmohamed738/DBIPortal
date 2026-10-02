@@ -1,0 +1,503 @@
+﻿@model DBI_eDahab.Web.ViewModels.UserReportViewModel
+
+@{ 
+    ViewBag.Title = "User Report"; 
+}
+
+<body>
+
+    <div class="page-content-wrap">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <!-- FILTER PANEL -->
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        <h3></h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+            <div class="alert alert-success"
+                 role="alert">
+
+                <button type="button"
+                        class="close"
+                        data-dismiss="alert">
+
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+
+                </button>
+
+                <strong>
+                    @TempData["SuccessMessage"]
+                </strong>
+
+            </div>}
+
+
+                        @if (TempData["Error"] != null)
+                        {
+            <h4 class="alert alert-danger">
+                @TempData["Error"]
+            </h4>}
+
+
+                        <form method="get"
+                              action="@Url.Action("Index", "UserReport")">
+
+                            <div class="form-group">
+
+                                <!-- PLATFORM -->
+                                <div class="col-md-2">
+
+                                    <div class="input-group">
+
+                                        <input type="text"
+                                               class="form-control"
+                                               value="@Model.Platform"
+                                               readonly />
+
+                                        <span class="input-group-addon add-on">
+                                            <span class="fa fa-server"></span>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- BRANCH -->
+                                <div class="col-md-3">
+
+                                    <div class="input-group">
+
+                                        <select name="Branch"
+                                                id="Branch"
+                                                class="form-control">
+
+                                            <option value="">
+                                                All Branches
+                                            </option>
+
+                                            @foreach (var branch in Model.Branches)
+                                            {
+                                <option value="@branch.Value"
+                                        @(branch.Selected ? "selected=\"selected\"" : "")>
+
+                                    @branch.Text
+
+                                </option>}
+
+                                        </select>
+
+                                        <span class="input-group-addon add-on">
+
+                                            <span class="fa fa-angle-down"></span>
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- USERS -->
+                                <div class="col-md-3">
+
+                                    <div class="input-group">
+
+                                        <select name="UserId"
+                                                id="UserId"
+                                                class="form-control">
+
+                                            <option value="">
+                                                All Users
+                                            </option>
+
+                                            @foreach (var user in Model.Users)
+                                            {
+                                <option value="@user.Value"
+                                        @(user.Selected ? "selected=\"selected\"" : "")>
+
+                                    @user.Text
+
+                                </option>}
+
+                                        </select>
+
+                                        <span class="input-group-addon add-on">
+
+                                            <span class="fa fa-user"></span>
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- BUTTONS -->
+                                <div class="col-md-4">
+
+                                    <div class="input-group">
+
+                                        <button class="btn btn-success"
+                                                type="submit">
+
+                                            <i class="fa fa-search"></i>
+
+                                            Search
+
+                                        </button>
+
+                                        &nbsp;
+
+                                        <a href="@Url.Action(
+                                                     "ExportExcel",
+                                                     "UserReport",
+                                                     new
+                                                     {
+                                                         branch = Model.Branch,
+                                                         userId = Model.UserId
+                                                     })"
+                                           class="btn btn-warning">
+
+                                            <i class="fa fa-file-excel-o"></i>
+
+                                            Export Excel
+
+                                        </a>
+
+                                        &nbsp;
+
+                                        <a href="@Url.Action(
+                                                     "Index",
+                                                     "UserReport")"
+                                           class="btn btn-default">
+
+                                            <i class="fa fa-refresh"></i>
+
+                                            Reset
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REPORT TABLE -->
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+
+                        <h3 class="panel-title">
+                            User Report
+                        </h3>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <table class="table table-striped table-hover">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>No.</th>
+
+                                    <th>User Name</th>
+
+                                    <th>Full Name</th>
+
+                                    <th>Email</th>
+
+                                    <th>Mobile Number</th>
+
+                                    <th>Branch</th>
+
+                                    <th>Registered Date</th>
+
+                                    <th>Status</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                @if (Model.Report != null &&
+                                     Model.Report.Any())
+                                {
+                                    int count =
+                                        (Model.Report.PageNumber - 1)
+                                        * Model.Report.PageSize;
+
+                                    foreach (var item in Model.Report)
+                                    {
+                                        count++;
+
+                    <tr>
+
+                        <td>
+                            @count
+                        </td>
+
+                        <td>
+                            @item.UserName
+                        </td>
+
+                        <td>
+                            @item.FullName
+                        </td>
+
+                        <td>
+                            @item.Email
+                        </td>
+
+                        <td>
+                            @item.MobileNumber
+                        </td>
+
+                        <td>
+
+                            @item.BranchName
+
+                            <br />
+
+                            <small class="text-muted">
+                                @item.Branch
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            @if (item.RegisteredDate.HasValue)
+                            {
+                                @item.RegisteredDate.Value.ToString("dd/MM/yyyy HH:mm")
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            @if (item.Active)
+                            {
+        <span class="label label-success">
+            Active
+        </span> }
+                            else
+                            {
+        <span class="label label-danger">
+            Inactive
+        </span>}
+
+                        </td>
+
+                    </tr> }
+                                }
+                                else
+                                {
+                    <tr>
+
+                        <td colspan="9"
+                            class="text-center">
+
+                            No users found.
+
+                        </td>
+
+                    </tr>}
+
+                            </tbody>
+
+                        </table>
+
+
+                        <!-- PAGINATION -->
+                        @if (Model.Report != null &&
+                             Model.Report.PageCount > 1)
+                        {
+            <div class="pagedList pull-right">
+
+                @Html.PagedListPager(
+                    Model.Report,
+
+                    page => Url.Action(
+                        "Index",
+                        "UserReport",
+                        new
+                        {
+                            page = page,
+
+                            branch =
+                                Request.QueryString["branch"],
+
+                            userId =
+                                Request.QueryString["userId"]
+                        }),
+
+                    PagedListRenderOptions
+                        .MinimalWithItemCountText
+                )
+
+            </div>}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#Branch').change(function () {
+
+                var branch =
+                    $(this).val();
+
+                var userDropdown =
+                    $('#UserId');
+
+
+                userDropdown.empty();
+
+                userDropdown.append(
+                    $('<option></option>')
+                        .val('')
+                        .text('All Users')
+                );
+
+
+                if (!branch) {
+                    return;
+                }
+
+
+                userDropdown.empty();
+
+                userDropdown.append(
+                    $('<option></option>')
+                        .val('')
+                        .text('Loading users...')
+                );
+
+
+                userDropdown.prop(
+                    'disabled',
+                    true
+                );
+
+
+                $.ajax({
+
+                    url: '@Url.Action(
+                        "GetUsers",
+                        "UserReport")',
+
+                    type: 'GET',
+
+                    dataType: 'json',
+
+                    data: {
+                        branch: branch
+                    },
+
+
+                    success: function (data) {
+
+                        userDropdown.empty();
+
+                        userDropdown.append(
+                            $('<option></option>')
+                                .val('')
+                                .text('All Users')
+                        );
+
+
+                        if (data &&
+                            data.length > 0) {
+
+                            $.each(
+                                data,
+                                function (
+                                    index,
+                                    item) {
+
+                                    userDropdown.append(
+                                        $('<option></option>')
+                                            .val(item.id)
+                                            .text(item.text)
+                                    );
+
+                                }
+                            );
+
+                        }
+
+                    },
+
+
+                    error: function () {
+
+                        userDropdown.empty();
+
+                        userDropdown.append(
+                            $('<option></option>')
+                                .val('')
+                                .text(
+                                    'Unable to load users'
+                                )
+                        );
+
+                    },
+
+
+                    complete: function () {
+
+                        userDropdown.prop(
+                            'disabled',
+                            false
+                        );
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+}

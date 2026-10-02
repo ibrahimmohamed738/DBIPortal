@@ -39,6 +39,7 @@ namespace DBI_eDahab.Web.ViewModels
             Update_Limit = 1 << 9,
             Registration_Report = 1 << 10,
             Bulk_Update = 1 << 11,
+            Users_Branch_Report = 1 << 12,
         }
     }
 }

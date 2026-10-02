@@ -103,7 +103,7 @@ namespace DBI_eDahab.Web.Controllers
             var edahabInfo = await _dahab.GetUserInfo(trans.MSISDN);
             if (trans != null && trans.TransactionType == "DEPOSIT")
             {
-                var checkDBITrans = await _fluxCubeApi.GetDBITransaction(new CheckDBITransRequest { Entity = "DBI", ExternalTransactionId = trans.EdahabTransactionId });
+                var checkDBITrans = await _fluxCubeApi.GetDBITransaction(new CheckDBITransRequest { Entity = "DBI", ExternalTransactionId = trans.EdahabTransactionId.Replace(".","") });
                 if (checkDBITrans != null)
                 {
                     using (EventLog eventLog = new EventLog("Application"))
@@ -121,7 +121,7 @@ namespace DBI_eDahab.Web.Controllers
                     Entity = "DBI",
                     AlternateAccountId = trans.AccountId,
                     Amount = trans.Amount,
-                    ExternalTransactionId = trans.EdahabTransactionId,
+                    ExternalTransactionId = trans.EdahabTransactionId.Replace(".",""),
                     Narrative = trans.Description,
                     Market = isNorth ? "North" : "South",
                     TransactionType = "Deposit",
@@ -168,7 +168,7 @@ namespace DBI_eDahab.Web.Controllers
                 }
                 else if (dahabRes.StatusCode == "IMTCODE31")
                 {
-                    var edahabCheck = await _dahab.GetDBITransaction(trans.DBITransactionId);
+                    var edahabCheck = await _dahab.GetDBITransaction(trans.DBITransactionId, ConfigurationManager.AppSettings["AgentMsisdn"].ToString());
                     if (edahabCheck == null)
                     {
                         TempData["Error"] = "Transaction not found in eDahab side."; ;

@@ -49,63 +49,116 @@ namespace DBI_eDahab.Web.Models
             }
         }
 
+
+        private HttpClient CreatePayxClient()
+        {
+            var client = new HttpClient();
+
+            client.BaseAddress = new Uri(
+                ConfigurationManager.AppSettings["PayxApiUrl"]);
+
+            client.DefaultRequestHeaders.TryAddWithoutValidation(
+                "X-API-KEY",
+                ConfigurationManager.AppSettings["PayxApiKey"]);
+
+            client.DefaultRequestHeaders.TryAddWithoutValidation(
+                "X-API-SECRET",
+                ConfigurationManager.AppSettings["PayxApiSecret"]);
+
+            client.DefaultRequestHeaders.TryAddWithoutValidation(
+                "Accept",
+                "*/*");
+
+            return client;
+        }
+
         public async Task<DahabBalanceResponse> GetAgentBalance(string Msisdn)
         {
-            using (var _client = new HttpClient())
+            using (var client = CreatePayxClient())
             {
-                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["EDahabLoacalAPI"]);
-                await GetToken();
-                _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
-                var response = await _client.GetAsync($"EDahab/GetAgentBalance/{Msisdn}");
-                if (!response.IsSuccessStatusCode)
+                try
+                {
+                    var response = await client.GetAsync(
+                        "edahab/" + Msisdn + "/balance");
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var error = await response.Content
+                            .ReadAsAsync<PayxErrorResponse>();
+
+                        return null;
+                    }
+
+                    var result = await response.Content
+                        .ReadAsAsync<PayxBalanceResponse>();
+
+                    if (result == null || result.Balances == null)
+                    {
+                        return null;
+                    }
+
+                    var dollar = result.Balances
+                        .FirstOrDefault(x =>
+                            string.Equals(
+                                x.Currency,
+                                "dollar",
+                                StringComparison.OrdinalIgnoreCase));
+
+                    var shilling = result.Balances
+                        .FirstOrDefault(x =>
+                            string.Equals(
+                                x.Currency,
+                                "shilling",
+                                StringComparison.OrdinalIgnoreCase));
+
+                    return new DahabBalanceResponse
+                    {
+                        USDBalance = dollar != null
+                            ? dollar.Balance
+                            : 0,
+
+                        SLSBalance = shilling != null
+                            ? shilling.Balance
+                            : 0
+                    };
+                }
+                catch (Exception)
                 {
                     return null;
                 }
-
-                var result = await response.Content.ReadAsAsync<DahabResponse<DahabBalanceResponse>>();
-                if (result is null)
-                {
-                    return null;
-                }
-                var balanceResponse = new DahabBalanceResponse
-                {
-                    USDBalance = result.Data.USDBalance,
-                    SLSBalance = result.Data.SLSBalance
-
-                };
-                return balanceResponse;
             }
         }
 
         public async Task<UserInfo> GetUserInfo(string Msisdn)
         {
-            using (var _client = new HttpClient())
+            using (var client = CreatePayxClient())
             {
-                _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["EDahabLoacalAPI"]);
-                await GetToken();
-                _client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + _token);
-                var response = await _client.GetAsync($"EDahab/get-user-info/{Msisdn}");
+                var response = await client.GetAsync(
+                    "edahab/" + Msisdn);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     return null;
                 }
 
-                var result = await response.Content.ReadAsAsync<DahabResponse<UserInfo>>();
-                if (result is null)
+                var result = await response.Content
+                    .ReadAsAsync<PayxUserResponse>();
+
+                if (result == null)
                 {
                     return null;
                 }
-                var user = new UserInfo
+
+                return new UserInfo
                 {
-                    UserId = result.Data.UserId,
-                    Msisdn = result.Data.Msisdn,
-                    FullName = result.Data.FullName,
-                    CategoryCode = result.Data.CategoryCode,
-                    Gender = result.Data.Gender,
-                    Status = result.Data.Status,
-                    AgentCode = result.Data.AgentCode
+                    UserId = result.Id,
+                    Msisdn = result.Phone,
+                    FullName = result.FullName,
+                    CategoryCode = result.Category,
+                    Gender = result.Gender,
+                    Status = result.Status,
+                    AgentCode = result.Code
                 };
-                return user;
             }
         }
 
@@ -133,135 +186,157 @@ namespace DBI_eDahab.Web.Models
 
         public async Task<CashResponse> SubscriberCashInAsync(CashinRequest request)
         {
-            var responseObj = new CashResponse();
-               var xmlFormat = $@"<COMMAND>
-                                        <TYPE>IMTCIREQ</TYPE>
-                                        <TRANSACTIONID>{request.TransactionId}</TRANSACTIONID>  
-                                        <SENDONLINEID>{request.TransactionId}</SENDONLINEID>  
-                                        <MSISDN>{request.AgentLongCode}</MSISDN>
-                                        <SENPROVID>{request.Currency}</SENPROVID>
-                                        <RECPROVID>{request.Currency}</RECPROVID>
-                                        <SENPAYID>12</SENPAYID>
-                                        <RECPAYID>12</RECPAYID>
-                                        <MPIN></MPIN>
-                                        <MSISDN2>{request.Phone}</MSISDN2>   
-                                        <AMOUNT>{request.Amount}</AMOUNT>
-                                        <BLOCKSMS></BLOCKSMS>
-                                        <CELLID>{request.Phone}</CELLID>
-                                        <FTXNID>{request.GTransactionId}</FTXNID>
-                                  </COMMAND>";
-            var xml = string.Format(xmlFormat);
-            var address = ConfigurationManager.AppSettings["ComvivaApiEndpointWeb"].ToString();
-            var client = new HttpClient();
-            var data = Encoding.UTF8.GetBytes("requestText=" + xml);
-            var body = new ByteArrayContent(data);
-            var response = await client.PostAsync(address, body);
-            if (!response.IsSuccessStatusCode)
+            using (var client = CreatePayxClient())
             {
-                return responseObj;
-            }
-            var resText = await response.Content.ReadAsStringAsync();
-            var resXml = XDocument.Parse(resText);
-            var commandElement = resXml.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("COMMAND"));
-            var statusElement = commandElement.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("TXNSTATUS"));
-            var messageElement = commandElement.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("MESSAGE"));
-            var transactionIdElement = commandElement.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("TXNID"));
-
-            responseObj.StatusCode = statusElement.Value;
-            responseObj.Message = messageElement.Value;
-
-            if (responseObj.StatusCode.Equals("200"))
-            {
-                responseObj.TransactionId = transactionIdElement.Value;
-            }
-           
-            return responseObj;
-        }
-
-        public async Task<CashResponse> MerchantInAsync(CashinRequest request)
-        {
-            var responseObj = new CashResponse();
-            var xmlFormat = $@"<COMMAND>
-                                    <TYPE>RTMREQ</TYPE>
-                                    <MSISDN>{request.AgentLongCode}</MSISDN>
-                                    <MSISDN2>{request.Phone}</MSISDN2>
-                                    <AMOUNT>{request.Amount}</AMOUNT>
-                                    <MPIN></MPIN>
-                                    <PIN></PIN>
-                                    <PROVIDER>{request.Currency}</PROVIDER>
-                                    <PROVIDER2>{request.Currency}</PROVIDER2>
-                                    <PAYID>12</PAYID>
-                                    <PAYID2>12</PAYID2>
-                                    <AGENT_CODE></AGENT_CODE>
-                                    <MERCHANT_CODE></MERCHANT_CODE>
-                                    <BLOCKSMS></BLOCKSMS>
-                                    <TXNMODE>eDahabDBI</TXNMODE>
-                                    <LANGUAGE1>2</LANGUAGE1>
-                                    <LANGUAGE2>2</LANGUAGE2>
-                                    <CELLID>{request.Phone}</CELLID>
-                                    <FTXNID>{request.TransactionId}</FTXNID> 
-                                    </COMMAND>";
-
-            var xml = string.Format(xmlFormat);
-            var address = ConfigurationManager.AppSettings["ComvivaApiEndpointWeb"].ToString();
-
-            var client = new HttpClient();
-
-            var data = Encoding.UTF8.GetBytes("requestText=" + xml);
-            var body = new ByteArrayContent(data);
-
-            var response = await client.PostAsync(address, body);
-            if (!response.IsSuccessStatusCode)
-            {
-                return responseObj;
-            }
-
-            var resText = await response.Content.ReadAsStringAsync();
-
-            var resXml = XDocument.Parse(resText);
-            var commandElement = resXml.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("COMMAND"));
-            var statusElement = commandElement.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("TXNSTATUS"));
-            var messageElement = commandElement.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("MESSAGE"));
-            var transactionIdElement = commandElement.Elements().SingleOrDefault(e => e.Name.LocalName.Equals("TXNID"));
-
-            responseObj.StatusCode = statusElement?.Value ?? "";
-            responseObj.Message = messageElement?.Value;
-
-            if (responseObj.StatusCode.Equals("200"))
-            {
-                responseObj.TransactionId = transactionIdElement.Value;
-            }
-            return responseObj;
-        }
-
-        public async Task<DBITransaction> GetDBITransaction(string transactionId)
-        {
-            using (var connection = new OracleConnection(ConfigurationManager.ConnectionStrings["oracleConnection"].ConnectionString))
-            {
-                string sql = @"SELECT TRANSFER_ID,(TRANSFER_VALUE / 100) AS AMOUNT,CELL_ID,FTXN_ID from mtx_transaction_header where TRANSFER_STATUS='TS' AND REFERENCE_NUMBER = :transId ";
-                OracleCommand cmd = new OracleCommand(sql, connection);
-                cmd.Parameters.Add(new OracleParameter(":transId", transactionId));
-                cmd.CommandType = CommandType.Text;
-                if (connection.State == ConnectionState.Closed)
-                    await connection.OpenAsync();
-
-                OracleDataReader dr = cmd.ExecuteReader();
-                dr.Read();
-                if (dr.HasRows)
+                var body = new
                 {
-                    return new DBITransaction
+                    receiverPhone = request.Phone,
+                    transactorPhone = request.AgentLongCode,
+                    amount = request.Amount,
+                    currency = request.Currency,
+                    externalReferenceId = request.TransactionId
+                };
+
+                var response = await client.PostAsJsonAsync(
+                    "edahab/imt-cashin",
+                    body);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content
+                        .ReadAsAsync<PayxErrorResponse>();
+
+                    return new CashResponse
                     {
-                        TransferId = dr.GetString(0),
-                        Amount = dr.GetDecimal(1),
-                        CELLID = dr.GetString(2),
-                        FTXNID = dr.GetString(3)
+                        StatusCode = ((int)response.StatusCode).ToString(),
+                        Message = error != null
+                            ? error.Message
+                            : "Transaction failed"
                     };
                 }
 
-                else
-                    return null;
+                var result = await response.Content
+                    .ReadAsAsync<PayxCashInResponse>();
 
-            }   
+                if (result == null)
+                {
+                    return new CashResponse
+                    {
+                        StatusCode = "500",
+                        Message = "Invalid response"
+                    };
+                }
+
+                return new CashResponse
+                {
+                    StatusCode = result.Status == "SUCCEEDED"
+                        ? "200"
+                        : "400",
+
+                    Message = result.Message,
+                    TransactionId = result.TransactionId
+                };
+            }
+        }
+
+        public async Task<CashResponse> MerchantInAsync(
+     CashinRequest request)
+        {
+            using (var client = CreatePayxClient())
+            {
+                var body = new
+                {
+                    senderPhone = request.AgentLongCode,
+                    receiverPhone = request.Phone,
+                    amount = request.Amount,
+                    currency = request.Currency,
+                    remarks = "DBI"
+                };
+
+                var response = await client.PostAsJsonAsync(
+                    "edahab/c2c-without-pin",
+                    body);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content
+                        .ReadAsAsync<PayxErrorResponse>();
+
+                    return new CashResponse
+                    {
+                        StatusCode = ((int)response.StatusCode).ToString(),
+
+                        Message = error != null
+                            ? error.Message
+                            : "Transaction failed"
+                    };
+                }
+
+                var result = await response.Content
+                    .ReadAsAsync<PayxTransactionResponse>();
+
+                if (result == null)
+                {
+                    return new CashResponse
+                    {
+                        StatusCode = "500",
+                        Message = "Invalid response"
+                    };
+                }
+
+                return new CashResponse
+                {
+                    StatusCode = result.StatusCode.ToString(),
+                    Message = result.Message,
+                    TransactionId = result.TransactionId
+                };
+            }
+        }
+
+        public async Task<DBITransaction> GetDBITransaction(string transactionId,string userPhone)
+        {
+            using (var client = CreatePayxClient())
+            {
+                var body = new
+                {
+                    transactionId = transactionId,
+                    userPhone = userPhone
+                };
+
+                var response = await client.PostAsJsonAsync(
+                    "edahab/transaction-details",
+                    body);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var result = await response.Content
+                    .ReadAsAsync<PayxTransactionDetailsResponse>();
+
+                if (result == null)
+                {
+                    return null;
+                }
+
+                decimal amount = 0;
+
+                decimal.TryParse(
+                    result.TransferValue,
+                    out amount);
+
+                return new DBITransaction
+                {
+                    TransferId = result.TransactionId,
+                    Amount = amount,
+                    CELLID = result.Receiver != null
+                        ? result.Receiver.MobileNumber
+                        : "",
+
+                    FTXNID = result.ServiceRequestId
+                };
+            }
         }
     }
 }
